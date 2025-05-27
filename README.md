@@ -1,169 +1,144 @@
-# MUI Word Slider - React + Vite + GitHub Pages
+# React MUI TypeScript Project
 
-A React application built with Vite, demonstrating deployment to GitHub Pages with automatic CI/CD.
+A modern React application built with TypeScript, Material-UI, and Vite, featuring word learning functionality with a
+beautiful dark theme.
 
-## 🎯 Purpose
+## Features
 
-This project demonstrates:
+- 🎨 **Material-UI Dark Theme** - Beautiful Darcula-inspired design
+- 📱 **Responsive Layout** - Works on desktop and mobile
+- 🔄 **State Management** - Zustand for efficient state handling
+- 📝 **Form Management** - Formik with Yup validation
+- 🎠 **Interactive Slider** - Word learning carousel with auto-play
+- 📤 **File Upload** - JSON word pairs upload with validation
+- 🔔 **Notifications** - Auto-dismissing snackbar notifications
+- 🧭 **Routing** - React Router for navigation
 
-- ✅ React + Vite application deployment to GitHub Pages
-- ✅ Automatic build and deployment via GitHub Actions
-- ✅ Proper configuration for GitHub Pages subdirectory hosting
-- ✅ Modern React development with Vite's fast build system
+## Tech Stack
 
-## 🚀 Live Demo
+- **React 19** with TypeScript
+- **Material-UI (MUI)** for components and theming
+- **Vite** for fast development and building
+- **Zustand** for state management
+- **React Router** for navigation
+- **Formik + Yup** for form handling
+- **React Slick** for carousel functionality
+- **React Markdown** with syntax highlighting
 
-Once deployed, this site will be available at:
-`https://[your-username].github.io/mui-word-slider/`
+## Development Setup
 
-## 🛠️ Tech Stack
+### Prerequisites
 
-- **React 19** - Modern React with latest features
-- **Vite 6** - Fast build tool and dev server
-- **GitHub Actions** - CI/CD pipeline
-- **GitHub Pages** - Static hosting
+- Node.js 18+
+- npm or yarn
 
-## 📁 Project Structure
-
-```
-mui-word-slider/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # GitHub Actions workflow
-├── dist/                       # Built files (generated)
-├── public/                     # Static assets
-├── src/                        # React source code
-├── .gitignore                  # Git ignore rules
-├── index.html                  # HTML template
-├── package.json                # Dependencies and scripts
-├── vite.config.js              # Vite configuration
-└── README.md                   # This file
-```
-
-## 🔧 Local Development
-
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-2. **Start development server**:
-   ```bash
-   npm run dev
-   ```
-
-3. **Build for production**:
-   ```bash
-   npm run build
-   ```
-
-4. **Preview production build**:
-   ```bash
-   npm run preview
-   ```
-
-## 🚀 Deployment to GitHub Pages
-
-### Automatic Deployment (Recommended)
-
-1. **Configure Vite**: The `vite.config.js` is already configured with the correct base path:
-   ```javascript
-   export default defineConfig({
-     plugins: [react()],
-     base: '/mui-word-slider/',
-   })
-   ```
-
-2. **Enable GitHub Pages**:
-   - Go to repository Settings → Pages
-   - Select "GitHub Actions" as the source
-
-3. **Push to Repository**: The workflow will automatically:
-   - Install dependencies
-   - Build the React app
-   - Deploy to GitHub Pages
-
-### Manual Deployment
-
-If you prefer manual deployment:
-
-1. **Build the project**:
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy dist folder**: Upload the `dist/` folder contents to your hosting provider
-
-## ✅ Build Verification
-
-The build is correctly configured when:
-
-- [x] `vite.config.js` has the correct `base` path
-- [x] Built `index.html` references assets with `/mui-word-slider/` prefix
-- [x] All assets are in the `dist/assets/` folder
-- [x] GitHub Actions workflow builds and deploys successfully
-
-### Current Build Status
+### Installation
 
 ```bash
-✓ 32 modules transformed.
-dist/index.html                   0.51 kB │ gzip:  0.31 kB
-dist/assets/react-CHdo91hT.svg    4.13 kB │ gzip:  2.05 kB
-dist/assets/index-D8b4DHJx.css    1.39 kB │ gzip:  0.71 kB
-dist/assets/index-CYx_iUZg.js   188.09 kB │ gzip: 59.22 kB
-✓ built in 351ms
+npm install
 ```
 
-## 🔍 Troubleshooting
+### Development Scripts
 
-### Common Issues
+```bash
+# Start development server
+npm run dev
 
-1. **404 errors for assets**: Ensure `base` in `vite.config.js` matches your repository name
-2. **Blank page**: Check browser console for asset loading errors
-3. **Build fails**: Verify all dependencies are installed with `npm ci`
+# Build for production
+npm run build
 
-### Asset Path Verification
+# Preview production build
+npm run preview
 
-The built `index.html` should contain paths like:
-```html
-<script src="/mui-word-slider/assets/index-[hash].js"></script>
-<link href="/mui-word-slider/assets/index-[hash].css" rel="stylesheet">
+# Run linting
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+
+# Format code with Prettier
+npm run format
+
+# Check code formatting
+npm run format:check
+
+# Run both linting and format check
+npm run check
+
+# Fix both linting and formatting
+npm run fix
 ```
 
-## 📊 Performance
+## Code Quality
 
-- **Bundle size**: ~188KB (59KB gzipped)
-- **Build time**: ~351ms
-- **Fast refresh**: Enabled in development
-- **Tree shaking**: Automatic dead code elimination
+This project uses ESLint and Prettier for code quality and consistency:
 
-## 🛡️ Security
+### ESLint Configuration
 
-- HTTPS enabled by default on GitHub Pages
-- No server-side vulnerabilities (static files only)
-- Content Security Policy can be added via meta tags
+- **TypeScript support** with `@typescript-eslint`
+- **React hooks rules** for proper hook usage
+- **React best practices** with `eslint-plugin-react`
+- **Prettier integration** for consistent formatting
+- **Modern flat config** format (eslint.config.js)
 
-## 🤝 Contributing
+### Prettier Configuration
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes
-4. Test locally: `npm run dev`
-5. Build: `npm run build`
-6. Commit: `git commit -m 'Add feature'`
-7. Push: `git push origin feature-name`
-8. Create a Pull Request
+- **2-space indentation**
+- **Single quotes** for strings
+- **Trailing commas** where valid
+- **100 character** line width
+- **Semicolons** always
+- **LF line endings**
 
-## 📄 Scripts
+### VS Code Integration
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+The project includes VS Code settings for:
 
----
+- **Format on save** with Prettier
+- **Auto-fix ESLint** issues on save
+- **TypeScript** auto-imports
+- **Recommended extensions** for optimal development experience
 
-**Build Status**: ✅ Successfully built  
-**Deployment**: GitHub Actions → GitHub Pages  
-**Asset Paths**: ✅ Correctly configured for subdirectory hosting  
-**Status**: Ready for deployment
+### Recommended VS Code Extensions
+
+- ESLint (`dbaeumer.vscode-eslint`)
+- Prettier (`esbenp.prettier-vscode`)
+- TypeScript (`ms-vscode.vscode-typescript-next`)
+
+## Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── layout/         # Layout components (Header, Menu)
+│   ├── upload/         # Upload page components
+│   └── word-pair/      # Word learning components
+├── pages/              # Page components
+├── stores/             # Zustand stores
+├── theme/              # MUI theme configuration
+├── types/              # TypeScript type definitions
+└── services/           # API and external services
+```
+
+## Usage
+
+1. **Learning Mode**: Navigate to the main page to see word pairs in an interactive slider
+2. **Upload Mode**: Use the upload page to add new word pairs via JSON format
+3. **Navigation**: Use the header menu to switch between modes
+
+### JSON Upload Format
+
+```json
+[
+  {
+    "id": "1",
+    "sourceWord": "Hello",
+    "targetWord": "Hola"
+  },
+  {
+    "id": "2",
+    "sourceWord": "World",
+    "targetWord": "Mundo"
+  }
+]
+```

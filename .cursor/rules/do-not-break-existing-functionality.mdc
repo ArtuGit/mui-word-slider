@@ -1,0 +1,6 @@
+---
+description: Do not break unrelated
+globs: 
+alwaysApply: false
+---
+Do not break unrelated existing changes that you have not added, it could be make manually and intentionally.

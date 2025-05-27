@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+.vite
+*.config.js
+*.config.ts
+vite.config.ts
+eslint.config.js
+public
+coverage
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local 
