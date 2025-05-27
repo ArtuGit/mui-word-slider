@@ -50,7 +50,7 @@ This is configured in `vite.config.js`:
 ```javascript
 export default defineConfig(({ command, mode }) => {
   const base = mode === 'production' ? '/mui-word-slider/' : '/';
-  
+
   return {
     plugins: [react()],
     base,
@@ -93,11 +93,27 @@ npm run fix
 
 ### GitHub Pages
 
-The project is configured for automatic deployment to GitHub Pages:
+The project is configured for automatic deployment to GitHub Pages with proper SPA routing support:
 
 1. **Automatic Deployment**: Push to `main` or `master` branch triggers GitHub Actions
 2. **Environment Detection**: Production builds automatically use `/mui-word-slider/` base path
-3. **GitHub Actions**: Workflow builds and deploys to GitHub Pages
+3. **SPA Routing**: Uses HashRouter and 404.html redirect for client-side routing support
+4. **GitHub Actions**: Workflow builds and deploys to GitHub Pages
+
+#### Routing Solution
+
+To handle client-side routing on GitHub Pages, the project uses:
+
+- **HashRouter**: Routes use hash fragments (e.g., `#/learn`, `#/upload`) which work with static hosting
+- **404.html**: Redirects any direct URL access to the main page with proper route preservation
+- **SPA Script**: Handles URL restoration for bookmarked or shared links
+
+This ensures that:
+
+- ✅ Direct links like `https://artugit.github.io/mui-word-slider/#/learn` work correctly
+- ✅ Page refreshes maintain the current route
+- ✅ Bookmarked routes load properly
+- ✅ Navigation between routes is seamless
 
 ### Manual Deployment
 
