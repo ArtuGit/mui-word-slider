@@ -146,6 +146,7 @@ const UploadInstruction: FC = () => {
             }
 
             return (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               <SyntaxHighlighter style={vscDarkPlus as any} language={language} PreTag="div">
                 {String(children).replace(/\n$/, '')}
               </SyntaxHighlighter>
