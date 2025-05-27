@@ -38,6 +38,26 @@ beautiful dark theme.
 npm install
 ```
 
+### Environment Configuration
+
+The project automatically configures the base path based on the environment:
+
+- **Development**: Uses `/` (root path) for local development
+- **Production**: Uses `/mui-word-slider/` for GitHub Pages deployment
+
+This is configured in `vite.config.js`:
+
+```javascript
+export default defineConfig(({ command, mode }) => {
+  const base = mode === 'production' ? '/mui-word-slider/' : '/';
+  
+  return {
+    plugins: [react()],
+    base,
+  };
+});
+```
+
 ### Development Scripts
 
 ```bash
@@ -67,6 +87,36 @@ npm run check
 
 # Fix both linting and formatting
 npm run fix
+```
+
+## Deployment
+
+### GitHub Pages
+
+The project is configured for automatic deployment to GitHub Pages:
+
+1. **Automatic Deployment**: Push to `main` or `master` branch triggers GitHub Actions
+2. **Environment Detection**: Production builds automatically use `/mui-word-slider/` base path
+3. **GitHub Actions**: Workflow builds and deploys to GitHub Pages
+
+### Manual Deployment
+
+For manual deployment to other platforms:
+
+```bash
+# Build for production
+npm run build
+
+# The dist/ folder contains the built application
+# Upload contents to your hosting provider
+```
+
+### Local Preview
+
+To preview the production build locally:
+
+```bash
+npm run preview
 ```
 
 ## Code Quality
