@@ -26,8 +26,8 @@ const mockWords: WordPairList = [
 // Simulate network delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const api = {
-  getWords: async (): Promise<WordPairList> => {
+export const wordPairProvider = {
+  getDefaultWordPairs: async (): Promise<WordPairList> => {
     // Simulate network delay between 500ms and 1500ms
     await delay(Math.random() * 1000 + 500);
     return mockWords;

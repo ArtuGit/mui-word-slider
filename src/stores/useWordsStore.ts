@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { WordPair, WordPairList } from '../types/word.types';
-import { api } from '../services/api.service';
+import { wordPairProvider } from '../services/word-pair.provider.ts';
 
 interface WordsState {
   words: WordPairList;
@@ -22,7 +22,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
   fetchWords: async () => {
     set({ isLoading: true, error: null });
     try {
-      const words = await api.getWords();
+      const words = await wordPairProvider.getDefaultWordPairs();
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -39,7 +39,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     if (words.length === 0 && !hasInitialized && !isLoading) {
       set({ isLoading: true, error: null });
       try {
-        const words = await api.getWords();
+        const words = await wordPairProvider.getDefaultWordPairs();
         set({ words, isLoading: false, hasInitialized: true });
       } catch (error) {
         set({
