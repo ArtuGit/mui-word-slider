@@ -1,0 +1,137 @@
+import { WordPairList } from '../types/word.types';
+import { WordPairIndexedDbProvider } from './word-pair.indexed-db-provider.ts';
+
+const mockWords: WordPairList = [
+  { id: '1', sourceWord: 'Dzień dobry', targetWord: 'Good morning' },
+  { id: '2', sourceWord: 'Do widzenia', targetWord: 'Goodbye' },
+  { id: '3', sourceWord: 'Proszę', targetWord: 'Please' },
+  { id: '4', sourceWord: 'Dziękuję', targetWord: 'Thank you' },
+  { id: '5', sourceWord: 'Przepraszam', targetWord: 'Sorry' },
+  { id: '6', sourceWord: 'Tak', targetWord: 'Yes' },
+  { id: '7', sourceWord: 'Nie', targetWord: 'No' },
+  { id: '8', sourceWord: 'Cześć', targetWord: 'Hi' },
+  { id: '9', sourceWord: 'Jak się masz?', targetWord: 'How are you?' },
+  { id: '10', sourceWord: 'Dobranoc', targetWord: 'Good night' },
+  { id: '11', sourceWord: 'Kocham cię', targetWord: 'I love you' },
+  { id: '12', sourceWord: 'Smacznego', targetWord: 'Enjoy your meal' },
+  { id: '13', sourceWord: 'Na zdrowie', targetWord: 'Cheers' },
+  { id: '14', sourceWord: 'Gdzie jest...?', targetWord: 'Where is...?' },
+  { id: '15', sourceWord: 'Co słychać?', targetWord: "What's up?" },
+  { id: '16', sourceWord: 'Wszystkiego najlepszego', targetWord: 'All the best' },
+  { id: '17', sourceWord: 'Powodzenia', targetWord: 'Good luck' },
+  { id: '18', sourceWord: 'Rozumiem', targetWord: 'I understand' },
+  { id: '19', sourceWord: 'Nie rozumiem', targetWord: "I don't understand" },
+  { id: '20', sourceWord: 'Dobry wieczór', targetWord: 'Good evening' },
+];
+
+// Simulate network delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export const wordPairService = {
+  /**
+   * Get default word pairs (mock data with simulated network delay)
+   */
+  getDefaultWordPairs: async (): Promise<WordPairList> => {
+    // Simulate network delay between 500ms and 1500ms
+    await delay(Math.random() * 1000 + 500);
+    return mockWords;
+  },
+
+  /**
+   * Load word pairs from IndexedDB
+   */
+  loadWordPairs: async (): Promise<WordPairList> => {
+    try {
+      return await WordPairIndexedDbProvider.getAllWordPairs();
+    } catch (error) {
+      console.error('Failed to load word pairs from IndexedDB:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Save word pairs to IndexedDB
+   */
+  saveWordPairs: async (wordPairs: WordPairList): Promise<void> => {
+    try {
+      await WordPairIndexedDbProvider.saveWordPairs(wordPairs);
+    } catch (error) {
+      console.error('Failed to save word pairs to IndexedDB:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Check if IndexedDB has word pairs stored
+   */
+  hasStoredWordPairs: async (): Promise<boolean> => {
+    try {
+      return await WordPairIndexedDbProvider.hasWordPairs();
+    } catch (error) {
+      console.error('Failed to check stored word pairs:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Initialize word pairs: load from IndexedDB if available, otherwise load defaults and save them
+   */
+  initializeWordPairs: async (): Promise<WordPairList> => {
+    try {
+      // Check if we have stored word pairs
+      const hasStored = await WordPairIndexedDbProvider.hasWordPairs();
+
+      if (hasStored) {
+        // Load from IndexedDB
+        console.log('Loading word pairs from IndexedDB');
+        return await WordPairIndexedDbProvider.getAllWordPairs();
+      } else {
+        // Load default words and save them to IndexedDB
+        console.log('Loading default word pairs and saving to IndexedDB');
+        const defaultWords = await wordPairService.getDefaultWordPairs();
+        await WordPairIndexedDbProvider.saveWordPairs(defaultWords);
+        return defaultWords;
+      }
+    } catch (error) {
+      console.error('Failed to initialize word pairs:', error);
+      // Fallback to default words without saving
+      return await wordPairService.getDefaultWordPairs();
+    }
+  },
+
+  /**
+   * Clear all stored word pairs from IndexedDB
+   */
+  clearStoredWordPairs: async (): Promise<void> => {
+    try {
+      await WordPairIndexedDbProvider.clearAllWordPairs();
+    } catch (error) {
+      console.error('Failed to clear stored word pairs:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get word pairs count from IndexedDB
+   */
+  getStoredWordPairsCount: async (): Promise<number> => {
+    try {
+      return await WordPairIndexedDbProvider.getWordPairsCount();
+    } catch (error) {
+      console.error('Failed to get stored word pairs count:', error);
+      return 0;
+    }
+  },
+
+  /**
+   * Search word pairs in IndexedDB
+   */
+  searchStoredWordPairs: async (query: string): Promise<WordPairList> => {
+    try {
+      return await WordPairIndexedDbProvider.searchWordPairs(query);
+    } catch (error) {
+      console.error('Failed to search stored word pairs:', error);
+      throw error;
+    }
+  },
+};

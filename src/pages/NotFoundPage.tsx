@@ -36,7 +36,7 @@ export const NotFoundPage: FC = () => {
             mb: 3,
           }}
         />
-        
+
         <Typography
           variant="h1"
           sx={{
@@ -48,7 +48,7 @@ export const NotFoundPage: FC = () => {
         >
           404
         </Typography>
-        
+
         <Typography
           variant="h4"
           sx={{
@@ -59,7 +59,7 @@ export const NotFoundPage: FC = () => {
         >
           Page Not Found
         </Typography>
-        
+
         <Typography
           variant="body1"
           sx={{
@@ -69,9 +69,10 @@ export const NotFoundPage: FC = () => {
             lineHeight: 1.6,
           }}
         >
-          Sorry, the page you are looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
+          Sorry, the page you are looking for doesn't exist. It might have been moved, deleted, or
+          you entered the wrong URL.
         </Typography>
-        
+
         <Box
           sx={{
             display: 'flex',
@@ -93,7 +94,7 @@ export const NotFoundPage: FC = () => {
           >
             Go Home
           </Button>
-          
+
           <Button
             variant="outlined"
             size="large"
@@ -113,4 +114,4 @@ export const NotFoundPage: FC = () => {
   );
 };
 
-export default NotFoundPage; 
+export default NotFoundPage;

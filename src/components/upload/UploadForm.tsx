@@ -50,7 +50,8 @@ const validationSchema = Yup.object({
 
 const UploadForm: FC = () => {
   const [isValidated, setIsValidated] = useState(false);
-  const { words, saveWords } = useWordsStore();
+  const [isSaving, setIsSaving] = useState(false);
+  const { words, saveWords, isLoading } = useWordsStore();
   const { enqueueSnackbar } = useSnackbar();
 
   // Generate initial JSON from current words
@@ -75,19 +76,26 @@ const UploadForm: FC = () => {
     }
   };
 
-  const handleSave = (values: { jsonInput: string }) => {
+  const handleSave = async (values: { jsonInput: string }) => {
+    setIsSaving(true);
     try {
       const parsed: WordPairInput[] = JSON.parse(values.jsonInput);
 
-      // Save to Zustand store
-      saveWords(parsed);
+      // Save to Zustand store (now with IndexedDB persistence)
+      await saveWords(parsed);
 
-      enqueueSnackbar(`Successfully saved ${parsed.length} word pairs to the store!`, {
+      enqueueSnackbar(`Successfully saved ${parsed.length} word pairs to local storage!`, {
         variant: 'success',
       });
       setIsValidated(false); // Reset validation state after save
-    } catch {
-      enqueueSnackbar('Error saving data', { variant: 'error' });
+    } catch (error) {
+      console.error('Error saving data:', error);
+      enqueueSnackbar(
+        error instanceof Error ? error.message : 'Error saving data to local storage',
+        { variant: 'error' }
+      );
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -187,7 +195,7 @@ const UploadForm: FC = () => {
                   variant="outlined"
                   color="primary"
                   onClick={() => handleValidate(values)}
-                  disabled={!values.jsonInput.trim()}
+                  disabled={!values.jsonInput.trim() || isLoading || isSaving}
                 >
                   Validate
                 </Button>
@@ -196,9 +204,9 @@ const UploadForm: FC = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => handleSave(values)}
-                  disabled={!isValidated || !isValid}
+                  disabled={!isValidated || !isValid || isLoading || isSaving}
                 >
-                  Save
+                  {isSaving ? 'Saving...' : 'Save'}
                 </Button>
 
                 {words.length > 0 && (
@@ -209,7 +217,7 @@ const UploadForm: FC = () => {
                       setFieldValue('jsonInput', currentWordsJson);
                       setIsValidated(false);
                     }}
-                    disabled={!isInputDifferent}
+                    disabled={!isInputDifferent || isLoading || isSaving}
                   >
                     Reset to Current
                   </Button>
