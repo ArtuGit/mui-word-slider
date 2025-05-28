@@ -5,7 +5,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const UPLOAD_INSTRUCTION_MD = `
-## How to upload your word pairs
+## How to Upload your Word Pairs
 
 Ask your AI agent to create a JSON with word pairs on a given language and topic 
 as an array of objects with the following structure:
