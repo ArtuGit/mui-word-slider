@@ -33,8 +33,10 @@ const StyledCard = styled(Card)(({ theme }) => ({
   overflow: 'hidden',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   transform: 'translateX(0)',
+  border: `2px solid transparent`,
   '&:hover': {
-    transform: 'scale(1.02)',
+    boxShadow: theme.shadows[15],
+    borderColor: theme.palette.primary.main,
   },
 }));
 
@@ -60,19 +62,17 @@ const PronunciationTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const RemarkTypography = styled(Typography)(({ theme }) => {
-  return ({
-    fontSize: '1.1rem',
-    fontWeight: 400,
-    textAlign: 'center',
-    fontStyle: 'italic',
-    opacity: 0.8,
-    marginTop: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '0.8rem',
-    },
-  });
-});
+const RemarkTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '1.1rem',
+  fontWeight: 400,
+  textAlign: 'center',
+  fontStyle: 'italic',
+  opacity: 0.8,
+  marginTop: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.8rem',
+  },
+}));
 
 export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord, pronunciation, remark }) => {
   return (
