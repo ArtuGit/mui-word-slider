@@ -138,6 +138,72 @@ const mockWords: WordPairList = [
     pronunciation: '/ˈdɔbrɨ ˈvjɛt͡ʂur/',
     remark: 'Formal greeting used from late afternoon onwards',
   },
+  {
+    id: '21',
+    sourceWord: 'Miło',
+    targetWord: 'Nice',
+    pronunciation: '/ˈmiwɔ/',
+    remark: 'Used to express something pleasant or agreeable',
+  },
+  {
+    id: '22',
+    sourceWord: 'Woda',
+    targetWord: 'Water',
+    pronunciation: '/ˈvɔda/',
+  },
+  {
+    id: '23',
+    sourceWord: 'Chleb',
+    targetWord: 'Bread',
+    pronunciation: '/xlɛp/',
+    remark: 'Basic food staple in Polish cuisine',
+  },
+  {
+    id: '24',
+    sourceWord: 'Dom',
+    targetWord: 'House',
+    pronunciation: '/dɔm/',
+  },
+  {
+    id: '25',
+    sourceWord: 'Piękny',
+    targetWord: 'Beautiful',
+    pronunciation: '/ˈpjɛŋknɨ/',
+    remark: 'Masculine form, changes with gender and case',
+  },
+  {
+    id: '26',
+    sourceWord: 'Mama',
+    targetWord: 'Mom',
+    pronunciation: '/ˈmama/',
+    remark: 'Informal, affectionate term for mother',
+  },
+  {
+    id: '27',
+    sourceWord: 'Tata',
+    targetWord: 'Dad',
+    pronunciation: '/ˈtata/',
+    remark: 'Informal, affectionate term for father',
+  },
+  {
+    id: '28',
+    sourceWord: 'Kot',
+    targetWord: 'Cat',
+    pronunciation: '/kɔt/',
+  },
+  {
+    id: '29',
+    sourceWord: 'Pies',
+    targetWord: 'Dog',
+    pronunciation: '/pjɛs/',
+  },
+  {
+    id: '30',
+    sourceWord: 'Miłość',
+    targetWord: 'Love',
+    pronunciation: '/ˈmiwɔɕt͡ɕ/',
+    remark: 'Abstract noun for the feeling of love',
+  },
 ];
 
 // Simulate network delay
