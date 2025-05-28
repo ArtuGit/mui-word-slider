@@ -60,17 +60,19 @@ const PronunciationTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const RemarkTypography = styled(Typography)(({ theme }) => ({
-  fontSize: '0.9rem',
-  fontWeight: 400,
-  textAlign: 'center',
-  fontStyle: 'italic',
-  opacity: 0.8,
-  marginTop: theme.spacing(1),
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '0.8rem',
-  },
-}));
+const RemarkTypography = styled(Typography)(({ theme }) => {
+  return ({
+    fontSize: '1.1rem',
+    fontWeight: 400,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    opacity: 0.8,
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.8rem',
+    },
+  });
+});
 
 export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord, pronunciation, remark }) => {
   return (
