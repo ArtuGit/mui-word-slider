@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+    <!-- Letter M in italic style - bold, perfectly centered -->
+    <path d="M 12 12 L 12 52 L 18 52 L 18 22 L 24 46 L 28 46 L 34 22 L 34 52 L 40 52 L 40 12 L 32 12 L 26 38 L 20 12 Z" 
+          fill="#9876AA" 
+          stroke="#9876AA"
+          stroke-width="1"
+          transform="skewX(-12)"/>
+    
+    <!-- Letter V in italic style - bold, perfectly centered -->
+    <path d="M 42 12 L 48 12 L 53 46 L 58 12 L 64 12 L 56 52 L 50 52 Z" 
+          fill="#3592C4" 
+          stroke="#3592C4"
+          stroke-width="1"
+          transform="skewX(-12)"/>
+</svg>
