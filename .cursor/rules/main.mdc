@@ -7,11 +7,13 @@ alwaysApply: true
 
 - Follow best Front End modern practices
 - See package.json for dependencies, suggest installing new dependencies if needed
-- Implement features step by step according to instructions to Agent
+- Implement features step by step according to instructions to the Agent
 - Use Material UI components and styles, follow Documentation https://mui.com/material-ui/getting-started/
 - Support responsive layout
 - React router is used
 - Zustand is state manager
 - Formik is form manager
+
+
 
 

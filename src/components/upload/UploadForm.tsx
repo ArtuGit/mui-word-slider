@@ -1,4 +1,4 @@
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography, Divider, Chip } from '@mui/material';
 import { FC, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -49,8 +49,17 @@ const validationSchema = Yup.object({
 
 const UploadForm: FC = () => {
   const [isValidated, setIsValidated] = useState(false);
-  const { saveWords } = useWordsStore();
+  const { words, saveWords } = useWordsStore();
   const { enqueueSnackbar } = useSnackbar();
+
+  // Generate initial JSON from current words
+  const getInitialJsonValue = () => {
+    console.log({ words });
+    if (words.length > 0) {
+      return JSON.stringify(words, null, 2);
+    }
+    return '';
+  };
 
   const handleValidate = async (values: { jsonInput: string }) => {
     try {
@@ -95,23 +104,40 @@ const UploadForm: FC = () => {
         Upload Word Pairs in JSON
       </Typography>
 
+      {words.length > 0 && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h6" component="h3" gutterBottom color="text.secondary">
+            Current Word Set
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+            <Chip label={`${words.length} word pairs loaded`} color="primary" variant="outlined" />
+          </Box>
+          <Divider sx={{ my: 3 }} />
+        </Box>
+      )}
+
       <Formik
-        initialValues={{ jsonInput: '' }}
+        initialValues={{ jsonInput: getInitialJsonValue() }}
         validationSchema={validationSchema}
         onSubmit={() => {}}
+        enableReinitialize={true}
       >
-        {({ values, errors, touched, isValid }) => (
-          <Form>
-            <Box sx={{ mb: 3 }}>
-              <Field
-                as={TextField}
-                name="jsonInput"
-                label="JSON Word Pairs"
-                multiline
-                rows={12}
-                fullWidth
-                variant="outlined"
-                placeholder={`[
+        {({ values, errors, touched, isValid, setFieldValue }) => {
+          const currentWordsJson = getInitialJsonValue();
+          const isInputDifferent = values.jsonInput.trim() !== currentWordsJson.trim();
+
+          return (
+            <Form>
+              <Box sx={{ mb: 3 }}>
+                <Field
+                  as={TextField}
+                  name="jsonInput"
+                  label="JSON Word Pairs"
+                  multiline
+                  rows={12}
+                  fullWidth
+                  variant="outlined"
+                  placeholder={`[
   {
     "id": "1",
     "sourceWord": "Hello",
@@ -123,38 +149,53 @@ const UploadForm: FC = () => {
     "targetWord": "Adiós"
   }
 ]`}
-                error={touched.jsonInput && !!errors.jsonInput}
-                helperText={touched.jsonInput && errors.jsonInput}
-                sx={{
-                  '& .MuiInputBase-input': {
-                    fontFamily: 'monospace',
-                    fontSize: '0.875rem',
-                  },
-                }}
-              />
-            </Box>
+                  error={touched.jsonInput && !!errors.jsonInput}
+                  helperText={touched.jsonInput && errors.jsonInput}
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      fontFamily: 'monospace',
+                      fontSize: '0.875rem',
+                    },
+                  }}
+                />
+              </Box>
 
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleValidate(values)}
-                disabled={!values.jsonInput.trim()}
-              >
-                Validate
-              </Button>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleValidate(values)}
+                  disabled={!values.jsonInput.trim()}
+                >
+                  Validate
+                </Button>
 
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleSave(values)}
-                disabled={!isValidated || !isValid}
-              >
-                Save
-              </Button>
-            </Box>
-          </Form>
-        )}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleSave(values)}
+                  disabled={!isValidated || !isValid}
+                >
+                  Save
+                </Button>
+
+                {words.length > 0 && (
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => {
+                      setFieldValue('jsonInput', currentWordsJson);
+                      setIsValidated(false);
+                    }}
+                    disabled={!isInputDifferent}
+                  >
+                    Reset to Current
+                  </Button>
+                )}
+              </Box>
+            </Form>
+          );
+        }}
       </Formik>
     </Paper>
   );
