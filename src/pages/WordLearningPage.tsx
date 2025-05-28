@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Alert, Box, CircularProgress, Container } from '@mui/material';
 import WordSlider from '../components/word-pair/WordSlider';
 import { useWordsStore } from '../stores/useWordsStore';
-import IndexedDBDebug from "../components/debug/IndexedDBDebug.tsx";
 
 export const WordLearningPage: FC = () => {
   const { words, isLoading, error, clearError } = useWordsStore();
