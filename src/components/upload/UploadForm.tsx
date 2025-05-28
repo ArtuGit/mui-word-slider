@@ -1,9 +1,10 @@
-import { Box, Button, Paper, TextField, Typography, Divider, Chip } from '@mui/material';
+import { Box, Button, Paper, Typography, Divider, Chip } from '@mui/material';
 import { FC, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useWordsStore } from '../../stores/useWordsStore';
+import CodeEditor from '@uiw/react-textarea-code-editor';
 
 interface WordPairInput {
   id: string;
@@ -122,22 +123,23 @@ const UploadForm: FC = () => {
         onSubmit={() => {}}
         enableReinitialize={true}
       >
-        {({ values, errors, touched, isValid, setFieldValue }) => {
+        {({ values, isValid, setFieldValue }) => {
           const currentWordsJson = getInitialJsonValue();
           const isInputDifferent = values.jsonInput.trim() !== currentWordsJson.trim();
 
           return (
             <Form>
               <Box sx={{ mb: 3 }}>
-                <Field
-                  as={TextField}
-                  name="jsonInput"
-                  label="JSON Word Pairs"
-                  multiline
-                  rows={12}
-                  fullWidth
-                  variant="outlined"
-                  placeholder={`[
+                <Typography variant="subtitle1" gutterBottom>
+                  JSON Word Pairs
+                </Typography>
+                <Field name="jsonInput">
+                  {({ field, meta }: any) => (
+                    <Box>
+                      <CodeEditor
+                        value={field.value}
+                        language="json"
+                        placeholder={`[
   {
     "id": "1",
     "sourceWord": "Hello",
@@ -149,15 +151,35 @@ const UploadForm: FC = () => {
     "targetWord": "Adiós"
   }
 ]`}
-                  error={touched.jsonInput && !!errors.jsonInput}
-                  helperText={touched.jsonInput && errors.jsonInput}
-                  sx={{
-                    '& .MuiInputBase-input': {
-                      fontFamily: 'monospace',
-                      fontSize: '0.875rem',
-                    },
-                  }}
-                />
+                        onChange={evn =>
+                          field.onChange({ target: { name: field.name, value: evn.target.value } })
+                        }
+                        onBlur={field.onBlur}
+                        padding={15}
+                        data-color-mode="dark"
+                        style={{
+                          fontSize: 14,
+                          backgroundColor: '#1e1e1e',
+                          fontFamily:
+                            'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                          minHeight: '300px',
+                          border:
+                            meta.touched && meta.error ? '2px solid #f44336' : '1px solid #424242',
+                          borderRadius: '4px',
+                        }}
+                      />
+                      {meta.touched && meta.error && (
+                        <Typography
+                          variant="caption"
+                          color="error"
+                          sx={{ mt: 1, display: 'block' }}
+                        >
+                          {meta.error}
+                        </Typography>
+                      )}
+                    </Box>
+                  )}
+                </Field>
               </Box>
 
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
