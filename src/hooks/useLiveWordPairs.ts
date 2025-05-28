@@ -47,7 +47,9 @@ export const useLiveWordPairsSearch = (
         .filter(
           wordPair =>
             wordPair.sourceWord.toLowerCase().includes(lowerQuery) ||
-            wordPair.targetWord.toLowerCase().includes(lowerQuery)
+            wordPair.targetWord.toLowerCase().includes(lowerQuery) ||
+            wordPair.pronunciation.toLowerCase().includes(lowerQuery) ||
+            (wordPair.remark?.toLowerCase().includes(lowerQuery) ?? false)
         )
         .toArray();
     },

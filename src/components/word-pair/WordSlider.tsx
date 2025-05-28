@@ -131,7 +131,12 @@ export const WordSlider: FC<WordSliderProps> = ({ words }) => {
         <Slider {...settings}>
           {words.map(word => (
             <div key={word.id}>
-              <WordCard sourceWord={word.sourceWord} targetWord={word.targetWord} />
+              <WordCard
+                sourceWord={word.sourceWord}
+                targetWord={word.targetWord}
+                pronunciation={word.pronunciation}
+                remark={word.remark}
+              />
             </div>
           ))}
         </Slider>

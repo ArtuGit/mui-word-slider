@@ -11,7 +11,7 @@ export const db = new Dexie('MemVocabDB') as WordPairDB;
 
 // Define the schema
 db.version(1).stores({
-  wordPairs: 'id, sourceWord, targetWord', // id is primary key, others are indexed
+  wordPairs: 'id, sourceWord, targetWord, pronunciation, remark', // id is primary key, others are indexed
 });
 
 export default db;

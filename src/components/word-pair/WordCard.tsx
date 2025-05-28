@@ -2,12 +2,13 @@ import { FC } from 'react';
 import { Box, Card, CardContent, styled, Typography } from '@mui/material';
 import { WordPair } from '../../types/word.types';
 
-type WordCardProps = Pick<WordPair, 'sourceWord' | 'targetWord'>;
+type WordCardProps = Pick<WordPair, 'sourceWord' | 'targetWord' | 'pronunciation' | 'remark'>;
 
 // Styled components for custom card sections
 const CardSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   minHeight: '200px',
@@ -47,7 +48,31 @@ const WordTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord }) => {
+const PronunciationTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '1.2rem',
+  fontWeight: 400,
+  textAlign: 'center',
+  fontFamily: 'monospace, "Courier New", Courier',
+  opacity: 0.9,
+  marginTop: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '1rem',
+  },
+}));
+
+const RemarkTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '0.9rem',
+  fontWeight: 400,
+  textAlign: 'center',
+  fontStyle: 'italic',
+  opacity: 0.8,
+  marginTop: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.8rem',
+  },
+}));
+
+export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord, pronunciation, remark }) => {
   return (
     <StyledCard>
       <CardContent
@@ -62,11 +87,19 @@ export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord }) => {
           <WordTypography variant="h1" color="text.primary">
             {sourceWord}
           </WordTypography>
+          <PronunciationTypography variant="body1" color="text.primary">
+            {pronunciation}
+          </PronunciationTypography>
         </UpperSection>
         <LowerSection>
           <WordTypography variant="h1" color="background.paper">
             {targetWord}
           </WordTypography>
+          {remark && (
+            <RemarkTypography variant="body2" color="background.paper">
+              {remark}
+            </RemarkTypography>
+          )}
         </LowerSection>
       </CardContent>
     </StyledCard>

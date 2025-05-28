@@ -10,16 +10,19 @@ const UPLOAD_INSTRUCTION_MD = `
 Ask your AI agent to create a JSON with word pairs on a given language and topic 
 as an array of objects with the following structure:
 
-  - \`id\`: Unique identifier for the word pair (string)
+  - \`id\`: A unique identifier for the word pair (string)
   - \`sourceWord\`: The word in the source language
   - \`targetWord\`: The word in the target language
+  - \`pronunciation\`: IPA pronunciation transcription of the source word
+  - \`remark\`: (Optional) Additional context or meaning clarification
   
 
 ### Prompt Example
 > Please, create JSON with an array of the  following structure:
->  - \`id\`: Unique identifier for the word pair (string)
+>  - \`id\`: A unique identifier for the word pair (string)
 >  - \`sourceWord\`: The word in the source language
 >  - \`targetWord\`: The word in the target language
+>  - \`pronunciation\`: IPA pronunciation transcription
 >
 >   Parameters:
 > - Source language: Polish
@@ -31,21 +34,61 @@ as an array of objects with the following structure:
 \`\`\`json
 [
   {
-    "id": 1,
+    "id": "1",
     "sourceWord": "Dzień dobry",
-    "targetWord": "Good morning / Good day"
+    "targetWord": "Good morning / Good day",
+    "pronunciation": "/d͡ʑɛɲ ˈdɔbrɨ/",
+    "remark": "Formal greeting used until afternoon"
   },
   {
-    "id": 2,
+    "id": "2",
     "sourceWord": "Do widzenia",
-    "targetWord": "Goodbye"
+    "targetWord": "Goodbye",
+    "pronunciation": "/dɔ viˈd͡zɛɲa/",
+    "remark": "Formal farewell, literally 'until seeing'"
   },
   {
-    "id": 3,
+    "id": "3",
     "sourceWord": "Cześć",
-    "targetWord": "Hi / Hello / Bye (informal)"
+    "targetWord": "Hi / Hello / Bye (informal)",
+    "pronunciation": "/t͡ʂɛɕt͡ɕ/",
+    "remark": "Informal greeting, also used for goodbye"
   },
   ...
+]
+\`\`\`
+
+> **Note:** Each object must have the following properties:
+>  - \`id\`: A unique identifier for the word pair (string)
+>  - \`sourceWord\`: The word in the source language
+>  - \`targetWord\`: The word in the target language
+>  - \`pronunciation\`: IPA pronunciation transcription
+>  - \`remark\`: (Optional) Additional context or meaning clarification
+
+**Example:**
+\`\`\`json
+[
+  {
+    "id": "1",
+    "sourceWord": "Dzień dobry",
+    "targetWord": "Good morning / Good day",
+    "pronunciation": "/d͡ʑɛɲ ˈdɔbrɨ/",
+    "remark": "Formal greeting used until afternoon"
+  },
+  {
+    "id": "2",
+    "sourceWord": "Do widzenia",
+    "targetWord": "Goodbye",
+    "pronunciation": "/dɔ viˈd͡zɛɲa/",
+    "remark": "Formal farewell, literally 'until seeing'"
+  },
+  {
+    "id": "3",
+    "sourceWord": "Cześć",
+    "targetWord": "Hi / Hello / Bye (informal)",
+    "pronunciation": "/t͡ʂɛɕt͡ɕ/",
+    "remark": "Informal greeting, also used for goodbye"
+  }
 ]
 \`\`\`
 `;

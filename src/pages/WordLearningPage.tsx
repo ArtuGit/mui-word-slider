@@ -23,7 +23,6 @@ export const WordLearningPage: FC = () => {
 
   return (
     <Container maxWidth="lg">
-
       <Box
         sx={{
           display: 'flex',

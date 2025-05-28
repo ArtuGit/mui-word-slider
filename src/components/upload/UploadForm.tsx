@@ -10,6 +10,8 @@ interface WordPairInput {
   id: string;
   sourceWord: string;
   targetWord: string;
+  pronunciation: string;
+  remark?: string;
 }
 
 const validationSchema = Yup.object({
@@ -26,7 +28,7 @@ const validationSchema = Yup.object({
     })
     .test(
       'valid-structure',
-      'JSON must be an array of objects with id (string), sourceWord (string), and targetWord (string)',
+      'JSON must be an array of objects with id (string), sourceWord (string), targetWord (string), pronunciation (string), and optionally remark (string)',
       function (value) {
         if (!value) return false;
         try {
@@ -39,7 +41,10 @@ const validationSchema = Yup.object({
               item !== null &&
               typeof (item as WordPairInput).id === 'string' &&
               typeof (item as WordPairInput).sourceWord === 'string' &&
-              typeof (item as WordPairInput).targetWord === 'string'
+              typeof (item as WordPairInput).targetWord === 'string' &&
+              typeof (item as WordPairInput).pronunciation === 'string' &&
+              (!(item as WordPairInput).remark ||
+                typeof (item as WordPairInput).remark === 'string')
           );
         } catch {
           return false;
@@ -150,12 +155,15 @@ const UploadForm: FC = () => {
   {
     "id": "1",
     "sourceWord": "Hello",
-    "targetWord": "Hola"
+    "targetWord": "Hola",
+    "pronunciation": "/ˈhɛloʊ/",
+    "remark": "Common greeting"
   },
   {
     "id": "2",
     "sourceWord": "Goodbye",
-    "targetWord": "Adiós"
+    "targetWord": "Adiós",
+    "pronunciation": "/ɡʊdˈbaɪ/"
   }
 ]`}
                         onChange={evn =>
