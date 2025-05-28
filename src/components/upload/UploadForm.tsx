@@ -15,7 +15,7 @@ interface WordPairInput {
 const validationSchema = Yup.object({
   jsonInput: Yup.string()
     .required('JSON input is required')
-    .test('valid-json', 'Invalid JSON format', function (value) {
+    .test('valid-json', 'Invalid JSON format or content', function (value) {
       if (!value) return false;
       try {
         const parsed = JSON.parse(value);
