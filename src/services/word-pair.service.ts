@@ -83,11 +83,9 @@ export const wordPairService = {
 
       if (hasStored) {
         // Load from IndexedDB
-        console.log('Loading word pairs from IndexedDB');
         return await WordPairIndexedDbProvider.getAllWordPairs();
       } else {
         // Load default words and save them to IndexedDB
-        console.log('Loading default word pairs and saving to IndexedDB');
         const defaultWords = await wordPairService.getDefaultWordPairs();
         await WordPairIndexedDbProvider.saveWordPairs(defaultWords);
         return defaultWords;

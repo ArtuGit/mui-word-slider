@@ -56,7 +56,6 @@ const UploadForm: FC = () => {
 
   // Generate initial JSON from current words
   const getInitialJsonValue = () => {
-    console.log({ words });
     if (words.length > 0) {
       return JSON.stringify(words, null, 2);
     }
