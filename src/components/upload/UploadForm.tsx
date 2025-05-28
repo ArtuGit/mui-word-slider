@@ -101,7 +101,7 @@ const UploadForm: FC = () => {
         color: 'text.primary',
       }}
     >
-      <Typography variant="h5" component="h2" gutterBottom color="primary">
+      <Typography variant="h2" component="h2" gutterBottom color="primary">
         Upload Word Pairs in JSON
       </Typography>
 
