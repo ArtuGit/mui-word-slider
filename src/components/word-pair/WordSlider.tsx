@@ -18,13 +18,19 @@ interface ArrowProps {
   onDirectionChange: (direction: 'left' | 'right') => void;
 }
 
-const OuterContainer = styled(Box)(() => ({
+const OuterContainer = styled(Box)(({ theme }) => ({
   width: '90%',
   maxWidth: '600px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  [theme.breakpoints.up('lg')]: {
+    maxWidth: '900px',
+  },
+  [theme.breakpoints.up('xl')]: {
+    maxWidth: '1200px',
+  },
 }));
 
 const SliderCardWrapper = styled(Box)(() => ({
@@ -63,6 +69,9 @@ const ArrowButton = styled(IconButton)(({ theme }) => ({
   '& svg': {
     fontSize: '2rem',
     color: theme.palette.primary.main,
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '2.5rem',
+    },
   },
 }));
 
@@ -73,6 +82,13 @@ const Counter = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
   fontSize: '1.3rem',
   letterSpacing: 1,
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '1.6rem',
+    marginTop: theme.spacing(3),
+  },
+  [theme.breakpoints.up('xl')]: {
+    fontSize: '1.8rem',
+  },
 }));
 
 const NextArrow: FC<ArrowProps> = props => {
@@ -82,7 +98,13 @@ const NextArrow: FC<ArrowProps> = props => {
     onClick?.(e);
   };
   return (
-    <ArrowButton onClick={handleClick} sx={{ right: -32 }} aria-label="next">
+    <ArrowButton
+      onClick={handleClick}
+      sx={{
+        right: { xs: -32, lg: -48 },
+      }}
+      aria-label="next"
+    >
       <ArrowForwardIosIcon />
     </ArrowButton>
   );
@@ -95,7 +117,13 @@ const PrevArrow: FC<ArrowProps> = props => {
     onClick?.(e);
   };
   return (
-    <ArrowButton onClick={handleClick} sx={{ left: -32 }} aria-label="previous">
+    <ArrowButton
+      onClick={handleClick}
+      sx={{
+        left: { xs: -32, lg: -48 },
+      }}
+      aria-label="previous"
+    >
       <ArrowBackIosNewIcon />
     </ArrowButton>
   );

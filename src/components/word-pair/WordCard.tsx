@@ -13,6 +13,14 @@ const CardSection = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   minHeight: '200px',
   width: '100%',
+  [theme.breakpoints.up('lg')]: {
+    padding: theme.spacing(6),
+    minHeight: '280px',
+  },
+  [theme.breakpoints.up('xl')]: {
+    padding: theme.spacing(8),
+    minHeight: '320px',
+  },
 }));
 
 const UpperSection = styled(CardSection)(({ theme }) => ({
@@ -38,6 +46,15 @@ const StyledCard = styled(Card)(({ theme }) => ({
     boxShadow: theme.shadows[15],
     borderColor: theme.palette.primary.main,
   },
+  [theme.breakpoints.up('lg')]: {
+    maxWidth: '900px',
+    margin: '3rem auto',
+    borderRadius: theme.spacing(3),
+  },
+  [theme.breakpoints.up('xl')]: {
+    maxWidth: '1200px',
+    margin: '4rem auto',
+  },
 }));
 
 const WordTypography = styled(Typography)(({ theme }) => ({
@@ -47,6 +64,12 @@ const WordTypography = styled(Typography)(({ theme }) => ({
   transition: 'opacity 0.3s ease-in-out',
   [theme.breakpoints.down('sm')]: {
     fontSize: '2rem',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '3.5rem',
+  },
+  [theme.breakpoints.up('xl')]: {
+    fontSize: '4.5rem',
   },
 }));
 
@@ -60,6 +83,13 @@ const PronunciationTypography = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     fontSize: '1rem',
   },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '1.6rem',
+    marginTop: theme.spacing(2),
+  },
+  [theme.breakpoints.up('xl')]: {
+    fontSize: '2rem',
+  },
 }));
 
 const RemarkTypography = styled(Typography)(({ theme }) => ({
@@ -71,6 +101,13 @@ const RemarkTypography = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(1),
   [theme.breakpoints.down('sm')]: {
     fontSize: '0.8rem',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '1.4rem',
+    marginTop: theme.spacing(2),
+  },
+  [theme.breakpoints.up('xl')]: {
+    fontSize: '1.6rem',
   },
 }));
 
