@@ -13,10 +13,10 @@ as an array of objects with the following structure:
   - \`id\`: A unique identifier for the word pair (string)
   - \`sourceLanguage\`: The source language name (string)
   - \`targetLanguage\`: The target language name (string)
-  - \`sourceWord\`: The word in the source language
-  - \`targetWord\`: The word in the target language
+  - \`sourceWord\`: The word/short phrase in the source language
+  - \`targetWord\`: The word/short in the target language
   - \`pronunciation\`: IPA pronunciation transcription
-  - \`remark\`: (Optional) Additional context or meaning clarification
+  - \`remark\`: (Optional) Additional context or meaning clarification, if needed to clarify the meaning of the word/phrase
   
 
 ### Prompt Example
@@ -24,10 +24,10 @@ as an array of objects with the following structure:
 >  - \`id\`: A unique identifier for the word pair (string)
 >  - \`sourceLanguage\`: Polish
 >  - \`targetLanguage\`: English
->  - \`sourceWord\`: The word in the source language
->  - \`targetWord\`: The word in the target language
+>  - \`sourceWord\`: The word/short phrase in the source language
+>  - \`targetWord\`: The word/short in the target language
 >  - \`pronunciation\`: IPA pronunciation transcription
->  - \`remark\`: (Optional) Additional context or meaning clarification
+>  - \`remark\`: (Optional) Additional context or meaning clarification, if needed to clarify the meaning of the word/phrase
 >
 >   Parameters:
 > - Source language: Polish
