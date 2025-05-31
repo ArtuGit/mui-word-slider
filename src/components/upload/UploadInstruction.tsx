@@ -11,6 +11,8 @@ Ask your AI agent to create a JSON with word pairs on a given language and topic
 as an array of objects with the following structure:
 
   - \`id\`: A unique identifier for the word pair (string)
+  - \`sourceLanguage\`: The source language name (string)
+  - \`targetLanguage\`: The target language name (string)
   - \`sourceWord\`: The word in the source language
   - \`targetWord\`: The word in the target language
   - \`pronunciation\`: IPA pronunciation transcription
@@ -20,6 +22,8 @@ as an array of objects with the following structure:
 ### Prompt Example
 > Please, create JSON with an array of the  following structure:
 >  - \`id\`: A unique identifier for the word pair (string)
+>  - \`sourceLanguage\`: The source language name (string)
+>  - \`targetLanguage\`: The target language name (string)
 >  - \`sourceWord\`: The word in the source language
 >  - \`targetWord\`: The word in the target language
 >  - \`pronunciation\`: IPA pronunciation transcription
@@ -36,6 +40,8 @@ as an array of objects with the following structure:
 [
   {
     "id": "1",
+    "sourceLanguage": "Polish",
+    "targetLanguage": "English",
     "sourceWord": "Dzień dobry",
     "targetWord": "Good morning / Good day",
     "pronunciation": "/d͡ʑɛɲ ˈdɔbrɨ/",
@@ -43,6 +49,8 @@ as an array of objects with the following structure:
   },
   {
     "id": "2",
+    "sourceLanguage": "Polish",
+    "targetLanguage": "English",
     "sourceWord": "Do widzenia",
     "targetWord": "Goodbye",
     "pronunciation": "/dɔ viˈd͡zɛɲa/",
@@ -50,6 +58,8 @@ as an array of objects with the following structure:
   },
   {
     "id": "3",
+    "sourceLanguage": "Polish",
+    "targetLanguage": "English",
     "sourceWord": "Cześć",
     "targetWord": "Hi / Hello / Bye (informal)",
     "pronunciation": "/t͡ʂɛɕt͡ɕ/",

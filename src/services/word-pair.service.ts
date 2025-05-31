@@ -4,6 +4,8 @@ import { WordPairIndexedDbProvider } from './word-pair.indexed-db-provider.ts';
 const mockWords: WordPairList = [
   {
     id: '1',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Dzień dobry',
     targetWord: 'Good morning',
     pronunciation: '/d͡ʑɛɲ ˈdɔbrɨ/',
@@ -11,6 +13,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '2',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Do widzenia',
     targetWord: 'Goodbye',
     pronunciation: '/dɔ viˈd͡zɛɲa/',
@@ -18,6 +22,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '3',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Proszę',
     targetWord: 'Please',
     pronunciation: '/ˈprɔʂɛ/',
@@ -25,12 +31,16 @@ const mockWords: WordPairList = [
   },
   {
     id: '4',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Dziękuję',
     targetWord: 'Thank you',
     pronunciation: '/d͡ʑɛŋˈkujɛ/',
   },
   {
     id: '5',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Przepraszam',
     targetWord: 'Sorry',
     pronunciation: '/pʂɛˈpraʂam/',
@@ -38,18 +48,24 @@ const mockWords: WordPairList = [
   },
   {
     id: '6',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Tak',
     targetWord: 'Yes',
     pronunciation: '/tak/',
   },
   {
     id: '7',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Nie',
     targetWord: 'No',
     pronunciation: '/ɲɛ/',
   },
   {
     id: '8',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Cześć',
     targetWord: 'Hi',
     pronunciation: '/t͡ʂɛɕt͡ɕ/',
@@ -57,6 +73,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '9',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Jak się masz?',
     targetWord: 'How are you?',
     pronunciation: '/jak ɕɛ maʂ/',
@@ -64,6 +82,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '10',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Dobranoc',
     targetWord: 'Good night',
     pronunciation: '/dɔˈbranɔt͡s/',
@@ -71,6 +91,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '11',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Kocham cię',
     targetWord: 'I love you',
     pronunciation: '/ˈkɔxam t͡ɕɛ/',
@@ -78,6 +100,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '12',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Smacznego',
     targetWord: 'Enjoy your meal',
     pronunciation: '/smat͡ʂˈnɛɡɔ/',
@@ -85,6 +109,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '13',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Na zdrowie',
     targetWord: 'Cheers',
     pronunciation: '/na ˈzdrɔvjɛ/',
@@ -92,6 +118,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '14',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Gdzie jest...?',
     targetWord: 'Where is...?',
     pronunciation: '/ɡd͡ʑɛ jɛst/',
@@ -99,6 +127,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '15',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Co słychać?',
     targetWord: "What's up?",
     pronunciation: '/t͡sɔ ˈswɨxat͡ɕ/',
@@ -106,6 +136,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '16',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Wszystkiego najlepszego',
     targetWord: 'All the best',
     pronunciation: '/fʂɨstˈkjɛɡɔ najˈlɛpʂɛɡɔ/',
@@ -113,6 +145,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '17',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Powodzenia',
     targetWord: 'Good luck',
     pronunciation: '/pɔvɔˈd͡zɛɲa/',
@@ -120,12 +154,16 @@ const mockWords: WordPairList = [
   },
   {
     id: '18',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Rozumiem',
     targetWord: 'I understand',
     pronunciation: '/rɔˈzumjɛm/',
   },
   {
     id: '19',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Nie rozumiem',
     targetWord: "I don't understand",
     pronunciation: '/ɲɛ rɔˈzumjɛm/',
@@ -133,6 +171,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '20',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Dobry wieczór',
     targetWord: 'Good evening',
     pronunciation: '/ˈdɔbrɨ ˈvjɛt͡ʂur/',
@@ -140,6 +180,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '21',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Miło',
     targetWord: 'Nice',
     pronunciation: '/ˈmiwɔ/',
@@ -147,12 +189,16 @@ const mockWords: WordPairList = [
   },
   {
     id: '22',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Woda',
     targetWord: 'Water',
     pronunciation: '/ˈvɔda/',
   },
   {
     id: '23',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Chleb',
     targetWord: 'Bread',
     pronunciation: '/xlɛp/',
@@ -160,12 +206,16 @@ const mockWords: WordPairList = [
   },
   {
     id: '24',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Dom',
     targetWord: 'House',
     pronunciation: '/dɔm/',
   },
   {
     id: '25',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Piękny',
     targetWord: 'Beautiful',
     pronunciation: '/ˈpjɛŋknɨ/',
@@ -173,6 +223,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '26',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Mama',
     targetWord: 'Mom',
     pronunciation: '/ˈmama/',
@@ -180,6 +232,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '27',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Tata',
     targetWord: 'Dad',
     pronunciation: '/ˈtata/',
@@ -187,18 +241,24 @@ const mockWords: WordPairList = [
   },
   {
     id: '28',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Kot',
     targetWord: 'Cat',
     pronunciation: '/kɔt/',
   },
   {
     id: '29',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Pies',
     targetWord: 'Dog',
     pronunciation: '/pjɛs/',
   },
   {
     id: '30',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     sourceWord: 'Miłość',
     targetWord: 'Love',
     pronunciation: '/ˈmiwɔɕt͡ɕ/',

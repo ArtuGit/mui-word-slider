@@ -1,5 +1,7 @@
 export interface WordPair {
   id: string;
+  sourceLanguage: string;
+  targetLanguage: string;
   sourceWord: string;
   targetWord: string;
   pronunciation: string;
