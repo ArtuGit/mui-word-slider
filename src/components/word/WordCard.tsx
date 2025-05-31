@@ -77,7 +77,8 @@ const PronunciationTypography = styled(Typography)(({ theme }) => ({
   fontSize: '1.2rem',
   fontWeight: 400,
   textAlign: 'center',
-  fontFamily: 'monospace, "Courier New", Courier',
+  fontFamily:
+    '"Noto Sans", "Roboto", "Segoe UI", "Arial Unicode MS", "Lucida Sans Unicode", sans-serif',
   opacity: 0.9,
   marginTop: theme.spacing(1),
   [theme.breakpoints.down('sm')]: {
