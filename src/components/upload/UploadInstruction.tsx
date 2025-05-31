@@ -22,8 +22,8 @@ as an array of objects with the following structure:
 ### Prompt Example
 > Please, create JSON with an array of the  following structure:
 >  - \`id\`: A unique identifier for the word pair (string)
->  - \`sourceLanguage\`: The source language name (string)
->  - \`targetLanguage\`: The target language name (string)
+>  - \`sourceLanguage\`: Polish
+>  - \`targetLanguage\`: English
 >  - \`sourceWord\`: The word in the source language
 >  - \`targetWord\`: The word in the target language
 >  - \`pronunciation\`: IPA pronunciation transcription
