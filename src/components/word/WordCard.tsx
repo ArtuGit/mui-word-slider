@@ -150,18 +150,20 @@ export const WordCard: FC<WordCardProps> = ({
 }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
+  // Check if speech is supported and language is available
+  const isSpeechAvailable =
+    speechService.isSupported() &&
+    sourceLanguage &&
+    speechService.isLanguageSupported(sourceLanguage);
+
   const handleSpeak = async () => {
-    if (!speechService.isSupported()) {
+    if (!isSpeechAvailable) {
       return;
     }
 
     if (isSpeaking) {
       speechService.stop();
       setIsSpeaking(false);
-      return;
-    }
-
-    if (!sourceLanguage) {
       return;
     }
 
@@ -191,15 +193,13 @@ export const WordCard: FC<WordCardProps> = ({
         }}
       >
         <UpperSection>
-          <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
-            <SpeechButton
-              onClick={handleSpeak}
-              disabled={!speechService.isSupported()}
-              size="medium"
-            >
-              <VolumeUpIcon />
-            </SpeechButton>
-          </Tooltip>
+          {isSpeechAvailable && (
+            <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
+              <SpeechButton onClick={handleSpeak} size="medium">
+                <VolumeUpIcon />
+              </SpeechButton>
+            </Tooltip>
+          )}
           <WordTypography variant="h1" color="text.primary">
             {sourceWord}
           </WordTypography>

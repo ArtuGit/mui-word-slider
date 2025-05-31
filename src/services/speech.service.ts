@@ -10,6 +10,31 @@ interface SpeechOptions {
   volume?: number;
 }
 
+// Language mapping for speech synthesis
+const LANGUAGE_MAP: Record<string, string> = {
+  polish: 'pl-PL',
+  english: 'en-US',
+  spanish: 'es-ES',
+  french: 'fr-FR',
+  german: 'de-DE',
+  italian: 'it-IT',
+  portuguese: 'pt-PT',
+  russian: 'ru-RU',
+  chinese: 'zh-CN',
+  japanese: 'ja-JP',
+  korean: 'ko-KR',
+  arabic: 'ar-SA',
+  hindi: 'hi-IN',
+  dutch: 'nl-NL',
+  swedish: 'sv-SE',
+  norwegian: 'no-NO',
+  danish: 'da-DK',
+  finnish: 'fi-FI',
+};
+
+// Supported languages list
+export const SUPPORTED_LANGUAGES = Object.keys(LANGUAGE_MAP);
+
 export class SpeechService {
   private static synthesis: SpeechSynthesis | null = null;
   private static isSupported: boolean | null = null;
@@ -22,6 +47,29 @@ export class SpeechService {
       this.isSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
     }
     return this.isSupported;
+  }
+
+  /**
+   * Check if a specific language is supported
+   */
+  static isLanguageSupported(language: string): boolean {
+    if (!language || typeof language !== 'string') {
+      return false;
+    }
+
+    const normalizedLanguage = language.toLowerCase().trim();
+
+    // Check exact match
+    if (LANGUAGE_MAP[normalizedLanguage]) {
+      return true;
+    }
+
+    // Check if it looks like a language code
+    if (normalizedLanguage.match(/^[a-z]{2}(-[a-z]{2})?$/i)) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -60,32 +108,11 @@ export class SpeechService {
       return 'en-US'; // Default to English with proper format
     }
 
-    const languageMap: Record<string, string> = {
-      polish: 'pl-PL',
-      english: 'en-US',
-      spanish: 'es-ES',
-      french: 'fr-FR',
-      german: 'de-DE',
-      italian: 'it-IT',
-      portuguese: 'pt-PT',
-      russian: 'ru-RU',
-      chinese: 'zh-CN',
-      japanese: 'ja-JP',
-      korean: 'ko-KR',
-      arabic: 'ar-SA',
-      hindi: 'hi-IN',
-      dutch: 'nl-NL',
-      swedish: 'sv-SE',
-      norwegian: 'no-NO',
-      danish: 'da-DK',
-      finnish: 'fi-FI',
-    };
-
     const normalizedLanguage = language.toLowerCase().trim();
 
     // First try exact match
-    if (languageMap[normalizedLanguage]) {
-      return languageMap[normalizedLanguage];
+    if (LANGUAGE_MAP[normalizedLanguage]) {
+      return LANGUAGE_MAP[normalizedLanguage];
     }
 
     // Try partial matches for common variations
@@ -201,6 +228,8 @@ export const speechService = {
   stop: SpeechService.stop.bind(SpeechService),
   isSpeaking: SpeechService.isSpeaking.bind(SpeechService),
   isSupported: SpeechService.isSpeechSupported.bind(SpeechService),
+  isLanguageSupported: SpeechService.isLanguageSupported.bind(SpeechService),
   pause: SpeechService.pause.bind(SpeechService),
   resume: SpeechService.resume.bind(SpeechService),
+  supportedLanguages: SUPPORTED_LANGUAGES,
 };
