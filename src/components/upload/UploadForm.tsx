@@ -1,9 +1,10 @@
 import { Box, Button, Paper, Typography, Divider, Chip } from '@mui/material';
 import { FC, useState } from 'react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useWordsStore } from '../../stores/useWordsStore';
+import { useDecksStore } from '../../stores/useDecksStore';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 
 interface WordPairInput {
@@ -12,6 +13,7 @@ interface WordPairInput {
   targetWord: string;
   pronunciation: string;
   remark?: string;
+  deckId?: string; // Optional in input, will be added automatically
 }
 
 const validationSchema = Yup.object({
@@ -57,12 +59,15 @@ const UploadForm: FC = () => {
   const [isValidated, setIsValidated] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { words, saveWords, isLoading } = useWordsStore();
+  const { currentDeck } = useDecksStore();
   const { enqueueSnackbar } = useSnackbar();
 
   // Generate initial JSON from current words
   const getInitialJsonValue = () => {
     if (words.length > 0) {
-      return JSON.stringify(words, null, 2);
+      // Remove deckId from display to keep the interface clean
+      const wordsForDisplay = words.map(({ deckId: _deckId, ...word }) => word);
+      return JSON.stringify(wordsForDisplay, null, 2);
     }
     return '';
   };
@@ -85,8 +90,14 @@ const UploadForm: FC = () => {
     try {
       const parsed: WordPairInput[] = JSON.parse(values.jsonInput);
 
+      // Add deckId to each word pair if not present
+      const wordsWithDeckId = parsed.map(word => ({
+        ...word,
+        deckId: word.deckId || currentDeck?.id || 'default-deck-1',
+      }));
+
       // Save to Zustand store (now with IndexedDB persistence)
-      await saveWords(parsed);
+      await saveWords(wordsWithDeckId);
 
       enqueueSnackbar(`Successfully saved ${parsed.length} word pairs to local storage!`, {
         variant: 'success',
@@ -117,6 +128,17 @@ const UploadForm: FC = () => {
         Upload Word Pairs in JSON
       </Typography>
 
+      {currentDeck && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h6" component="h3" gutterBottom color="text.secondary">
+            Current Deck: {currentDeck.topic}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {currentDeck.description} ({currentDeck.languageFrom} → {currentDeck.languageTo})
+          </Typography>
+        </Box>
+      )}
+
       {words.length > 0 && (
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" component="h3" gutterBottom color="text.secondary">
@@ -146,7 +168,7 @@ const UploadForm: FC = () => {
                   JSON Word Pairs
                 </Typography>
                 <Field name="jsonInput">
-                  {({ field, meta }: any) => (
+                  {({ field, meta }: FieldProps) => (
                     <Box>
                       <CodeEditor
                         value={field.value}

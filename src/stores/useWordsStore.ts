@@ -1,19 +1,20 @@
 import { create } from 'zustand';
 import { WordPair, WordPairList } from '../types/word.types';
 import { wordPairService } from '../services/word-pair.service.ts';
+import { useDecksStore } from './useDecksStore';
 
 interface WordsState {
   words: WordPairList;
   isLoading: boolean;
   error: string | null;
   hasInitialized: boolean;
-  fetchWords: () => Promise<void>;
-  initializeWords: () => Promise<void>;
-  saveWords: (newWords: WordPair[]) => Promise<void>;
-  loadWordsFromDB: () => Promise<void>;
-  clearStoredWords: () => Promise<void>;
-  getStoredWordsCount: () => Promise<number>;
-  searchWords: (query: string) => Promise<WordPairList>;
+  fetchWords: (deckId?: string) => Promise<void>;
+  initializeWords: (deckId?: string) => Promise<void>;
+  saveWords: (newWords: WordPair[], deckId?: string) => Promise<void>;
+  loadWordsFromDB: (deckId?: string) => Promise<void>;
+  clearStoredWords: (deckId?: string) => Promise<void>;
+  getStoredWordsCount: (deckId?: string) => Promise<number>;
+  searchWords: (query: string, deckId?: string) => Promise<WordPairList>;
   clearError: () => void;
 }
 
@@ -23,10 +24,10 @@ export const useWordsStore = create<WordsState>((set, get) => ({
   error: null,
   hasInitialized: false,
 
-  fetchWords: async () => {
+  fetchWords: async (deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
-      const words = await wordPairService.getDefaultWordPairs();
+      const words = await wordPairService.getDefaultWordPairs(deckId);
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -36,15 +37,26 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  initializeWords: async () => {
+  initializeWords: async (deckId?: string) => {
     const { words, hasInitialized, isLoading } = get();
 
     // Only initialize if we haven't already and we're not currently loading
     if (words.length === 0 && !hasInitialized && !isLoading) {
       set({ isLoading: true, error: null });
       try {
+        // If no deckId provided, get current deck from deck store
+        let targetDeckId = deckId;
+        if (!targetDeckId) {
+          const deckStore = useDecksStore.getState();
+          if (!deckStore.currentDeck) {
+            // Initialize deck store first if needed
+            await deckStore.initializeDecks();
+          }
+          targetDeckId = deckStore.currentDeck?.id;
+        }
+
         // Use the new initialize method that handles IndexedDB
-        const words = await wordPairService.initializeWordPairs();
+        const words = await wordPairService.initializeWordPairs(targetDeckId);
         set({ words, isLoading: false, hasInitialized: true });
       } catch (error) {
         set({
@@ -56,11 +68,18 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  saveWords: async (newWords: WordPair[]) => {
+  saveWords: async (newWords: WordPair[], deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
+      // If no deckId provided, get current deck from deck store
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const deckStore = useDecksStore.getState();
+        targetDeckId = deckStore.currentDeck?.id;
+      }
+
       // Save to IndexedDB
-      await wordPairService.saveWordPairs(newWords);
+      await wordPairService.saveWordPairs(newWords, targetDeckId);
       // Update store state
       set({ words: newWords, error: null, hasInitialized: true, isLoading: false });
     } catch (error) {
@@ -72,10 +91,17 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  loadWordsFromDB: async () => {
+  loadWordsFromDB: async (deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
-      const words = await wordPairService.loadWordPairs();
+      // If no deckId provided, get current deck from deck store
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const deckStore = useDecksStore.getState();
+        targetDeckId = deckStore.currentDeck?.id;
+      }
+
+      const words = await wordPairService.loadWordPairs(targetDeckId);
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -86,10 +112,17 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  clearStoredWords: async () => {
+  clearStoredWords: async (deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
-      await wordPairService.clearStoredWordPairs();
+      // If no deckId provided, get current deck from deck store
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const deckStore = useDecksStore.getState();
+        targetDeckId = deckStore.currentDeck?.id;
+      }
+
+      await wordPairService.clearStoredWordPairs(targetDeckId);
       set({ words: [], isLoading: false, hasInitialized: false });
     } catch (error) {
       set({
@@ -100,18 +133,32 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  getStoredWordsCount: async (): Promise<number> => {
+  getStoredWordsCount: async (deckId?: string): Promise<number> => {
     try {
-      return await wordPairService.getStoredWordPairsCount();
+      // If no deckId provided, get current deck from deck store
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const deckStore = useDecksStore.getState();
+        targetDeckId = deckStore.currentDeck?.id;
+      }
+
+      return await wordPairService.getStoredWordPairsCount(targetDeckId);
     } catch (error) {
       console.error('Failed to get stored words count:', error);
       return 0;
     }
   },
 
-  searchWords: async (query: string): Promise<WordPairList> => {
+  searchWords: async (query: string, deckId?: string): Promise<WordPairList> => {
     try {
-      return await wordPairService.searchStoredWordPairs(query);
+      // If no deckId provided, get current deck from deck store
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const deckStore = useDecksStore.getState();
+        targetDeckId = deckStore.currentDeck?.id;
+      }
+
+      return await wordPairService.searchStoredWordPairs(query, targetDeckId);
     } catch (error) {
       console.error('Failed to search words:', error);
       throw error;
