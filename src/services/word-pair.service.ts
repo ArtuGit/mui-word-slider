@@ -1,9 +1,11 @@
 import { WordPairList } from '../types/word.types';
 import { WordPairIndexedDbProvider } from './word-pair.indexed-db-provider.ts';
+import { DeckIndexedDbProvider } from './deck.indexed-db-provider.ts';
 
 const mockWords: WordPairList = [
   {
     id: '1',
+    deckId: 'default-deck-1',
     sourceWord: 'Dzień dobry',
     targetWord: 'Good morning',
     pronunciation: '/d͡ʑɛɲ ˈdɔbrɨ/',
@@ -11,6 +13,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '2',
+    deckId: 'default-deck-1',
     sourceWord: 'Do widzenia',
     targetWord: 'Goodbye',
     pronunciation: '/dɔ viˈd͡zɛɲa/',
@@ -18,6 +21,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '3',
+    deckId: 'default-deck-1',
     sourceWord: 'Proszę',
     targetWord: 'Please',
     pronunciation: '/ˈprɔʂɛ/',
@@ -25,12 +29,14 @@ const mockWords: WordPairList = [
   },
   {
     id: '4',
+    deckId: 'default-deck-1',
     sourceWord: 'Dziękuję',
     targetWord: 'Thank you',
     pronunciation: '/d͡ʑɛŋˈkujɛ/',
   },
   {
     id: '5',
+    deckId: 'default-deck-1',
     sourceWord: 'Przepraszam',
     targetWord: 'Sorry',
     pronunciation: '/pʂɛˈpraʂam/',
@@ -38,18 +44,21 @@ const mockWords: WordPairList = [
   },
   {
     id: '6',
+    deckId: 'default-deck-1',
     sourceWord: 'Tak',
     targetWord: 'Yes',
     pronunciation: '/tak/',
   },
   {
     id: '7',
+    deckId: 'default-deck-1',
     sourceWord: 'Nie',
     targetWord: 'No',
     pronunciation: '/ɲɛ/',
   },
   {
     id: '8',
+    deckId: 'default-deck-1',
     sourceWord: 'Cześć',
     targetWord: 'Hi',
     pronunciation: '/t͡ʂɛɕt͡ɕ/',
@@ -57,6 +66,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '9',
+    deckId: 'default-deck-1',
     sourceWord: 'Jak się masz?',
     targetWord: 'How are you?',
     pronunciation: '/jak ɕɛ maʂ/',
@@ -64,6 +74,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '10',
+    deckId: 'default-deck-1',
     sourceWord: 'Dobranoc',
     targetWord: 'Good night',
     pronunciation: '/dɔˈbranɔt͡s/',
@@ -71,6 +82,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '11',
+    deckId: 'default-deck-1',
     sourceWord: 'Kocham cię',
     targetWord: 'I love you',
     pronunciation: '/ˈkɔxam t͡ɕɛ/',
@@ -78,6 +90,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '12',
+    deckId: 'default-deck-1',
     sourceWord: 'Smacznego',
     targetWord: 'Enjoy your meal',
     pronunciation: '/smat͡ʂˈnɛɡɔ/',
@@ -85,6 +98,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '13',
+    deckId: 'default-deck-1',
     sourceWord: 'Na zdrowie',
     targetWord: 'Cheers',
     pronunciation: '/na ˈzdrɔvjɛ/',
@@ -92,6 +106,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '14',
+    deckId: 'default-deck-1',
     sourceWord: 'Gdzie jest...?',
     targetWord: 'Where is...?',
     pronunciation: '/ɡd͡ʑɛ jɛst/',
@@ -99,6 +114,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '15',
+    deckId: 'default-deck-1',
     sourceWord: 'Co słychać?',
     targetWord: "What's up?",
     pronunciation: '/t͡sɔ ˈswɨxat͡ɕ/',
@@ -106,6 +122,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '16',
+    deckId: 'default-deck-1',
     sourceWord: 'Wszystkiego najlepszego',
     targetWord: 'All the best',
     pronunciation: '/fʂɨstˈkjɛɡɔ najˈlɛpʂɛɡɔ/',
@@ -113,6 +130,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '17',
+    deckId: 'default-deck-1',
     sourceWord: 'Powodzenia',
     targetWord: 'Good luck',
     pronunciation: '/pɔvɔˈd͡zɛɲa/',
@@ -120,12 +138,14 @@ const mockWords: WordPairList = [
   },
   {
     id: '18',
+    deckId: 'default-deck-1',
     sourceWord: 'Rozumiem',
     targetWord: 'I understand',
     pronunciation: '/rɔˈzumjɛm/',
   },
   {
     id: '19',
+    deckId: 'default-deck-1',
     sourceWord: 'Nie rozumiem',
     targetWord: "I don't understand",
     pronunciation: '/ɲɛ rɔˈzumjɛm/',
@@ -133,6 +153,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '20',
+    deckId: 'default-deck-1',
     sourceWord: 'Dobry wieczór',
     targetWord: 'Good evening',
     pronunciation: '/ˈdɔbrɨ ˈvjɛt͡ʂur/',
@@ -140,6 +161,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '21',
+    deckId: 'default-deck-1',
     sourceWord: 'Miło',
     targetWord: 'Nice',
     pronunciation: '/ˈmiwɔ/',
@@ -147,12 +169,14 @@ const mockWords: WordPairList = [
   },
   {
     id: '22',
+    deckId: 'default-deck-1',
     sourceWord: 'Woda',
     targetWord: 'Water',
     pronunciation: '/ˈvɔda/',
   },
   {
     id: '23',
+    deckId: 'default-deck-1',
     sourceWord: 'Chleb',
     targetWord: 'Bread',
     pronunciation: '/xlɛp/',
@@ -160,12 +184,14 @@ const mockWords: WordPairList = [
   },
   {
     id: '24',
+    deckId: 'default-deck-1',
     sourceWord: 'Dom',
     targetWord: 'House',
     pronunciation: '/dɔm/',
   },
   {
     id: '25',
+    deckId: 'default-deck-1',
     sourceWord: 'Piękny',
     targetWord: 'Beautiful',
     pronunciation: '/ˈpjɛŋknɨ/',
@@ -173,6 +199,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '26',
+    deckId: 'default-deck-1',
     sourceWord: 'Mama',
     targetWord: 'Mom',
     pronunciation: '/ˈmama/',
@@ -180,6 +207,7 @@ const mockWords: WordPairList = [
   },
   {
     id: '27',
+    deckId: 'default-deck-1',
     sourceWord: 'Tata',
     targetWord: 'Dad',
     pronunciation: '/ˈtata/',
@@ -187,18 +215,21 @@ const mockWords: WordPairList = [
   },
   {
     id: '28',
+    deckId: 'default-deck-1',
     sourceWord: 'Kot',
     targetWord: 'Cat',
     pronunciation: '/kɔt/',
   },
   {
     id: '29',
+    deckId: 'default-deck-1',
     sourceWord: 'Pies',
     targetWord: 'Dog',
     pronunciation: '/pjɛs/',
   },
   {
     id: '30',
+    deckId: 'default-deck-1',
     sourceWord: 'Miłość',
     targetWord: 'Love',
     pronunciation: '/ˈmiwɔɕt͡ɕ/',
@@ -213,18 +244,22 @@ export const wordPairService = {
   /**
    * Get default word pairs (mock data with simulated network delay)
    */
-  getDefaultWordPairs: async (): Promise<WordPairList> => {
+  getDefaultWordPairs: async (deckId?: string): Promise<WordPairList> => {
     // Simulate network delay between 500ms and 1500ms
     await delay(Math.random() * 1000 + 500);
+
+    if (deckId) {
+      return mockWords.filter(word => word.deckId === deckId);
+    }
     return mockWords;
   },
 
   /**
    * Load word pairs from IndexedDB
    */
-  loadWordPairs: async (): Promise<WordPairList> => {
+  loadWordPairs: async (deckId?: string): Promise<WordPairList> => {
     try {
-      return await WordPairIndexedDbProvider.getAllWordPairs();
+      return await WordPairIndexedDbProvider.getAllWordPairs(deckId);
     } catch (error) {
       console.error('Failed to load word pairs from IndexedDB:', error);
       throw error;
@@ -232,11 +267,23 @@ export const wordPairService = {
   },
 
   /**
+   * Load word pairs for a specific deck
+   */
+  loadWordPairsByDeckId: async (deckId: string): Promise<WordPairList> => {
+    try {
+      return await WordPairIndexedDbProvider.getWordPairsByDeckId(deckId);
+    } catch (error) {
+      console.error('Failed to load word pairs by deck ID:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Save word pairs to IndexedDB
    */
-  saveWordPairs: async (wordPairs: WordPairList): Promise<void> => {
+  saveWordPairs: async (wordPairs: WordPairList, deckId?: string): Promise<void> => {
     try {
-      await WordPairIndexedDbProvider.saveWordPairs(wordPairs);
+      await WordPairIndexedDbProvider.saveWordPairs(wordPairs, deckId);
     } catch (error) {
       console.error('Failed to save word pairs to IndexedDB:', error);
       throw error;
@@ -246,9 +293,9 @@ export const wordPairService = {
   /**
    * Check if IndexedDB has word pairs stored
    */
-  hasStoredWordPairs: async (): Promise<boolean> => {
+  hasStoredWordPairs: async (deckId?: string): Promise<boolean> => {
     try {
-      return await WordPairIndexedDbProvider.hasWordPairs();
+      return await WordPairIndexedDbProvider.hasWordPairs(deckId);
     } catch (error) {
       console.error('Failed to check stored word pairs:', error);
       return false;
@@ -258,33 +305,40 @@ export const wordPairService = {
   /**
    * Initialize word pairs: load from IndexedDB if available, otherwise load defaults and save them
    */
-  initializeWordPairs: async (): Promise<WordPairList> => {
+  initializeWordPairs: async (deckId?: string): Promise<WordPairList> => {
     try {
-      // Check if we have stored word pairs
-      const hasStored = await WordPairIndexedDbProvider.hasWordPairs();
+      // If no deckId provided, get the default deck
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const defaultDeck = await DeckIndexedDbProvider.getDefaultDeck();
+        targetDeckId = defaultDeck.id;
+      }
+
+      // Check if we have stored word pairs for this deck
+      const hasStored = await WordPairIndexedDbProvider.hasWordPairs(targetDeckId);
 
       if (hasStored) {
         // Load from IndexedDB
-        return await WordPairIndexedDbProvider.getAllWordPairs();
+        return await WordPairIndexedDbProvider.getAllWordPairs(targetDeckId);
       } else {
-        // Load default words and save them to IndexedDB
-        const defaultWords = await wordPairService.getDefaultWordPairs();
-        await WordPairIndexedDbProvider.saveWordPairs(defaultWords);
+        // Load default words for this deck and save them to IndexedDB
+        const defaultWords = await wordPairService.getDefaultWordPairs(targetDeckId);
+        await WordPairIndexedDbProvider.saveWordPairs(defaultWords, targetDeckId);
         return defaultWords;
       }
     } catch (error) {
       console.error('Failed to initialize word pairs:', error);
       // Fallback to default words without saving
-      return await wordPairService.getDefaultWordPairs();
+      return await wordPairService.getDefaultWordPairs(deckId);
     }
   },
 
   /**
    * Clear all stored word pairs from IndexedDB
    */
-  clearStoredWordPairs: async (): Promise<void> => {
+  clearStoredWordPairs: async (deckId?: string): Promise<void> => {
     try {
-      await WordPairIndexedDbProvider.clearAllWordPairs();
+      await WordPairIndexedDbProvider.clearAllWordPairs(deckId);
     } catch (error) {
       console.error('Failed to clear stored word pairs:', error);
       throw error;
@@ -294,9 +348,9 @@ export const wordPairService = {
   /**
    * Get word pairs count from IndexedDB
    */
-  getStoredWordPairsCount: async (): Promise<number> => {
+  getStoredWordPairsCount: async (deckId?: string): Promise<number> => {
     try {
-      return await WordPairIndexedDbProvider.getWordPairsCount();
+      return await WordPairIndexedDbProvider.getWordPairsCount(deckId);
     } catch (error) {
       console.error('Failed to get stored word pairs count:', error);
       return 0;
@@ -306,9 +360,9 @@ export const wordPairService = {
   /**
    * Search word pairs in IndexedDB
    */
-  searchStoredWordPairs: async (query: string): Promise<WordPairList> => {
+  searchStoredWordPairs: async (query: string, deckId?: string): Promise<WordPairList> => {
     try {
-      return await WordPairIndexedDbProvider.searchWordPairs(query);
+      return await WordPairIndexedDbProvider.searchWordPairs(query, deckId);
     } catch (error) {
       console.error('Failed to search stored word pairs:', error);
       throw error;

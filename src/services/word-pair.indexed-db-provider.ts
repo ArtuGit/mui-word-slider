@@ -5,8 +5,11 @@ export class WordPairIndexedDbProvider {
   /**
    * Get all word pairs from IndexedDB
    */
-  static async getAllWordPairs(): Promise<WordPairList> {
+  static async getAllWordPairs(deckId?: string): Promise<WordPairList> {
     try {
+      if (deckId) {
+        return await db.wordPairs.where('deckId').equals(deckId).toArray();
+      }
       return await db.wordPairs.toArray();
     } catch (error) {
       console.error('Failed to get word pairs from IndexedDB:', error);
@@ -15,13 +18,30 @@ export class WordPairIndexedDbProvider {
   }
 
   /**
-   * Save word pairs to IndexedDB (replaces all existing data)
+   * Get word pairs by deck ID
    */
-  static async saveWordPairs(wordPairs: WordPairList): Promise<void> {
+  static async getWordPairsByDeckId(deckId: string): Promise<WordPairList> {
+    try {
+      return await db.wordPairs.where('deckId').equals(deckId).toArray();
+    } catch (error) {
+      console.error('Failed to get word pairs by deck ID from IndexedDB:', error);
+      throw new Error('Failed to load word pairs from local storage');
+    }
+  }
+
+  /**
+   * Save word pairs to IndexedDB (replaces all existing data for a specific deck)
+   */
+  static async saveWordPairs(wordPairs: WordPairList, deckId?: string): Promise<void> {
     try {
       await db.transaction('rw', db.wordPairs, async () => {
-        // Clear existing data
-        await db.wordPairs.clear();
+        if (deckId) {
+          // Clear existing data for this deck only
+          await db.wordPairs.where('deckId').equals(deckId).delete();
+        } else {
+          // Clear all existing data
+          await db.wordPairs.clear();
+        }
         // Add new data
         await db.wordPairs.bulkAdd(wordPairs);
       });
@@ -68,10 +88,26 @@ export class WordPairIndexedDbProvider {
   }
 
   /**
+   * Delete all word pairs for a specific deck
+   */
+  static async deleteWordPairsByDeckId(deckId: string): Promise<number> {
+    try {
+      return await db.wordPairs.where('deckId').equals(deckId).delete();
+    } catch (error) {
+      console.error('Failed to delete word pairs by deck ID from IndexedDB:', error);
+      throw new Error('Failed to delete word pairs from local storage');
+    }
+  }
+
+  /**
    * Check if IndexedDB has any word pairs
    */
-  static async hasWordPairs(): Promise<boolean> {
+  static async hasWordPairs(deckId?: string): Promise<boolean> {
     try {
+      if (deckId) {
+        const count = await db.wordPairs.where('deckId').equals(deckId).count();
+        return count > 0;
+      }
       const count = await db.wordPairs.count();
       return count > 0;
     } catch (error) {
@@ -83,9 +119,13 @@ export class WordPairIndexedDbProvider {
   /**
    * Clear all word pairs from IndexedDB
    */
-  static async clearAllWordPairs(): Promise<void> {
+  static async clearAllWordPairs(deckId?: string): Promise<void> {
     try {
-      await db.wordPairs.clear();
+      if (deckId) {
+        await db.wordPairs.where('deckId').equals(deckId).delete();
+      } else {
+        await db.wordPairs.clear();
+      }
     } catch (error) {
       console.error('Failed to clear word pairs from IndexedDB:', error);
       throw new Error('Failed to clear word pairs from local storage');
@@ -95,8 +135,11 @@ export class WordPairIndexedDbProvider {
   /**
    * Get word pairs count
    */
-  static async getWordPairsCount(): Promise<number> {
+  static async getWordPairsCount(deckId?: string): Promise<number> {
     try {
+      if (deckId) {
+        return await db.wordPairs.where('deckId').equals(deckId).count();
+      }
       return await db.wordPairs.count();
     } catch (error) {
       console.error('Failed to get word pairs count from IndexedDB:', error);
@@ -107,18 +150,22 @@ export class WordPairIndexedDbProvider {
   /**
    * Search word pairs by source or target word
    */
-  static async searchWordPairs(query: string): Promise<WordPairList> {
+  static async searchWordPairs(query: string, deckId?: string): Promise<WordPairList> {
     try {
       const lowerQuery = query.toLowerCase();
-      return await db.wordPairs
-        .filter(
-          wordPair =>
-            wordPair.sourceWord.toLowerCase().includes(lowerQuery) ||
-            wordPair.targetWord.toLowerCase().includes(lowerQuery) ||
-            wordPair.pronunciation.toLowerCase().includes(lowerQuery) ||
-            (wordPair.remark?.toLowerCase().includes(lowerQuery) ?? false)
-        )
-        .toArray();
+      let collection = db.wordPairs.filter(
+        wordPair =>
+          wordPair.sourceWord.toLowerCase().includes(lowerQuery) ||
+          wordPair.targetWord.toLowerCase().includes(lowerQuery) ||
+          wordPair.pronunciation.toLowerCase().includes(lowerQuery) ||
+          (wordPair.remark?.toLowerCase().includes(lowerQuery) ?? false)
+      );
+
+      if (deckId) {
+        collection = collection.and(wordPair => wordPair.deckId === deckId);
+      }
+
+      return await collection.toArray();
     } catch (error) {
       console.error('Failed to search word pairs in IndexedDB:', error);
       throw new Error('Failed to search word pairs in local storage');
