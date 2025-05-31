@@ -1,8 +1,13 @@
-import { FC } from 'react';
-import { Box, Card, CardContent, styled, Typography } from '@mui/material';
+import { FC, useState } from 'react';
+import { Box, Card, CardContent, styled, Typography, IconButton, Tooltip } from '@mui/material';
+import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
 import { WordPair } from '../../types/word.types';
+import { speechService } from '../../services/speech.service';
 
-type WordCardProps = Pick<WordPair, 'sourceWord' | 'targetWord' | 'pronunciation' | 'remark'>;
+type WordCardProps = Pick<
+  WordPair,
+  'sourceWord' | 'targetWord' | 'pronunciation' | 'remark' | 'sourceLanguage'
+>;
 
 // Styled components for custom card sections
 const CardSection = styled(Box)(({ theme }) => ({
@@ -26,6 +31,7 @@ const CardSection = styled(Box)(({ theme }) => ({
 const UpperSection = styled(CardSection)(({ theme }) => ({
   borderBottom: `2px solid ${theme.palette.divider}`,
   background: theme.palette.primary.main,
+  position: 'relative',
 }));
 
 const LowerSection = styled(CardSection)(({ theme }) => ({
@@ -112,7 +118,68 @@ const RemarkTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord, pronunciation, remark }) => {
+const SpeechButton = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  top: theme.spacing(2),
+  right: theme.spacing(2),
+  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  color: theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  '&:disabled': {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    color: 'rgba(255, 255, 255, 0.3)',
+  },
+  [theme.breakpoints.up('lg')]: {
+    top: theme.spacing(3),
+    right: theme.spacing(3),
+  },
+  [theme.breakpoints.up('xl')]: {
+    top: theme.spacing(4),
+    right: theme.spacing(4),
+  },
+}));
+
+export const WordCard: FC<WordCardProps> = ({
+  sourceWord,
+  targetWord,
+  pronunciation,
+  remark,
+  sourceLanguage,
+}) => {
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const handleSpeak = async () => {
+    if (!speechService.isSupported()) {
+      return;
+    }
+
+    if (isSpeaking) {
+      speechService.stop();
+      setIsSpeaking(false);
+      return;
+    }
+
+    if (!sourceLanguage) {
+      return;
+    }
+
+    try {
+      setIsSpeaking(true);
+      await speechService.speak(sourceWord, {
+        language: sourceLanguage,
+        rate: 0.8, // Slightly slower for learning
+        pitch: 1.0,
+        volume: 1.0,
+      });
+    } catch {
+      // Silently handle errors in production
+    } finally {
+      setIsSpeaking(false);
+    }
+  };
+
   return (
     <StyledCard>
       <CardContent
@@ -124,6 +191,15 @@ export const WordCard: FC<WordCardProps> = ({ sourceWord, targetWord, pronunciat
         }}
       >
         <UpperSection>
+          <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
+            <SpeechButton
+              onClick={handleSpeak}
+              disabled={!speechService.isSupported()}
+              size="medium"
+            >
+              <VolumeUpIcon />
+            </SpeechButton>
+          </Tooltip>
           <WordTypography variant="h1" color="text.primary">
             {sourceWord}
           </WordTypography>
