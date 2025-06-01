@@ -50,26 +50,31 @@ export class SpeechService {
   }
 
   /**
-   * Check if a specific language is supported
+   * Check if a specific language is supported with actual voices available
    */
   static isLanguageSupported(language: string): boolean {
     if (!language || typeof language !== 'string') {
       return false;
     }
 
-    const normalizedLanguage = language.toLowerCase().trim();
-
-    // Check exact match
-    if (LANGUAGE_MAP[normalizedLanguage]) {
-      return true;
+    if (!this.isSpeechSupported()) {
+      return false;
     }
 
-    // Check if it looks like a language code
-    if (normalizedLanguage.match(/^[a-z]{2}(-[a-z]{2})?$/i)) {
-      return true;
+    const synthesis = this.getSynthesis();
+    if (!synthesis) {
+      return false;
     }
 
-    return false;
+    // Get all available voices
+    const voices = synthesis.getVoices();
+    if (voices.length === 0) {
+      return false;
+    }
+
+    // Use the improved voice matching
+    const availableVoices = this.getVoicesForLanguage(language);
+    return availableVoices.length > 0;
   }
 
   /**
@@ -96,7 +101,18 @@ export class SpeechService {
     const voices = synthesis.getVoices();
     const languageCode = this.getLanguageCode(language);
 
-    return voices.filter(voice => voice.lang.toLowerCase().startsWith(languageCode.toLowerCase()));
+    // Try exact language match first (e.g., 'pl-PL')
+    let matchingVoices = voices.filter(
+      voice => voice.lang.toLowerCase() === languageCode.toLowerCase()
+    );
+
+    // If no exact match, try language prefix (e.g., 'pl')
+    if (matchingVoices.length === 0) {
+      const langPrefix = languageCode.toLowerCase().substring(0, 2);
+      matchingVoices = voices.filter(voice => voice.lang.toLowerCase().startsWith(langPrefix));
+    }
+
+    return matchingVoices;
   }
 
   /**

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Box, Card, CardContent, styled, Typography, IconButton, Tooltip } from '@mui/material';
 import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
 import { WordPair } from '../../types/word.types';
@@ -149,12 +149,35 @@ export const WordCard: FC<WordCardProps> = ({
   sourceLanguage,
 }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSpeechAvailable, setIsSpeechAvailable] = useState(false);
 
-  // Check if speech is supported and language is available
-  const isSpeechAvailable =
-    speechService.isSupported() &&
-    sourceLanguage &&
-    speechService.isLanguageSupported(sourceLanguage);
+  // Check speech availability when component mounts and when voices change
+  useEffect(() => {
+    const checkSpeechAvailability = () => {
+      const available =
+        speechService.isSupported() &&
+        Boolean(sourceLanguage) &&
+        speechService.isLanguageSupported(sourceLanguage);
+      setIsSpeechAvailable(available);
+    };
+
+    // Initial check
+    checkSpeechAvailability();
+
+    // Listen for voices changed event (important for mobile devices)
+    if (speechService.isSupported() && window.speechSynthesis) {
+      const handleVoicesChanged = () => {
+        // Small delay to ensure voices are fully loaded
+        setTimeout(checkSpeechAvailability, 100);
+      };
+
+      window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+
+      return () => {
+        window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+      };
+    }
+  }, [sourceLanguage]);
 
   const handleSpeak = async () => {
     if (!isSpeechAvailable) {
