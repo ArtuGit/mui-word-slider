@@ -13,8 +13,8 @@ export const db = new Dexie('MemVocabDB') as WordPairDB;
 
 // Define the schema
 db.version(1).stores({
-  wordPairs: 'id, deckId, sourceWord, targetWord, pronunciation, remark',
   decks: 'id, topic, description, languageFrom, languageTo, amount',
+  wordPairs: 'id, deckId, sourceLanguage, targetLanguage, sourceWord, targetWord, pronunciation, remark', // id is primary key, others are indexed
 });
 
 export default db;

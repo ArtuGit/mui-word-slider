@@ -9,6 +9,8 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 
 interface WordPairInput {
   id: string;
+  sourceLanguage: string;
+  targetLanguage: string;
   sourceWord: string;
   targetWord: string;
   pronunciation: string;
@@ -30,7 +32,7 @@ const validationSchema = Yup.object({
     })
     .test(
       'valid-structure',
-      'JSON must be an array of objects with id (string), sourceWord (string), targetWord (string), pronunciation (string), and optionally remark (string)',
+      'JSON must be an array of objects with id (string), sourceLanguage (string), targetLanguage (string), sourceWord (string), targetWord (string), pronunciation (string), and optionally remark (string)',
       function (value) {
         if (!value) return false;
         try {
@@ -42,6 +44,8 @@ const validationSchema = Yup.object({
               typeof item === 'object' &&
               item !== null &&
               typeof (item as WordPairInput).id === 'string' &&
+              typeof (item as WordPairInput).sourceLanguage === 'string' &&
+              typeof (item as WordPairInput).targetLanguage === 'string' &&
               typeof (item as WordPairInput).sourceWord === 'string' &&
               typeof (item as WordPairInput).targetWord === 'string' &&
               typeof (item as WordPairInput).pronunciation === 'string' &&
@@ -176,16 +180,20 @@ const UploadForm: FC = () => {
                         placeholder={`[
   {
     "id": "1",
-    "sourceWord": "Hello",
-    "targetWord": "Hola",
-    "pronunciation": "/ˈhɛloʊ/",
-    "remark": "Common greeting"
+    "sourceLanguage": "Polish",
+    "targetLanguage": "English",
+    "sourceWord": "Dzień dobry",
+    "targetWord": "Good morning",
+    "pronunciation": "/d͡ʑɛɲ ˈdɔbrɨ/",
+    "remark": "Formal greeting used until afternoon"
   },
   {
     "id": "2",
-    "sourceWord": "Goodbye",
-    "targetWord": "Adiós",
-    "pronunciation": "/ɡʊdˈbaɪ/"
+    "sourceLanguage": "Polish",
+    "targetLanguage": "English",
+    "sourceWord": "Do widzenia",
+    "targetWord": "Goodbye",
+    "pronunciation": "/dɔ viˈd͡zɛɲa/"
   }
 ]`}
                         onChange={evn =>

@@ -164,6 +164,7 @@ export const WordSlider: FC<WordSliderProps> = ({ words }) => {
                 targetWord={word.targetWord}
                 pronunciation={word.pronunciation}
                 remark={word.remark}
+                sourceLanguage={word.sourceLanguage}
               />
             </div>
           ))}

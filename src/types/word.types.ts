@@ -1,6 +1,8 @@
 export interface WordPair {
   id: string;
   deckId: string;
+  sourceLanguage: string;
+  targetLanguage: string;
   sourceWord: string;
   targetWord: string;
   pronunciation: string;

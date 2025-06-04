@@ -157,6 +157,8 @@ export class WordPairIndexedDbProvider {
         wordPair =>
           wordPair.sourceWord.toLowerCase().includes(lowerQuery) ||
           wordPair.targetWord.toLowerCase().includes(lowerQuery) ||
+          wordPair.sourceLanguage.toLowerCase().includes(lowerQuery) ||
+          wordPair.targetLanguage.toLowerCase().includes(lowerQuery) ||
           wordPair.pronunciation.toLowerCase().includes(lowerQuery) ||
           (wordPair.remark?.toLowerCase().includes(lowerQuery) ?? false)
       );

@@ -5,6 +5,8 @@ import { DeckIndexedDbProvider } from './deck.indexed-db-provider.ts';
 const mockWords: WordPairList = [
   {
     id: '1',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Dzień dobry',
     targetWord: 'Good morning',
@@ -13,6 +15,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '2',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Do widzenia',
     targetWord: 'Goodbye',
@@ -21,6 +25,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '3',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Proszę',
     targetWord: 'Please',
@@ -29,6 +35,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '4',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Dziękuję',
     targetWord: 'Thank you',
@@ -36,6 +44,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '5',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Przepraszam',
     targetWord: 'Sorry',
@@ -44,6 +54,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '6',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Tak',
     targetWord: 'Yes',
@@ -51,6 +63,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '7',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Nie',
     targetWord: 'No',
@@ -58,6 +72,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '8',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Cześć',
     targetWord: 'Hi',
@@ -66,6 +82,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '9',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Jak się masz?',
     targetWord: 'How are you?',
@@ -74,6 +92,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '10',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Dobranoc',
     targetWord: 'Good night',
@@ -82,6 +102,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '11',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Kocham cię',
     targetWord: 'I love you',
@@ -90,6 +112,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '12',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Smacznego',
     targetWord: 'Enjoy your meal',
@@ -98,6 +122,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '13',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Na zdrowie',
     targetWord: 'Cheers',
@@ -106,6 +132,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '14',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Gdzie jest...?',
     targetWord: 'Where is...?',
@@ -114,6 +142,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '15',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Co słychać?',
     targetWord: "What's up?",
@@ -122,6 +152,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '16',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Wszystkiego najlepszego',
     targetWord: 'All the best',
@@ -130,6 +162,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '17',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Powodzenia',
     targetWord: 'Good luck',
@@ -138,6 +172,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '18',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Rozumiem',
     targetWord: 'I understand',
@@ -145,6 +181,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '19',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Nie rozumiem',
     targetWord: "I don't understand",
@@ -153,6 +191,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '20',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Dobry wieczór',
     targetWord: 'Good evening',
@@ -161,6 +201,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '21',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Miło',
     targetWord: 'Nice',
@@ -169,6 +211,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '22',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Woda',
     targetWord: 'Water',
@@ -176,6 +220,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '23',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Chleb',
     targetWord: 'Bread',
@@ -184,6 +230,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '24',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Dom',
     targetWord: 'House',
@@ -191,6 +239,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '25',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Piękny',
     targetWord: 'Beautiful',
@@ -199,6 +249,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '26',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Mama',
     targetWord: 'Mom',
@@ -207,6 +259,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '27',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Tata',
     targetWord: 'Dad',
@@ -215,6 +269,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '28',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Kot',
     targetWord: 'Cat',
@@ -222,6 +278,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '29',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Pies',
     targetWord: 'Dog',
@@ -229,6 +287,8 @@ const mockWords: WordPairList = [
   },
   {
     id: '30',
+    sourceLanguage: 'Polish',
+    targetLanguage: 'English',
     deckId: 'default-deck-1',
     sourceWord: 'Miłość',
     targetWord: 'Love',

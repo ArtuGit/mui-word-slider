@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useWordsStore } from '../stores/useWordsStore';
+import { VALID_ROUTES } from '../constants/routes';
 import { useDecksStore } from '../stores/useDecksStore';
 
 /**
@@ -14,7 +15,7 @@ export const useGlobalWordInitialization = () => {
 
   useEffect(() => {
     // Only initialize on valid routes (not 404 pages)
-    const isValidRoute = ['/', '/learn', '/upload', '/debug'].includes(location.pathname);
+    const isValidRoute = (VALID_ROUTES as readonly string[]).includes(location.pathname);
 
     if (isValidRoute) {
       // Initialize decks first, then words
