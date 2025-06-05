@@ -1,9 +1,8 @@
 import { Deck } from '../types/deck.types';
 import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
 import { INITIAL_DECKS } from '../constants/initial-data';
+import {delay} from "../utils/time.utils.ts";
 
-// Simulate network delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Get default decks (creates default decks if none exist)
@@ -51,22 +50,6 @@ export const deckService = {
       return await DeckIndexedDbProvider.getDeckById(id);
     } catch (error) {
       console.error('Failed to get deck by ID:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Get the default deck
-   */
-  getDefaultDeck: async (): Promise<Deck> => {
-    try {
-      const defaultDecks = await getDefaultDecks();
-      if (defaultDecks.length === 0) {
-        throw new Error('No default deck available');
-      }
-      return defaultDecks[0]; // Return the first deck as the default
-    } catch (error) {
-      console.error('Failed to get default deck:', error);
       throw error;
     }
   },
