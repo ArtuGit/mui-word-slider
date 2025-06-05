@@ -12,6 +12,7 @@ interface DecksState {
   // Actions
   getAllDecks: () => Promise<void>;
   getDeckById: (id: string) => Promise<Deck | undefined>;
+  getDefaultDecks: () => Promise<void>;
   getDefaultDeck: () => Promise<void>;
   setCurrentDeck: (deck: Deck) => void;
   createDeck: (deck: Deck) => Promise<string>;
@@ -50,6 +51,25 @@ export const useDecksStore = create<DecksState>((set, get) => ({
         error: error instanceof Error ? error.message : 'Failed to get deck',
       });
       return undefined;
+    }
+  },
+
+  getDefaultDecks: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const decks = await deckService.getDefaultDecks();
+      set({
+        decks,
+        currentDeck: decks.length > 0 ? decks[0] : null,
+        isLoading: false,
+        hasInitialized: true,
+      });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to get default decks',
+        isLoading: false,
+        hasInitialized: true,
+      });
     }
   },
 
@@ -157,13 +177,11 @@ export const useDecksStore = create<DecksState>((set, get) => ({
     if (!hasInitialized && !isLoading) {
       set({ isLoading: true, error: null });
       try {
-        // Get the default deck and set it as current
-        const defaultDeck = await deckService.getDefaultDeck();
-        // Also get all decks
-        const allDecks = await deckService.getAllDecks();
+        // Get the default decks (creates default if none exist)
+        const allDecks = await deckService.initializeDecks();
 
         set({
-          currentDeck: defaultDeck,
+          currentDeck: allDecks.length > 0 ? allDecks[0] : null,
           decks: allDecks,
           isLoading: false,
           hasInitialized: true,

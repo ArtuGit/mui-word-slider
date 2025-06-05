@@ -1,6 +1,9 @@
 import { db } from '../db/database';
 import { Deck } from '../types/deck.types';
 
+// Simulate network delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export class DeckIndexedDbProvider {
   /**
    * Get all decks from IndexedDB
@@ -27,17 +30,19 @@ export class DeckIndexedDbProvider {
   }
 
   /**
-   * Get the default deck - creates one if it doesn't exist
+   * Get the default decks - creates default deck if none exist, returns as array
    */
-  static async getDefaultDeck(): Promise<Deck> {
+  static async getDefaultDecks(): Promise<Deck[]> {
     try {
-      const defaultDeckId = 'default-deck-1';
-      let defaultDeck = await db.decks.get(defaultDeckId);
+      // Simulate network delay between 500ms and 1500ms
+      await delay(Math.random() * 1000 + 500);
 
-      if (!defaultDeck) {
-        // Create default deck if it doesn't exist
-        const newDefaultDeck: Deck = {
-          id: defaultDeckId,
+      const allDecks = await db.decks.toArray();
+
+      if (allDecks.length === 0) {
+        // Create default deck if no decks exist
+        const defaultDeck: Deck = {
+          id: 'default-deck-1',
           topic: 'Polish Common Phrases',
           description: 'Essential Polish phrases for everyday conversation',
           languageFrom: 'Polish',
@@ -46,13 +51,26 @@ export class DeckIndexedDbProvider {
           promptToAiAgent:
             'Please create JSON with Polish common phrases and their English translations, including pronunciation and remarks for context.',
         };
-        await db.decks.add(newDefaultDeck);
-        defaultDeck = newDefaultDeck;
+        await db.decks.add(defaultDeck);
+        return [defaultDeck];
       }
 
-      return defaultDeck;
+      return allDecks;
     } catch (error) {
-      console.error('Failed to get or create default deck:', error);
+      console.error('Failed to get or create default decks:', error);
+      throw new Error('Failed to initialize default decks');
+    }
+  }
+
+  /**
+   * Get the default deck - creates one if it doesn't exist (kept for backward compatibility)
+   */
+  static async getDefaultDeck(): Promise<Deck> {
+    try {
+      const defaultDecks = await this.getDefaultDecks();
+      return defaultDecks[0]; // Return the first deck as the default
+    } catch (error) {
+      console.error('Failed to get default deck:', error);
       throw new Error('Failed to initialize default deck');
     }
   }

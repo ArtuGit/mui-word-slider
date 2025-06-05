@@ -6,7 +6,8 @@
 export const ROUTES = {
   HOME: '/',
   LEARN: '/learn',
-  UPLOAD: '/upload'
+  DECKS: '/decks',
+  UPLOAD: '/upload',
 } as const;
 
 // Valid routes for word initialization (excludes catch-all routes)
@@ -21,6 +22,10 @@ export const ROUTE_DEFINITIONS = [
   {
     path: ROUTES.LEARN,
     component: 'WordLearningPage',
+  },
+  {
+    path: ROUTES.DECKS,
+    component: 'DecksPage',
   },
   {
     path: ROUTES.UPLOAD,

@@ -123,11 +123,23 @@ export const deckService = {
   },
 
   /**
-   * Initialize the deck system - ensures default deck exists
+   * Get default decks (creates default deck if none exist)
    */
-  initializeDecks: async (): Promise<Deck> => {
+  getDefaultDecks: async (): Promise<Deck[]> => {
     try {
-      return await DeckIndexedDbProvider.getDefaultDeck();
+      return await DeckIndexedDbProvider.getDefaultDecks();
+    } catch (error) {
+      console.error('Failed to get default decks:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Initialize the deck system - ensures default deck exists, returns all decks
+   */
+  initializeDecks: async (): Promise<Deck[]> => {
+    try {
+      return await DeckIndexedDbProvider.getDefaultDecks();
     } catch (error) {
       console.error('Failed to initialize decks:', error);
       throw error;
