@@ -1,0 +1,106 @@
+import { FC, useEffect } from 'react';
+import { Alert, Box, CircularProgress, Container, Typography, Button, styled } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useDecksStore } from '../stores/useDecksStore';
+import { useWordsStore } from '../stores/useWordsStore';
+import DeckList from '../components/deck/DeckList';
+import { Deck as DeckType } from '../types/deck.types';
+import { ROUTES } from '../constants/routes';
+
+const PageHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: theme.spacing(4),
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    gap: theme.spacing(2),
+    alignItems: 'stretch',
+  },
+}));
+
+const ContentContainer = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  minHeight: '400px',
+  py: 4,
+}));
+
+export const DecksPage: FC = () => {
+  const navigate = useNavigate();
+  const { decks, isLoading, error, clearError, getDefaultDecks, setCurrentDeck } = useDecksStore();
+  const { initializeWords } = useWordsStore();
+
+  // Load decks when component mounts
+  useEffect(() => {
+    getDefaultDecks();
+  }, [getDefaultDecks]);
+
+  const handlePlayDeck = async (deck: DeckType) => {
+    try {
+      // Set the selected deck as current
+      setCurrentDeck(deck);
+      // Initialize words for this deck
+      await initializeWords(deck.id);
+      // Navigate to learning page
+      navigate(ROUTES.LEARN);
+    } catch (error) {
+      console.error('Failed to start deck:', error);
+    }
+  };
+
+  const handleEditDeck = (deck: DeckType) => {
+    // TODO: Implement deck editing
+    console.log('Edit deck:', deck);
+  };
+
+  const handleDeleteDeck = (deck: DeckType) => {
+    // TODO: Implement deck deletion
+    console.log('Delete deck:', deck);
+  };
+
+  const handleCreateDeck = () => {
+    // TODO: Navigate to deck creation page
+    console.log('Create new deck');
+  };
+
+  let content;
+  if (isLoading) {
+    content = <CircularProgress size={60} />;
+  } else if (error) {
+    content = (
+      <Alert severity="error" onClose={clearError}>
+        {error}
+      </Alert>
+    );
+  } else {
+    content = (
+      <DeckList
+        decks={decks}
+        onPlayDeck={handlePlayDeck}
+        onEditDeck={handleEditDeck}
+        onDeleteDeck={handleDeleteDeck}
+      />
+    );
+  }
+
+  return (
+    <Container maxWidth="xl">
+      <PageHeader>
+        <Typography variant="h4" component="h1" color="primary">
+          My Decks
+        </Typography>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreateDeck} size="large">
+          Create Deck
+        </Button>
+      </PageHeader>
+
+      <ContentContainer>{content}</ContentContainer>
+    </Container>
+  );
+};
+
+export default DecksPage;
