@@ -1,6 +1,6 @@
 import { WordPairList } from '../types/word.types';
 import { WordPairIndexedDbProvider } from './word-pair.indexed-db-provider.ts';
-import { DeckIndexedDbProvider } from './deck.indexed-db-provider.ts';
+import { deckService } from './deck.service';
 
 const mockWords: WordPairList = [
   {
@@ -370,7 +370,7 @@ export const wordPairService = {
       // If no deckId provided, get the default deck
       let targetDeckId = deckId;
       if (!targetDeckId) {
-        const defaultDeck = await DeckIndexedDbProvider.getDefaultDeck();
+        const defaultDeck = await deckService.getDefaultDeck();
         targetDeckId = defaultDeck.id;
       }
 
