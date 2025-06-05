@@ -50,11 +50,6 @@ export const DecksPage: FC = () => {
     console.log('Edit deck:', deck);
   };
 
-  const handleDeleteDeck = (deck: DeckType) => {
-    // TODO: Implement deck deletion
-    console.log('Delete deck:', deck);
-  };
-
   const handleCreateDeck = () => {
     // TODO: Navigate to deck creation page
     console.log('Create new deck');
@@ -70,14 +65,7 @@ export const DecksPage: FC = () => {
       </Alert>
     );
   } else {
-    content = (
-      <DeckList
-        decks={decks}
-        onPlayDeck={handlePlayDeck}
-        onEditDeck={handleEditDeck}
-        onDeleteDeck={handleDeleteDeck}
-      />
-    );
+    content = <DeckList decks={decks} onPlayDeck={handlePlayDeck} onEditDeck={handleEditDeck} />;
   }
 
   return (
