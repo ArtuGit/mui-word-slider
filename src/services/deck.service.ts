@@ -1,23 +1,9 @@
 import { Deck } from '../types/deck.types';
 import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
+import { INITIAL_DECKS } from '../constants/initial-data';
 
 // Simulate network delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Default decks configuration
-const DEFAULT_DECKS: Deck[] = [
-  {
-    id: 'default-deck-1',
-    topic: 'Polish Common Phrases',
-    description: 'Essential Polish phrases for everyday conversation',
-    languageFrom: 'Polish',
-    languageTo: 'English',
-    amount: 30,
-    promptToAiAgent:
-      'Please create JSON with Polish common phrases and their English translations, including pronunciation and remarks for context.',
-  },
-  // Add more default decks here in the future
-];
 
 /**
  * Get default decks (creates default decks if none exist)
@@ -31,10 +17,10 @@ const getDefaultDecks = async (): Promise<Deck[]> => {
 
     if (allDecks.length === 0) {
       // Create default decks if none exist
-      for (const defaultDeck of DEFAULT_DECKS) {
-        await DeckIndexedDbProvider.saveDeck(defaultDeck);
+      for (const initialDeck of INITIAL_DECKS) {
+        await DeckIndexedDbProvider.saveDeck(initialDeck);
       }
-      return [...DEFAULT_DECKS];
+      return [...INITIAL_DECKS];
     }
 
     return allDecks;
