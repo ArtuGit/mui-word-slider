@@ -22,6 +22,7 @@ import {
   Delete as DeleteIcon,
   Translate as TranslateIcon,
 } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 import { Deck as DeckType } from '../../types/deck.types';
 import { useDecksStore } from '../../stores/useDecksStore';
 
@@ -83,6 +84,7 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const { deleteDeck } = useDecksStore();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -104,10 +106,15 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
     try {
       await deleteDeck(deck.id);
       setDeleteDialogOpen(false);
+      enqueueSnackbar(`Deck "${deck.topic}" has been successfully deleted!`, {
+        variant: 'success',
+      });
       onDelete?.(deck);
     } catch (error) {
       console.error('Failed to delete deck:', error);
-      // You could add a toast notification here
+      enqueueSnackbar('Failed to delete deck. Please try again.', {
+        variant: 'error',
+      });
     } finally {
       setIsDeleting(false);
     }
