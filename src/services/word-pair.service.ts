@@ -2,7 +2,9 @@ import { WordPairList } from '../types/word.types';
 import { WordPairIndexedDbProvider } from './word-pair.indexed-db-provider.ts';
 import { deckService } from './deck.service';
 import { INITIAL_WORDS } from '../constants/initial-data';
-import {delay} from "../utils/time.utils.ts";
+
+// Simulate network delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const wordPairService = {
   /**
