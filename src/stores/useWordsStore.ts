@@ -13,6 +13,7 @@ interface WordsState {
   saveWords: (newWords: WordPair[], deckId?: string) => Promise<void>;
   loadWordsFromDB: (deckId?: string) => Promise<void>;
   clearStoredWords: (deckId?: string) => Promise<void>;
+  clearWords: () => void;
   getStoredWordsCount: (deckId?: string) => Promise<number>;
   searchWords: (query: string, deckId?: string) => Promise<WordPairList>;
   clearError: () => void;
@@ -38,33 +39,39 @@ export const useWordsStore = create<WordsState>((set, get) => ({
   },
 
   initializeWords: async (deckId?: string) => {
-    const { words, hasInitialized, isLoading } = get();
+    const { isLoading } = get();
 
-    // Only initialize if we haven't already and we're not currently loading
-    if (words.length === 0 && !hasInitialized && !isLoading) {
-      set({ isLoading: true, error: null });
-      try {
-        // If no deckId provided, get current deck from deck store
-        let targetDeckId = deckId;
-        if (!targetDeckId) {
-          const deckStore = useDecksStore.getState();
-          if (!deckStore.currentDeck) {
-            // Initialize deck store first if needed
-            await deckStore.initializeDecks();
-          }
-          targetDeckId = deckStore.currentDeck?.id;
+    // Don't initialize if already loading
+    if (isLoading) {
+      return;
+    }
+
+    set({ isLoading: true, error: null });
+    try {
+      // If no deckId provided, get current deck from deck store
+      let targetDeckId = deckId;
+      if (!targetDeckId) {
+        const deckStore = useDecksStore.getState();
+        if (!deckStore.currentDeck) {
+          // Initialize deck store first if needed
+          await deckStore.initializeDecks();
         }
-
-        // Use the new initialize method that handles IndexedDB
-        const words = await wordPairService.initializeWordPairs(targetDeckId);
-        set({ words, isLoading: false, hasInitialized: true });
-      } catch (error) {
-        set({
-          error: error instanceof Error ? error.message : 'Failed to load initial words',
-          isLoading: false,
-          hasInitialized: true, // Mark as initialized even on error to prevent retries
-        });
+        targetDeckId = deckStore.currentDeck?.id;
       }
+
+      if (!targetDeckId) {
+        throw new Error('No deck ID available for word initialization');
+      }
+
+      // Use the new initialize method that handles IndexedDB
+      const words = await wordPairService.initializeWordPairs(targetDeckId);
+      set({ words, isLoading: false, hasInitialized: true });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to load initial words',
+        isLoading: false,
+        hasInitialized: true, // Mark as initialized even on error to prevent retries
+      });
     }
   },
 
@@ -166,4 +173,6 @@ export const useWordsStore = create<WordsState>((set, get) => ({
   },
 
   clearError: () => set({ error: null }),
+
+  clearWords: () => set({ words: [] }),
 }));

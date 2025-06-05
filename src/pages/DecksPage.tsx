@@ -3,10 +3,8 @@ import { Alert, Box, CircularProgress, Container, Typography, Button, styled } f
 import { Add as AddIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDecksStore } from '../stores/useDecksStore';
-import { useWordsStore } from '../stores/useWordsStore';
 import DeckList from '../components/deck/DeckList';
 import { Deck as DeckType } from '../types/deck.types';
-import { ROUTES } from '../constants/routes';
 
 const PageHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -31,8 +29,7 @@ const ContentContainer = styled(Box)(() => ({
 
 export const DecksPage: FC = () => {
   const navigate = useNavigate();
-  const { decks, isLoading, error, clearError, getDefaultDecks, setCurrentDeck } = useDecksStore();
-  const { initializeWords } = useWordsStore();
+  const { decks, isLoading, error, clearError, getDefaultDecks } = useDecksStore();
 
   // Load decks when component mounts
   useEffect(() => {
@@ -41,12 +38,8 @@ export const DecksPage: FC = () => {
 
   const handlePlayDeck = async (deck: DeckType) => {
     try {
-      // Set the selected deck as current
-      setCurrentDeck(deck);
-      // Initialize words for this deck
-      await initializeWords(deck.id);
-      // Navigate to learning page
-      navigate(ROUTES.LEARN);
+      // Navigate to the specific deck learning page
+      navigate(`/deck/${deck.id}`);
     } catch (error) {
       console.error('Failed to start deck:', error);
     }
