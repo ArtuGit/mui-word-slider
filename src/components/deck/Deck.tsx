@@ -46,11 +46,10 @@ const CardHeader = styled(Box)(({ theme }) => ({
 }));
 
 const ActionButtons = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
   display: 'flex',
+  flexDirection: 'row',
   gap: theme.spacing(0.5),
+  flexShrink: 0,
 }));
 
 const LanguageChip = styled(Chip)(({ theme }) => ({
@@ -95,63 +94,71 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   return (
     <StyledCard onClick={handleCardClick}>
       <CardHeader>
-        <ActionButtons>
-          <Tooltip title="Play Deck">
-            <IconButton
-              size="small"
-              onClick={handlePlay}
-              sx={{
-                color: 'inherit',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                },
-              }}
-            >
-              <PlayArrowIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit Deck">
-            <IconButton
-              size="small"
-              onClick={handleEdit}
-              sx={{
-                color: 'inherit',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                },
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete Deck">
-            <IconButton
-              size="small"
-              onClick={handleDelete}
-              sx={{
-                color: 'inherit',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                },
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </ActionButtons>
-
-        <Typography variant="h6" component="h3" gutterBottom sx={{ pr: 6 }}>
+        <Typography variant="h6" component="h3" gutterBottom>
           {deck.topic}
         </Typography>
 
-        <LanguageChip
-          icon={<TranslateIcon />}
-          label={`${deck.languageFrom} → ${deck.languageTo}`}
-          size="small"
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <LanguageChip
+            icon={<TranslateIcon />}
+            label={`${deck.languageFrom} → ${deck.languageTo}`}
+            size="small"
+          />
+
+          <ActionButtons>
+            <Tooltip title="Play Deck">
+              <IconButton
+                size="small"
+                onClick={handlePlay}
+                sx={{
+                  color: 'inherit',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  padding: '4px',
+                  minWidth: 'auto',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                }}
+              >
+                <PlayArrowIcon sx={{ fontSize: '1rem' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit Deck">
+              <IconButton
+                size="small"
+                onClick={handleEdit}
+                sx={{
+                  color: 'inherit',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  padding: '4px',
+                  minWidth: 'auto',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                }}
+              >
+                <EditIcon sx={{ fontSize: '1rem' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete Deck">
+              <IconButton
+                size="small"
+                onClick={handleDelete}
+                sx={{
+                  color: 'inherit',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  padding: '4px',
+                  minWidth: 'auto',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  },
+                }}
+              >
+                <DeleteIcon sx={{ fontSize: '1rem' }} />
+              </IconButton>
+            </Tooltip>
+          </ActionButtons>
+        </Box>
       </CardHeader>
 
       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
