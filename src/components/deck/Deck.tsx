@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -8,6 +8,13 @@ import {
   IconButton,
   Tooltip,
   styled,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  CircularProgress,
 } from '@mui/material';
 import {
   PlayArrow as PlayArrowIcon,
@@ -16,6 +23,7 @@ import {
   Translate as TranslateIcon,
 } from '@mui/icons-material';
 import { Deck as DeckType } from '../../types/deck.types';
+import { useDecksStore } from '../../stores/useDecksStore';
 
 interface DeckProps {
   deck: DeckType;
@@ -72,6 +80,10 @@ const StatsBox = styled(Box)(({ theme }) => ({
 }));
 
 export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { deleteDeck } = useDecksStore();
+
   const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
     onPlay?.(deck);
@@ -84,7 +96,25 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onDelete?.(deck);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteDeck(deck.id);
+      setDeleteDialogOpen(false);
+      onDelete?.(deck);
+    } catch (error) {
+      console.error('Failed to delete deck:', error);
+      // You could add a toast notification here
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteDialogOpen(false);
   };
 
   const handleCardClick = () => {
@@ -92,102 +122,139 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   };
 
   return (
-    <StyledCard onClick={handleCardClick}>
-      <CardHeader>
-        <Typography variant="h6" component="h3" gutterBottom>
-          {deck.topic}
-        </Typography>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <LanguageChip
-            icon={<TranslateIcon />}
-            label={`${deck.languageFrom} → ${deck.languageTo}`}
-            size="small"
-          />
-
-          <ActionButtons>
-            <Tooltip title="Play Deck">
-              <IconButton
-                size="small"
-                onClick={handlePlay}
-                sx={{
-                  color: 'inherit',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  padding: '4px',
-                  minWidth: 'auto',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  },
-                }}
-              >
-                <PlayArrowIcon sx={{ fontSize: '1rem' }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit Deck">
-              <IconButton
-                size="small"
-                onClick={handleEdit}
-                sx={{
-                  color: 'inherit',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  padding: '4px',
-                  minWidth: 'auto',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  },
-                }}
-              >
-                <EditIcon sx={{ fontSize: '1rem' }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete Deck">
-              <IconButton
-                size="small"
-                onClick={handleDelete}
-                sx={{
-                  color: 'inherit',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  padding: '4px',
-                  minWidth: 'auto',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  },
-                }}
-              >
-                <DeleteIcon sx={{ fontSize: '1rem' }} />
-              </IconButton>
-            </Tooltip>
-          </ActionButtons>
-        </Box>
-      </CardHeader>
-
-      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            flexGrow: 1,
-            mb: 2,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-          }}
-        >
-          {deck.description}
-        </Typography>
-
-        <StatsBox>
-          <Typography variant="body2" color="text.secondary">
-            Words
+    <>
+      <StyledCard onClick={handleCardClick}>
+        <CardHeader>
+          <Typography variant="h6" component="h3" gutterBottom>
+            {deck.topic}
           </Typography>
-          <Typography variant="h6" color="primary">
-            {deck.amount}
+
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <LanguageChip
+              icon={<TranslateIcon />}
+              label={`${deck.languageFrom} → ${deck.languageTo}`}
+              size="small"
+            />
+
+            <ActionButtons>
+              <Tooltip title="Play Deck">
+                <IconButton
+                  size="small"
+                  onClick={handlePlay}
+                  sx={{
+                    color: 'inherit',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: '4px',
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    },
+                  }}
+                >
+                  <PlayArrowIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit Deck">
+                <IconButton
+                  size="small"
+                  onClick={handleEdit}
+                  sx={{
+                    color: 'inherit',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: '4px',
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    },
+                  }}
+                >
+                  <EditIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete Deck">
+                <IconButton
+                  size="small"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  sx={{
+                    color: 'inherit',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    padding: '4px',
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    },
+                  }}
+                >
+                  {isDeleting ? (
+                    <CircularProgress size={16} sx={{ color: 'inherit' }} />
+                  ) : (
+                    <DeleteIcon sx={{ fontSize: '1rem' }} />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </ActionButtons>
+          </Box>
+        </CardHeader>
+
+        <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              flexGrow: 1,
+              mb: 2,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {deck.description}
           </Typography>
-        </StatsBox>
-      </CardContent>
-    </StyledCard>
+
+          <StatsBox>
+            <Typography variant="body2" color="text.secondary">
+              Words
+            </Typography>
+            <Typography variant="h6" color="primary">
+              {deck.amount}
+            </Typography>
+          </StatsBox>
+        </CardContent>
+      </StyledCard>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleCancelDelete}
+        aria-labelledby="delete-deck-dialog-title"
+        aria-describedby="delete-deck-dialog-description"
+      >
+        <DialogTitle id="delete-deck-dialog-title">Delete Deck</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-deck-dialog-description">
+            Are you sure you want to delete the deck "{deck.topic}"? This action cannot be undone.
+            All word pairs in this deck will also be deleted.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} disabled={isDeleting}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="contained"
+            disabled={isDeleting}
+            startIcon={isDeleting ? <CircularProgress size={16} /> : undefined}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
