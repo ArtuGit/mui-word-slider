@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useWordsStore } from '../stores/useWordsStore';
-import { VALID_ROUTES } from '../constants/routes';
-import { useDecksStore } from '../stores/useDecksStore';
+import {useEffect} from 'react';
+import {useLocation} from 'react-router-dom';
+import {useCardsStore} from '../stores/useCardsStore.ts';
+import {VALID_ROUTES} from '../constants/routes';
+import {useDecksStore} from '../stores/useDecksStore';
 
 /**
- * Custom hook that initializes default deck and word pairs when the app loads
+ * Custom hook that initializes default deck and cards when the app loads
  * Only runs once and only if the store is empty and on valid routes
  */
 export const useGlobalWordInitialization = () => {
-  const { initializeWords } = useWordsStore();
+  const { initializeCards } = useCardsStore();
   const { initializeDecks } = useDecksStore();
   const location = useLocation();
 
@@ -22,7 +22,7 @@ export const useGlobalWordInitialization = () => {
       const initialize = async () => {
         try {
           await initializeDecks();
-          await initializeWords();
+          await initializeCards();
         } catch (error) {
           console.error('Failed to initialize app data:', error);
         }
@@ -30,5 +30,5 @@ export const useGlobalWordInitialization = () => {
 
       initialize();
     }
-  }, [initializeDecks, initializeWords, location.pathname]);
+  }, [initializeDecks, initializeCards, location.pathname]);
 };

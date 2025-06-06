@@ -1,11 +1,11 @@
 import { db } from '../db/database';
-import { Deck } from '../types/deck.types';
+import { IDeck } from '../types/deck.types';
 
 export class DeckIndexedDbProvider {
   /**
    * Get all decks from IndexedDB
    */
-  static async getAllDecks(): Promise<Deck[]> {
+  static async getAllDecks(): Promise<IDeck[]> {
     try {
       return await db.decks.toArray();
     } catch (error) {
@@ -17,7 +17,7 @@ export class DeckIndexedDbProvider {
   /**
    * Get a deck by ID
    */
-  static async getDeckById(id: string): Promise<Deck | undefined> {
+  static async getDeckById(id: string): Promise<IDeck | undefined> {
     try {
       return await db.decks.get(id);
     } catch (error) {
@@ -29,7 +29,7 @@ export class DeckIndexedDbProvider {
   /**
    * Save a deck to IndexedDB
    */
-  static async saveDeck(deck: Deck): Promise<string> {
+  static async saveDeck(deck: IDeck): Promise<string> {
     try {
       return await db.decks.add(deck);
     } catch (error) {
@@ -41,7 +41,7 @@ export class DeckIndexedDbProvider {
   /**
    * Update a deck in IndexedDB
    */
-  static async updateDeck(id: string, updates: Partial<Omit<Deck, 'id'>>): Promise<number> {
+  static async updateDeck(id: string, updates: Partial<Omit<IDeck, 'id'>>): Promise<number> {
     try {
       return await db.decks.update(id, updates);
     } catch (error) {
@@ -102,7 +102,7 @@ export class DeckIndexedDbProvider {
   /**
    * Search decks by topic or description
    */
-  static async searchDecks(query: string): Promise<Deck[]> {
+  static async searchDecks(query: string): Promise<IDeck[]> {
     try {
       const lowerQuery = query.toLowerCase();
       return await db.decks

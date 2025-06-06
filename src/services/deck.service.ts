@@ -1,4 +1,4 @@
-import { Deck } from '../types/deck.types';
+import { IDeck } from '../types/deck.types';
 import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
 import { INITIAL_DECKS } from '../constants/initial-data';
 
@@ -8,7 +8,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 /**
  * Get default decks (creates default decks if none exist)
  */
-const getDefaultDecks = async (): Promise<Deck[]> => {
+const getDefaultDecks = async (): Promise<IDeck[]> => {
   try {
     // Simulate network delay between 500ms and 1500ms
     await delay(Math.random() * 1000 + 500);
@@ -34,7 +34,7 @@ export const deckService = {
   /**
    * Get all decks
    */
-  getAllDecks: async (): Promise<Deck[]> => {
+  getAllDecks: async (): Promise<IDeck[]> => {
     try {
       return await DeckIndexedDbProvider.getAllDecks();
     } catch (error) {
@@ -46,7 +46,7 @@ export const deckService = {
   /**
    * Get a deck by ID
    */
-  getDeckById: async (id: string): Promise<Deck | undefined> => {
+  getDeckById: async (id: string): Promise<IDeck | undefined> => {
     try {
       return await DeckIndexedDbProvider.getDeckById(id);
     } catch (error) {
@@ -58,7 +58,7 @@ export const deckService = {
   /**
    * Get the default deck
    */
-  getDefaultDeck: async (): Promise<Deck> => {
+  getDefaultDeck: async (): Promise<IDeck> => {
     try {
       const defaultDecks = await getDefaultDecks();
       if (defaultDecks.length === 0) {
@@ -74,7 +74,7 @@ export const deckService = {
   /**
    * Create a new deck
    */
-  createDeck: async (deck: Deck): Promise<string> => {
+  createDeck: async (deck: IDeck): Promise<string> => {
     try {
       return await DeckIndexedDbProvider.saveDeck(deck);
     } catch (error) {
@@ -86,7 +86,7 @@ export const deckService = {
   /**
    * Update an existing deck
    */
-  updateDeck: async (id: string, updates: Partial<Omit<Deck, 'id'>>): Promise<number> => {
+  updateDeck: async (id: string, updates: Partial<Omit<IDeck, 'id'>>): Promise<number> => {
     try {
       return await DeckIndexedDbProvider.updateDeck(id, updates);
     } catch (error) {
@@ -146,7 +146,7 @@ export const deckService = {
   /**
    * Search decks by query
    */
-  searchDecks: async (query: string): Promise<Deck[]> => {
+  searchDecks: async (query: string): Promise<IDeck[]> => {
     try {
       return await DeckIndexedDbProvider.searchDecks(query);
     } catch (error) {
@@ -163,7 +163,7 @@ export const deckService = {
   /**
    * Initialize the deck system - ensures default decks exist, returns all decks
    */
-  initializeDecks: async (): Promise<Deck[]> => {
+  initializeDecks: async (): Promise<IDeck[]> => {
     try {
       return await getDefaultDecks();
     } catch (error) {

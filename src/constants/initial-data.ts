@@ -1,8 +1,8 @@
-import { Deck } from '../types/deck.types';
-import { WordPairList } from '../types/word.types';
+import { IDeck } from '../types/deck.types';
+import { ICardList } from '../types/card.types.ts';
 
 // Initial decks configuration
-export const INITIAL_DECKS: Deck[] = [
+export const INITIAL_DECKS: IDeck[] = [
   {
     id: 'default-deck-1',
     topic: 'Polish Common Phrases',
@@ -36,8 +36,8 @@ export const INITIAL_DECKS: Deck[] = [
   // Add more initial decks here in the future
 ];
 
-// Initial word pairs data
-export const INITIAL_WORDS: WordPairList = [
+// Initial cards data
+export const INITIAL_WORDS: ICardList = [
   // Polish deck words
   {
     id: '1',

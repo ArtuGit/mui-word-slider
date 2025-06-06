@@ -3,14 +3,14 @@ import Slider from 'react-slick';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { WordPair } from '../../types/word.types';
+import { ICard } from '../../types/card.types.ts';
 import WordCard from './WordCard';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-interface WordSliderProps {
-  words: WordPair[];
+interface WordCardSliderProps {
+  words: ICard[];
 }
 
 interface ArrowProps {
@@ -129,7 +129,7 @@ const PrevArrow: FC<ArrowProps> = props => {
   );
 };
 
-export const WordSlider: FC<WordSliderProps> = ({ words }) => {
+export const WordCardSlider: FC<WordCardSliderProps> = ({ words }) => {
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [current, setCurrent] = useState(0);
 
@@ -175,4 +175,4 @@ export const WordSlider: FC<WordSliderProps> = ({ words }) => {
   );
 };
 
-export default WordSlider;
+export default WordCardSlider;

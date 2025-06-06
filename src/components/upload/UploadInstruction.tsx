@@ -1,13 +1,13 @@
-import { FC } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import {FC} from 'react';
+import {Box, Paper, Typography} from '@mui/material';
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {vscDarkPlus} from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const UPLOAD_INSTRUCTION_MD = `
-## How to Upload your Word Pairs
+## How to Upload your Cards
 
-Ask your AI agent to create a JSON with word pairs on a given language and topic 
+Ask your AI agent to create a JSON with cards on a given language and topic 
 as an array of objects with the following structure:
 
   - \`id\`: A unique identifier for the word pair (string)
@@ -33,7 +33,7 @@ as an array of objects with the following structure:
 > - Source language: Polish
 > - Target language: English
 > - Topic: Common phrases
-> - Limit: 30 word pairs
+> - Limit: 30 cards
 
 ### JSON Output Example
 \`\`\`json

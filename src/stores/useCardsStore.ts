@@ -1,34 +1,34 @@
 import { create } from 'zustand';
-import { WordPair, WordPairList } from '../types/word.types';
-import { wordPairService } from '../services/word-pair.service.ts';
+import { ICard, ICardList } from '../types/card.types.ts';
+import { cardService } from '../services/card.service.ts';
 import { useDecksStore } from './useDecksStore';
 
 interface WordsState {
-  words: WordPairList;
+  words: ICardList;
   isLoading: boolean;
   error: string | null;
   hasInitialized: boolean;
-  fetchWords: (deckId?: string) => Promise<void>;
-  initializeWords: (deckId?: string) => Promise<void>;
-  saveWords: (newWords: WordPair[], deckId?: string) => Promise<void>;
-  loadWordsFromDB: (deckId?: string) => Promise<void>;
-  clearStoredWords: (deckId?: string) => Promise<void>;
+  fetchCards: (deckId?: string) => Promise<void>;
+  initializeCards: (deckId?: string) => Promise<void>;
+  saveCards: (newWords: ICard[], deckId?: string) => Promise<void>;
+  loadCardsFromDB: (deckId?: string) => Promise<void>;
+  clearStoredCards: (deckId?: string) => Promise<void>;
   clearWords: () => void;
-  getStoredWordsCount: (deckId?: string) => Promise<number>;
-  searchWords: (query: string, deckId?: string) => Promise<WordPairList>;
+  getStoredCardsCount: (deckId?: string) => Promise<number>;
+  searchCards: (query: string, deckId?: string) => Promise<ICardList>;
   clearError: () => void;
 }
 
-export const useWordsStore = create<WordsState>((set, get) => ({
+export const useCardsStore = create<WordsState>((set, get) => ({
   words: [],
   isLoading: false,
   error: null,
   hasInitialized: false,
 
-  fetchWords: async (deckId?: string) => {
+  fetchCards: async (deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
-      const words = await wordPairService.getDefaultWordPairs(deckId);
+      const words = await cardService.getDefaultCards(deckId);
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -38,7 +38,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  initializeWords: async (deckId?: string) => {
+  initializeCards: async (deckId?: string) => {
     const { isLoading } = get();
 
     // Don't initialize if already loading
@@ -64,7 +64,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
       }
 
       // Use the new initialize method that handles IndexedDB
-      const words = await wordPairService.initializeWordPairs(targetDeckId);
+      const words = await cardService.initializeCards(targetDeckId);
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -75,7 +75,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  saveWords: async (newWords: WordPair[], deckId?: string) => {
+  saveCards: async (newWords: ICard[], deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
       // If no deckId provided, get current deck from deck store
@@ -86,7 +86,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
       }
 
       // Save to IndexedDB
-      await wordPairService.saveWordPairs(newWords, targetDeckId);
+      await cardService.saveCards(newWords, targetDeckId);
       // Update store state
       set({ words: newWords, error: null, hasInitialized: true, isLoading: false });
     } catch (error) {
@@ -98,7 +98,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  loadWordsFromDB: async (deckId?: string) => {
+  loadCardsFromDB: async (deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
       // If no deckId provided, get current deck from deck store
@@ -108,7 +108,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
         targetDeckId = deckStore.currentDeck?.id;
       }
 
-      const words = await wordPairService.loadWordPairs(targetDeckId);
+      const words = await cardService.loadCards(targetDeckId);
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -119,7 +119,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  clearStoredWords: async (deckId?: string) => {
+  clearStoredCards: async (deckId?: string) => {
     set({ isLoading: true, error: null });
     try {
       // If no deckId provided, get current deck from deck store
@@ -129,7 +129,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
         targetDeckId = deckStore.currentDeck?.id;
       }
 
-      await wordPairService.clearStoredWordPairs(targetDeckId);
+      await cardService.clearStoredCards(targetDeckId);
       set({ words: [], isLoading: false, hasInitialized: false });
     } catch (error) {
       set({
@@ -140,7 +140,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  getStoredWordsCount: async (deckId?: string): Promise<number> => {
+  getStoredCardsCount: async (deckId?: string): Promise<number> => {
     try {
       // If no deckId provided, get current deck from deck store
       let targetDeckId = deckId;
@@ -149,14 +149,14 @@ export const useWordsStore = create<WordsState>((set, get) => ({
         targetDeckId = deckStore.currentDeck?.id;
       }
 
-      return await wordPairService.getStoredWordPairsCount(targetDeckId);
+      return await cardService.getStoredCardsCount(targetDeckId);
     } catch (error) {
       console.error('Failed to get stored words count:', error);
       return 0;
     }
   },
 
-  searchWords: async (query: string, deckId?: string): Promise<WordPairList> => {
+  searchCards: async (query: string, deckId?: string): Promise<ICardList> => {
     try {
       // If no deckId provided, get current deck from deck store
       let targetDeckId = deckId;
@@ -165,7 +165,7 @@ export const useWordsStore = create<WordsState>((set, get) => ({
         targetDeckId = deckStore.currentDeck?.id;
       }
 
-      return await wordPairService.searchStoredWordPairs(query, targetDeckId);
+      return await cardService.searchStoredCards(query, targetDeckId);
     } catch (error) {
       console.error('Failed to search words:', error);
       throw error;

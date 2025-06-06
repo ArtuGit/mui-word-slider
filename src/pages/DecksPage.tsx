@@ -4,7 +4,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDecksStore } from '../stores/useDecksStore';
 import DeckList from '../components/deck/DeckList';
-import { Deck as DeckType } from '../types/deck.types';
+import { IDeck as DeckType } from '../types/deck.types';
 
 const PageHeader = styled(Box)(({ theme }) => ({
   display: 'flex',

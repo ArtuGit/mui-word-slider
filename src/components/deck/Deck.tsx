@@ -1,30 +1,30 @@
-import { FC, useState } from 'react';
+import {FC, useState} from 'react';
 import {
+  Box,
+  Button,
   Card,
   CardContent,
-  Typography,
-  Box,
   Chip,
-  IconButton,
-  Tooltip,
-  styled,
+  CircularProgress,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Button,
-  CircularProgress,
+  DialogTitle,
+  IconButton,
+  styled,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import {
-  PlayArrow as PlayArrowIcon,
-  Edit as EditIcon,
   Delete as DeleteIcon,
+  Edit as EditIcon,
+  PlayArrow as PlayArrowIcon,
   Translate as TranslateIcon,
 } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
-import { Deck as DeckType } from '../../types/deck.types';
-import { useDecksStore } from '../../stores/useDecksStore';
+import {useSnackbar} from 'notistack';
+import {IDeck as DeckType} from '../../types/deck.types';
+import {useDecksStore} from '../../stores/useDecksStore';
 
 interface DeckProps {
   deck: DeckType;
@@ -243,7 +243,7 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
         <DialogContent>
           <DialogContentText id="delete-deck-dialog-description">
             Are you sure you want to delete the deck "{deck.topic}"? This action cannot be undone.
-            All word pairs in this deck will also be deleted.
+            All cards in this deck will also be deleted.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -1,24 +1,24 @@
 import { create } from 'zustand';
-import { Deck } from '../types/deck.types';
+import { IDeck } from '../types/deck.types';
 import { deckService } from '../services/deck.service';
 
 interface DecksState {
-  decks: Deck[];
-  currentDeck: Deck | null;
+  decks: IDeck[];
+  currentDeck: IDeck | null;
   isLoading: boolean;
   error: string | null;
   hasInitialized: boolean;
 
   // Actions
   getAllDecks: () => Promise<void>;
-  getDeckById: (id: string) => Promise<Deck | undefined>;
+  getDeckById: (id: string) => Promise<IDeck | undefined>;
   getDefaultDecks: () => Promise<void>;
   getDefaultDeck: () => Promise<void>;
-  setCurrentDeck: (deck: Deck) => void;
-  createDeck: (deck: Deck) => Promise<string>;
-  updateDeck: (id: string, updates: Partial<Omit<Deck, 'id'>>) => Promise<void>;
+  setCurrentDeck: (deck: IDeck) => void;
+  createDeck: (deck: IDeck) => Promise<string>;
+  updateDeck: (id: string, updates: Partial<Omit<IDeck, 'id'>>) => Promise<void>;
   deleteDeck: (id: string) => Promise<void>;
-  searchDecks: (query: string) => Promise<Deck[]>;
+  searchDecks: (query: string) => Promise<IDeck[]>;
   initializeDecks: () => Promise<void>;
   clearError: () => void;
 }
@@ -43,7 +43,7 @@ export const useDecksStore = create<DecksState>((set, get) => ({
     }
   },
 
-  getDeckById: async (id: string): Promise<Deck | undefined> => {
+  getDeckById: async (id: string): Promise<IDeck | undefined> => {
     try {
       return await deckService.getDeckById(id);
     } catch (error) {
@@ -91,11 +91,11 @@ export const useDecksStore = create<DecksState>((set, get) => ({
     }
   },
 
-  setCurrentDeck: (deck: Deck) => {
+  setCurrentDeck: (deck: IDeck) => {
     set({ currentDeck: deck });
   },
 
-  createDeck: async (deck: Deck): Promise<string> => {
+  createDeck: async (deck: IDeck): Promise<string> => {
     set({ isLoading: true, error: null });
     try {
       const id = await deckService.createDeck(deck);
@@ -112,7 +112,7 @@ export const useDecksStore = create<DecksState>((set, get) => ({
     }
   },
 
-  updateDeck: async (id: string, updates: Partial<Omit<Deck, 'id'>>) => {
+  updateDeck: async (id: string, updates: Partial<Omit<IDeck, 'id'>>) => {
     set({ isLoading: true, error: null });
     try {
       await deckService.updateDeck(id, updates);
@@ -159,7 +159,7 @@ export const useDecksStore = create<DecksState>((set, get) => ({
     }
   },
 
-  searchDecks: async (query: string): Promise<Deck[]> => {
+  searchDecks: async (query: string): Promise<IDeck[]> => {
     try {
       return await deckService.searchDecks(query);
     } catch (error) {

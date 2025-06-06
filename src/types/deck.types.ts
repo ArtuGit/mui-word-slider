@@ -1,4 +1,4 @@
-export interface Deck {
+export interface IDeck {
   id: string;
   topic: string;
   description?: string;

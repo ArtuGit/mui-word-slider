@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Box, Typography, styled } from '@mui/material';
-import { Deck as DeckType } from '../../types/deck.types';
+import { IDeck as DeckType } from '../../types/deck.types';
 import Deck from './Deck';
 
 interface DeckListProps {
