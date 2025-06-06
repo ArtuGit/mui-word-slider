@@ -1,7 +1,7 @@
 import {ICardList} from '../types/card.types.ts';
 import {CardIndexedDbProvider} from './card-indexed-db.provider.ts';
 import {deckService} from './deck.service';
-import {INITIAL_WORDS} from '../constants/initial-data';
+import {INITIAL_CARDS} from '../constants/initial-data';
 
 // Simulate network delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -15,9 +15,9 @@ export const cardService = {
     await delay(Math.random() * 1000 + 500);
 
     if (deckId) {
-      return INITIAL_WORDS.filter(word => word.deckId === deckId);
+      return INITIAL_CARDS.filter(word => word.deckId === deckId);
     }
-    return INITIAL_WORDS;
+    return INITIAL_CARDS;
   },
 
   /**

@@ -1,5 +1,5 @@
-import { IDeck } from '../types/deck.types';
-import { ICardList } from '../types/card.types.ts';
+import {IDeck} from '../types/deck.types';
+import {ICardList} from '../types/card.types.ts';
 
 // Initial decks configuration
 export const INITIAL_DECKS: IDeck[] = [
@@ -37,7 +37,7 @@ export const INITIAL_DECKS: IDeck[] = [
 ];
 
 // Initial cards data
-export const INITIAL_WORDS: ICardList = [
+export const INITIAL_CARDS: ICardList = [
   // Polish deck words
   {
     id: '1',
