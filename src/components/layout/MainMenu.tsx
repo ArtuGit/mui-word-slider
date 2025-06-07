@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { FC } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -27,13 +27,13 @@ const MainMenu: FC = () => {
     >
       <ListItem sx={{ width: 'auto' }}>
         <ListItemButton
-          selected={location.pathname === '/' || location.pathname === '/learn'}
-          onClick={() => handleNavigation('/learn')}
+          selected={location.pathname === '/decks'}
+          onClick={() => handleNavigation('/decks')}
         >
           <ListItemIcon sx={{ minWidth: 0, mr: 1 }}>
-            <RocketLaunchIcon color="primary" />
+            <ViewModuleIcon color="secondary" />
           </ListItemIcon>
-          <ListItemText primary="Go!" />
+          <ListItemText primary="Decks" />
         </ListItemButton>
       </ListItem>
       <ListItem sx={{ width: 'auto' }}>

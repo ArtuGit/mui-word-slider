@@ -1,11 +1,11 @@
 import { FC, useState, useEffect } from 'react';
 import { Box, Card, CardContent, styled, Typography, IconButton, Tooltip } from '@mui/material';
 import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
-import { WordPair } from '../../types/word.types';
+import { ICard } from '../../types/card.types.ts';
 import { speechService } from '../../services/speech.service';
 
-type WordCardProps = Pick<
-  WordPair,
+type CardProps = Pick<
+   ICard,
   'sourceWord' | 'targetWord' | 'pronunciation' | 'remark' | 'sourceLanguage'
 >;
 
@@ -141,7 +141,7 @@ const SpeechButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const WordCard: FC<WordCardProps> = ({
+export const WordCard: FC<CardProps> = ({
   sourceWord,
   targetWord,
   pronunciation,

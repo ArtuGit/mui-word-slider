@@ -1,10 +1,48 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Alert, Box, CircularProgress, Container } from '@mui/material';
-import WordSlider from '../components/word/WordSlider';
-import { useWordsStore } from '../stores/useWordsStore';
+import { useParams, useNavigate } from 'react-router-dom';
+import WordCardSlider from '../components/word/WordCardSlider.tsx';
+import { useCardsStore } from '../stores/useCardsStore.ts';
+import { useDecksStore } from '../stores/useDecksStore';
 
 export const WordLearningPage: FC = () => {
-  const { words, isLoading, error, clearError } = useWordsStore();
+  const { deckId } = useParams<{ deckId: string }>();
+  const navigate = useNavigate();
+  const { words, isLoading, error, clearError, initializeCards, clearWords } = useCardsStore();
+  const { setCurrentDeck, getDeckById } = useDecksStore();
+
+  useEffect(() => {
+    const loadDeckAndWords = async () => {
+      if (!deckId) {
+        // If no deckId, redirect to decks page
+        navigate('/decks');
+        return;
+      }
+
+      try {
+        // Clear existing words first
+        clearWords();
+
+        // Get the deck by ID and set it as current
+        const deck = await getDeckById(deckId);
+        if (!deck) {
+          // If deck not found, redirect to decks page
+          navigate('/decks');
+          return;
+        }
+
+        setCurrentDeck(deck);
+        // Initialize words for this specific deck
+        await initializeCards(deckId);
+      } catch (error) {
+        console.error('Failed to load deck and words:', error);
+        // On error, redirect to decks page
+        navigate('/decks');
+      }
+    };
+
+    loadDeckAndWords();
+  }, [deckId, navigate, getDeckById, setCurrentDeck, initializeCards, clearWords]);
 
   let content;
   if (isLoading) {
@@ -16,9 +54,9 @@ export const WordLearningPage: FC = () => {
       </Alert>
     );
   } else if (words.length > 0) {
-    content = <WordSlider words={words} />;
+    content = <WordCardSlider words={words} />;
   } else {
-    content = <Alert severity="info">No words available. Please upload some word pairs.</Alert>;
+    content = <Alert severity="info">No words available for this deck.</Alert>;
   }
 
   return (
