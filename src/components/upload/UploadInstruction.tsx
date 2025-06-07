@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {Paper} from '@mui/material';
 import {StyledMarkdown} from '../ui/StyledMarkdown';
-import {UPLOAD_INSTRUCTION_MARKDOWN} from "../../constants/markdown-content.ts";
+import {UPLOAD_INSTRUCTION_MARKDOWN} from "../../constants/mardown-contnent.ts";
 
 const UploadInstruction: FC = () => {
   return (
