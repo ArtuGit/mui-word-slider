@@ -1,6 +1,6 @@
-import { IDeck } from '../types/deck.types';
-import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
-import { INITIAL_DECKS } from '../constants/initial-data';
+import {IDeck} from '../types/deck.types';
+import {DeckIndexedDbProvider} from './deck.indexed-db-provider';
+import {INITIAL_DECKS} from '../constants/initial-data';
 
 // Simulate network delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -12,6 +12,7 @@ const getDefaultDecks = async (): Promise<IDeck[]> => {
   try {
     // Simulate network delay between 500ms and 1500ms
     await delay(Math.random() * 1000 + 500);
+    console.log('Fetching default decks...');
 
     const allDecks = await DeckIndexedDbProvider.getAllDecks();
 
