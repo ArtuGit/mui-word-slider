@@ -1,11 +1,11 @@
-import { FC, useState, useEffect } from 'react';
-import { Box, Card, CardContent, styled, Typography, IconButton, Tooltip } from '@mui/material';
-import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
-import { ICard } from '../../types/card.types.ts';
-import { speechService } from '../../services/speech.service';
+import {FC, useEffect, useState} from 'react';
+import {Box, Card, CardContent, IconButton, styled, Tooltip, Typography} from '@mui/material';
+import {VolumeUp as VolumeUpIcon} from '@mui/icons-material';
+import {ICard} from '../../types/card.types.ts';
+import {speechService} from '../../services/speech.service';
 
 type CardProps = Pick<
-   ICard,
+    ICard,
   'sourceWord' | 'targetWord' | 'pronunciation' | 'remark' | 'sourceLanguage'
 >;
 

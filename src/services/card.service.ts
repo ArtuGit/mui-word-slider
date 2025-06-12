@@ -2,9 +2,7 @@ import {ICardList} from '../types/card.types.ts';
 import {CardIndexedDbProvider} from './card-indexed-db.provider.ts';
 import {deckService} from './deck.service';
 import {INITIAL_CARDS} from '../constants/initial-data';
-
-// Simulate network delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import {delay} from '../utils/time.utils.ts';
 
 export const cardService = {
   /**

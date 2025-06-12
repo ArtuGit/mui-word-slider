@@ -49,8 +49,7 @@ const validationSchema = Yup.object({
               typeof (item as CardInput).sourceWord === 'string' &&
               typeof (item as CardInput).targetWord === 'string' &&
               typeof (item as CardInput).pronunciation === 'string' &&
-              (!(item as CardInput).remark ||
-                typeof (item as CardInput).remark === 'string')
+                (!(item as CardInput).remark || typeof (item as CardInput).remark === 'string')
           );
         } catch {
           return false;

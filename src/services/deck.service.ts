@@ -1,9 +1,7 @@
 import {IDeck} from '../types/deck.types';
 import {DeckIndexedDbProvider} from './deck.indexed-db-provider';
 import {INITIAL_DECKS} from '../constants/initial-data';
-
-// Simulate network delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import {delay} from '../utils/time.utils.ts';
 
 /**
  * Get default decks (creates default decks if none exist)
