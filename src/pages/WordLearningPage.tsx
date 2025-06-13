@@ -1,15 +1,27 @@
-import { FC, useEffect } from 'react';
-import { Alert, Box, CircularProgress, Container } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
+import {FC, useEffect} from 'react';
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import {useNavigate, useParams} from 'react-router-dom';
 import WordCardSlider from '../components/word/WordCardSlider.tsx';
-import { useCardsStore } from '../stores/useCardsStore.ts';
-import { useDecksStore } from '../stores/useDecksStore';
+import {useCardsStore} from '../stores/useCardsStore.ts';
+import {useDecksStore} from '../stores/useDecksStore';
 
 export const WordLearningPage: FC = () => {
   const { deckId } = useParams<{ deckId: string }>();
   const navigate = useNavigate();
   const { words, isLoading, error, clearError, initializeCards, clearWords } = useCardsStore();
-  const { setCurrentDeck, getDeckById } = useDecksStore();
+  const {setCurrentDeck, getDeckById, currentDeck} = useDecksStore();
+  const theme = useTheme();
 
   useEffect(() => {
     const loadDeckAndWords = async () => {
@@ -61,6 +73,70 @@ export const WordLearningPage: FC = () => {
 
   return (
     <Container maxWidth="lg">
+      {currentDeck && (
+          <Card
+              elevation={0}
+              sx={{
+                mb: 2,
+                bgcolor: 'background.default',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                p: {xs: 1, sm: 2},
+                maxWidth: 500,
+                mx: 'auto',
+                opacity: 0.85,
+              }}
+          >
+            <CardContent sx={{p: 0}}>
+              <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: {xs: '1.1rem', sm: '1.2rem'},
+                    mb: 0.5,
+                    textAlign: 'center',
+                    color: theme.palette.text.primary,
+                  }}
+              >
+                {currentDeck.topic}
+              </Typography>
+              {currentDeck.description && (
+                  <Typography
+                      variant="body2"
+                      sx={{
+                        fontSize: {xs: '0.95rem', sm: '1rem'},
+                        mb: 1,
+                        textAlign: 'center',
+                        color: theme.palette.text.primary,
+                      }}
+                  >
+                    {currentDeck.description}
+                  </Typography>
+              )}
+              <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
+                <Chip
+                    size="small"
+                    label={currentDeck.languageFrom}
+                    sx={{
+                      bgcolor: theme.palette.primary.main,
+                      color: theme.palette.text.primary,
+                      fontSize: '0.85rem',
+                    }}
+                />
+                <Chip
+                    size="small"
+                    label={currentDeck.languageTo}
+                    sx={{
+                      bgcolor: theme.palette.secondary.main,
+                      color: theme.palette.background.paper,
+                      fontSize: '0.85rem',
+                    }}
+                />
+              </Stack>
+            </CardContent>
+          </Card>
+      )}
       <Box
         sx={{
           display: 'flex',
