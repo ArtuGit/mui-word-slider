@@ -79,8 +79,6 @@ export const WordLearningPage: FC = () => {
               sx={{
                 mb: 2,
                 bgcolor: 'background.default',
-                border: '1px solid',
-                borderColor: 'divider',
                 borderRadius: 2,
                 p: {xs: 1, sm: 2},
                 maxWidth: 500,
