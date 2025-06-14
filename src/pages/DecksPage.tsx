@@ -1,10 +1,10 @@
-import { FC, useEffect } from 'react';
-import { Alert, Box, CircularProgress, Container, Typography, Button, styled } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import { useDecksStore } from '../stores/useDecksStore';
+import {FC, useEffect} from 'react';
+import {Alert, Box, Button, CircularProgress, Container, styled, Typography} from '@mui/material';
+import {Add as AddIcon} from '@mui/icons-material';
+import {useNavigate} from 'react-router-dom';
+import {useDecksStore} from '../stores/useDecksStore';
 import DeckList from '../components/deck/DeckList';
-import { IDeck as DeckType } from '../types/deck.types';
+import {IDeck as DeckType} from '../types/deck.types';
 
 const PageHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -46,13 +46,11 @@ export const DecksPage: FC = () => {
   };
 
   const handleEditDeck = (deck: DeckType) => {
-    // TODO: Implement deck editing
-    console.log('Edit deck:', deck);
+    navigate(`/deck/${deck.id}/edit`);
   };
 
   const handleCreateDeck = () => {
-    // TODO: Navigate to deck creation page
-    console.log('Create new deck');
+    navigate('/deck/new');
   };
 
   let content;
