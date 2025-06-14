@@ -11,5 +11,5 @@ export interface IDeck {
 }
 
 export interface IDeckWithCards extends IDeck {
-    cards: ICard[];
+  cards: ICard[];
 }
