@@ -122,7 +122,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
         );
       }
       onBack();
-    } catch (e) {
+    } catch {
       setError('Failed to save deck');
     }
   };
@@ -130,7 +130,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
   if (loading) return <CircularProgress sx={{m: 4}}/>;
 
   return (
-      <Paper sx={{maxWidth: 500, mx: 'auto', mt: 4, p: 3}}>
+      <Paper sx={{maxWidth: 900, mx: 'auto', mt: 4, p: 3}}>
         <Typography variant="h5" mb={2} textAlign="center">
           {deckId ? 'Edit Deck' : 'Add Deck'}
         </Typography>
@@ -147,92 +147,121 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
         >
           {({errors, touched, isSubmitting, values, setFieldValue}) => (
               <Form>
-                <Stack spacing={2}>
-                  <Field
-                      as={TextField}
-                      name="topic"
-                      label="Topic"
-                      fullWidth
-                      error={touched.topic && !!errors.topic}
-                      helperText={touched.topic && errors.topic}
-                  />
-                  <Field
-                      as={TextField}
-                      name="description"
-                      label="Description"
-                      fullWidth
-                      multiline
-                      minRows={2}
-                      error={touched.description && !!errors.description}
-                      helperText={touched.description && errors.description}
-                  />
-                  <Field
-                      as={TextField}
-                      name="languageFrom"
-                      label="Source Language"
-                      fullWidth
-                      error={touched.languageFrom && !!errors.languageFrom}
-                      helperText={touched.languageFrom && errors.languageFrom}
-                  />
-                  <Field
-                      as={TextField}
-                      name="languageTo"
-                      label="Target Language"
-                      fullWidth
-                      error={touched.languageTo && !!errors.languageTo}
-                      helperText={touched.languageTo && errors.languageTo}
-                  />
-                  <Field
-                      as={TextField}
-                      name="promptToAiAgent"
-                      label="Prompt to AI Agent"
-                      fullWidth
-                      multiline
-                      minRows={2}
-                      error={touched.promptToAiAgent && !!errors.promptToAiAgent}
-                      helperText={touched.promptToAiAgent && errors.promptToAiAgent}
-                  />
-                  <Box>
+                <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: {xs: 'column', md: 'row'},
+                      gap: 3,
+                      alignItems: 'stretch',
+                    }}
+                >
+                  {/* Left column: all fields except cards */}
+                  <Stack spacing={2} sx={{flex: 1, minWidth: 0}}>
+                    <Field
+                        as={TextField}
+                        name="topic"
+                        label="Topic"
+                        fullWidth
+                        error={touched.topic && !!errors.topic}
+                        helperText={touched.topic && errors.topic}
+                    />
+                    <Field
+                        as={TextField}
+                        name="description"
+                        label="Description"
+                        fullWidth
+                        multiline
+                        minRows={2}
+                        error={touched.description && !!errors.description}
+                        helperText={touched.description && errors.description}
+                    />
+                    <Field
+                        as={TextField}
+                        name="languageFrom"
+                        label="Source Language"
+                        fullWidth
+                        error={touched.languageFrom && !!errors.languageFrom}
+                        helperText={touched.languageFrom && errors.languageFrom}
+                    />
+                    <Field
+                        as={TextField}
+                        name="languageTo"
+                        label="Target Language"
+                        fullWidth
+                        error={touched.languageTo && !!errors.languageTo}
+                        helperText={touched.languageTo && errors.languageTo}
+                    />
+                    <Field
+                        as={TextField}
+                        name="promptToAiAgent"
+                        label="Prompt to AI Agent"
+                        fullWidth
+                        multiline
+                        minRows={2}
+                        error={touched.promptToAiAgent && !!errors.promptToAiAgent}
+                        helperText={touched.promptToAiAgent && errors.promptToAiAgent}
+                    />
+                  </Stack>
+                  {/* Right column: cards editor */}
+                  <Box
+                      sx={{
+                        flex: 1,
+                        minWidth: 0,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: {xs: 'auto', md: '100%'},
+                        maxHeight: {xs: 'none', md: '600px'},
+                      }}
+                  >
                     <Typography variant="subtitle1" gutterBottom>
                       Cards (JSON)
                     </Typography>
-                    <CodeEditor
-                        value={values.cards}
-                        language="json"
-                        placeholder="[]"
-                        onChange={evn => setFieldValue('cards', evn.target.value)}
-                        padding={15}
-                        data-color-mode="dark"
-                        style={{
-                          fontSize: 14,
+                    <Box
+                        sx={{
+                          flex: 1,
+                          minHeight: 200,
+                          height: '100%',
+                          overflowY: 'auto',
                           backgroundColor: '#1e1e1e',
-                          fontFamily:
-                              'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-                          minHeight: '200px',
                           border:
                               touched.cards && errors.cards ? '2px solid #f44336' : '1px solid #424242',
                           borderRadius: '4px',
                         }}
-                    />
+                    >
+                      <CodeEditor
+                          value={values.cards}
+                          language="json"
+                          placeholder="[]"
+                          onChange={evn => setFieldValue('cards', evn.target.value)}
+                          padding={15}
+                          data-color-mode="dark"
+                          style={{
+                            fontSize: 14,
+                            backgroundColor: 'transparent',
+                            fontFamily:
+                                'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                            minHeight: '200px',
+                            height: '100%',
+                            width: '100%',
+                            resize: 'none',
+                          }}
+                      />
+                    </Box>
                     {touched.cards && errors.cards && (
                         <Typography variant="caption" color="error" sx={{mt: 1, display: 'block'}}>
                           {errors.cards}
                         </Typography>
                     )}
                   </Box>
-                  <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={onBack}
-                        disabled={isSubmitting}
-                    >
-                      Cancel
-                    </Button>
-                    <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
-                      Save
-                    </Button>
-                  </Stack>
+                </Box>
+                {/* Buttons below both columns */}
+                <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
+                  <Button variant="outlined" color="secondary" onClick={onBack} disabled={isSubmitting}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+                    Save
+                  </Button>
                 </Stack>
               </Form>
           )}
