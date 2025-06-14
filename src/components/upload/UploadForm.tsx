@@ -1,12 +1,13 @@
-import { Box, Button, Paper, Typography, Divider, Chip } from '@mui/material';
-import { FC, useState } from 'react';
-import { Field, Form, Formik } from 'formik';
+import {Box, Button, Chip, Divider, Paper, Typography} from '@mui/material';
+import {FC, useState} from 'react';
+import {Field, FieldProps, Form, Formik} from 'formik';
 import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useWordsStore } from '../../stores/useWordsStore';
+import {useSnackbar} from 'notistack';
+import {useCardsStore} from '../../stores/useCardsStore.ts';
+import {useDecksStore} from '../../stores/useDecksStore';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 
-interface WordPairInput {
+interface CardInput {
   id: string;
   sourceLanguage: string;
   targetLanguage: string;
@@ -14,6 +15,7 @@ interface WordPairInput {
   targetWord: string;
   pronunciation: string;
   remark?: string;
+  deckId?: string; // Optional in input, will be added automatically
 }
 
 const validationSchema = Yup.object({
@@ -41,14 +43,13 @@ const validationSchema = Yup.object({
             (item: unknown) =>
               typeof item === 'object' &&
               item !== null &&
-              typeof (item as WordPairInput).id === 'string' &&
-              typeof (item as WordPairInput).sourceLanguage === 'string' &&
-              typeof (item as WordPairInput).targetLanguage === 'string' &&
-              typeof (item as WordPairInput).sourceWord === 'string' &&
-              typeof (item as WordPairInput).targetWord === 'string' &&
-              typeof (item as WordPairInput).pronunciation === 'string' &&
-              (!(item as WordPairInput).remark ||
-                typeof (item as WordPairInput).remark === 'string')
+              typeof (item as CardInput).id === 'string' &&
+              typeof (item as CardInput).sourceLanguage === 'string' &&
+              typeof (item as CardInput).targetLanguage === 'string' &&
+              typeof (item as CardInput).sourceWord === 'string' &&
+              typeof (item as CardInput).targetWord === 'string' &&
+              typeof (item as CardInput).pronunciation === 'string' &&
+                (!(item as CardInput).remark || typeof (item as CardInput).remark === 'string')
           );
         } catch {
           return false;
@@ -60,13 +61,16 @@ const validationSchema = Yup.object({
 const UploadForm: FC = () => {
   const [isValidated, setIsValidated] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { words, saveWords, isLoading } = useWordsStore();
+  const { words, saveCards, isLoading } = useCardsStore();
+  const { currentDeck } = useDecksStore();
   const { enqueueSnackbar } = useSnackbar();
 
   // Generate initial JSON from current words
   const getInitialJsonValue = () => {
     if (words.length > 0) {
-      return JSON.stringify(words, null, 2);
+      // Remove deckId from display to keep the interface clean
+      const wordsForDisplay = words.map(({ deckId: _deckId, ...word }) => word);
+      return JSON.stringify(wordsForDisplay, null, 2);
     }
     return '';
   };
@@ -87,12 +91,18 @@ const UploadForm: FC = () => {
   const handleSave = async (values: { jsonInput: string }) => {
     setIsSaving(true);
     try {
-      const parsed: WordPairInput[] = JSON.parse(values.jsonInput);
+      const parsed: CardInput[] = JSON.parse(values.jsonInput);
+
+      // Add deckId to each word pair if not present
+      const wordsWithDeckId = parsed.map(word => ({
+        ...word,
+        deckId: word.deckId || currentDeck?.id || 'default-deck-1',
+      }));
 
       // Save to Zustand store (now with IndexedDB persistence)
-      await saveWords(parsed);
+      await saveCards(wordsWithDeckId);
 
-      enqueueSnackbar(`Successfully saved ${parsed.length} word pairs to local storage!`, {
+      enqueueSnackbar(`Successfully saved ${parsed.length} cards to local storage!`, {
         variant: 'success',
       });
       setIsValidated(false); // Reset validation state after save
@@ -118,8 +128,19 @@ const UploadForm: FC = () => {
       }}
     >
       <Typography variant="h2" component="h2" gutterBottom color="primary">
-        Upload Word Pairs in JSON
+        Upload Cards in JSON
       </Typography>
+
+      {currentDeck && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h6" component="h3" gutterBottom color="text.secondary">
+            Current Deck: {currentDeck.topic}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {currentDeck.description} ({currentDeck.languageFrom} → {currentDeck.languageTo})
+          </Typography>
+        </Box>
+      )}
 
       {words.length > 0 && (
         <Box sx={{ mb: 3 }}>
@@ -127,7 +148,7 @@ const UploadForm: FC = () => {
             Current Word Set
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-            <Chip label={`${words.length} word pairs loaded`} color="primary" variant="outlined" />
+            <Chip label={`${words.length} cards loaded`} color="primary" variant="outlined"/>
           </Box>
           <Divider sx={{ my: 3 }} />
         </Box>
@@ -147,10 +168,10 @@ const UploadForm: FC = () => {
             <Form>
               <Box sx={{ mb: 3 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  JSON Word Pairs
+                  JSON Cards
                 </Typography>
                 <Field name="jsonInput">
-                  {({ field, meta }: any) => (
+                  {({ field, meta }: FieldProps) => (
                     <Box>
                       <CodeEditor
                         value={field.value}
