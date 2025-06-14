@@ -50,7 +50,7 @@ export const DecksPage: FC = () => {
   };
 
   const handleCreateDeck = () => {
-    navigate('/deck/new');
+    navigate('/deck/add');
   };
 
   let content;

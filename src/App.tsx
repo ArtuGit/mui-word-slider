@@ -13,7 +13,7 @@ const AppContent: FC = () => {
     <Routes>
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DECKS} replace />} />
       <Route path={ROUTES.DECKS} element={<DecksPage />} />
-        <Route path="/deck/new" element={<DeckEditPage/>}/>
+        <Route path="/deck/add" element={<DeckEditPage/>}/>
         <Route path="/deck/:deckId/edit" element={<DeckEditPage/>}/>
       <Route path="/deck/:deckId" element={<WordLearningPage />} />
       <Route path={ROUTES.UPLOAD} element={<UploadPage />} />
