@@ -6,6 +6,8 @@ import {deckService} from '../../services/deck.service';
 import {ICard} from '../../types/card.types';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import {cardService} from '../../services/card.service';
+import {SUPPORTED_LANGUAGES_NAMES} from '../../constants/languages';
+import MenuItem from '@mui/material/MenuItem';
 
 interface DeckEditProps {
   deckId?: string;
@@ -36,8 +38,12 @@ const cardArrayTest = (value: string) => {
 const DeckSchema = Yup.object().shape({
   topic: Yup.string().required('Topic is required'),
   description: Yup.string(),
-  languageFrom: Yup.string().required('Source language is required'),
-  languageTo: Yup.string().required('Target language is required'),
+  languageFrom: Yup.string()
+      .required('Source language is required')
+      .oneOf(SUPPORTED_LANGUAGES_NAMES, 'Invalid source language'),
+  languageTo: Yup.string()
+      .required('Target language is required')
+      .oneOf(SUPPORTED_LANGUAGES_NAMES, 'Invalid target language'),
   promptToAiAgent: Yup.string(),
   cards: Yup.string()
       .required('Cards JSON is required')
@@ -179,18 +185,32 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
                         as={TextField}
                         name="languageFrom"
                         label="Source Language"
+                        select
                         fullWidth
                         error={touched.languageFrom && !!errors.languageFrom}
                         helperText={touched.languageFrom && errors.languageFrom}
-                    />
+                    >
+                      {SUPPORTED_LANGUAGES_NAMES.map((lang: string) => (
+                          <MenuItem key={lang} value={lang}>
+                            {lang}
+                          </MenuItem>
+                      ))}
+                    </Field>
                     <Field
                         as={TextField}
                         name="languageTo"
                         label="Target Language"
+                        select
                         fullWidth
                         error={touched.languageTo && !!errors.languageTo}
                         helperText={touched.languageTo && errors.languageTo}
-                    />
+                    >
+                      {SUPPORTED_LANGUAGES_NAMES.map((lang: string) => (
+                          <MenuItem key={lang} value={lang}>
+                            {lang}
+                          </MenuItem>
+                      ))}
+                    </Field>
                     <Field
                         as={TextField}
                         name="promptToAiAgent"
