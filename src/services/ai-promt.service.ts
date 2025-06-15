@@ -1,12 +1,14 @@
 class AiPromptService {
     static getCardsRequestForDeckPrompt({
                                             topic,
+                                            description,
                                             sourceLanguage,
                                             targetLanguage,
                                             amount,
                                         }: {
         id: string;
         topic: string;
+        description: string;
         sourceLanguage: string;
         targetLanguage: string;
         amount: number;
@@ -26,6 +28,7 @@ Parameters:
 Source language: ${sourceLanguage}
 Target language: ${targetLanguage}
 Topic: ${topic}
+Description (additional context for the topic): ${description}
 Limit: ${amount} items
 `;
     }
