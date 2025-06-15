@@ -8,7 +8,7 @@ class AiPromptService {
                                         }: {
         id: string;
         topic: string;
-        description: string;
+        description?: string;
         sourceLanguage: string;
         targetLanguage: string;
         amount: number;
