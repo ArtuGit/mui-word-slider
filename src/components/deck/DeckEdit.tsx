@@ -136,7 +136,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
   if (loading) return <CircularProgress sx={{m: 4}}/>;
 
   return (
-      <Paper sx={{maxWidth: 900, mx: 'auto', mt: 4, p: 3}}>
+      <Paper sx={{width: '90vw', maxWidth: 900, mx: 'auto', mt: 4, p: 3}}>
         <Typography variant="h5" mb={2} textAlign="center">
           {deckId ? 'Edit Deck' : 'Add Deck'}
         </Typography>
