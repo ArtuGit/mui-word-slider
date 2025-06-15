@@ -2,6 +2,7 @@
  * Speech Service using Web Speech API
  * Provides text-to-speech functionality with language support
  */
+import {LANGUAGE_MAP, SUPPORTED_LANGUAGES} from "../constants/languages.ts";
 
 interface SpeechOptions {
   language: string;
@@ -9,31 +10,6 @@ interface SpeechOptions {
   pitch?: number;
   volume?: number;
 }
-
-// Language mapping for speech synthesis
-const LANGUAGE_MAP: Record<string, string> = {
-  polish: 'pl-PL',
-  english: 'en-US',
-  spanish: 'es-ES',
-  french: 'fr-FR',
-  german: 'de-DE',
-  italian: 'it-IT',
-  portuguese: 'pt-PT',
-  russian: 'ru-RU',
-  chinese: 'zh-CN',
-  japanese: 'ja-JP',
-  korean: 'ko-KR',
-  arabic: 'ar-SA',
-  hindi: 'hi-IN',
-  dutch: 'nl-NL',
-  swedish: 'sv-SE',
-  norwegian: 'no-NO',
-  danish: 'da-DK',
-  finnish: 'fi-FI',
-};
-
-// Supported languages list
-export const SUPPORTED_LANGUAGES = Object.keys(LANGUAGE_MAP);
 
 export class SpeechService {
   private static synthesis: SpeechSynthesis | null = null;
