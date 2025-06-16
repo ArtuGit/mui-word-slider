@@ -148,7 +148,7 @@ const UploadForm: FC = () => {
             Current Word Set
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-            <Chip label={`${words.length} cards loaded`} color="primary" variant="outlined"/>
+              <Chip label={`${words.length} cards loaded`} color="primary" variant="outlined"/>
           </Box>
           <Divider sx={{ my: 3 }} />
         </Box>

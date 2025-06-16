@@ -66,6 +66,6 @@ export const LANGUAGE_MAP: Record<string, string> = {
 // Supported languages list
 export const SUPPORTED_LANGUAGES = Object.keys(LANGUAGE_MAP);
 
-export const SUPPORTED_LANGUAGES_NAMES = SUPPORTED_LANGUAGES
-    .map(lang => lang.charAt(0).toUpperCase() + lang.slice(1))
-    .sort();
+export const SUPPORTED_LANGUAGES_NAMES = SUPPORTED_LANGUAGES.map(
+    lang => lang.charAt(0).toUpperCase() + lang.slice(1)
+).sort();

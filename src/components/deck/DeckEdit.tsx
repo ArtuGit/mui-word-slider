@@ -8,6 +8,10 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import {cardService} from '../../services/card.service';
 import {SUPPORTED_LANGUAGES_NAMES} from '../../constants/languages';
 import MenuItem from '@mui/material/MenuItem';
+import IconButton from '@mui/material/IconButton';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AiPromptService from '../../services/ai-promt.service';
+import InputAdornment from '@mui/material/InputAdornment';
 
 interface DeckEditProps {
   deckId?: string;
@@ -220,6 +224,31 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
                         minRows={2}
                         error={touched.promptToAiAgent && !!errors.promptToAiAgent}
                         helperText={touched.promptToAiAgent && errors.promptToAiAgent}
+                        InputProps={{
+                          endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Compose"
+                                    color="primary"
+                                    disabled={!!values.promptToAiAgent}
+                                    onClick={() => {
+                                      const prompt = AiPromptService.getCardsRequestForDeckPrompt({
+                                        id: '',
+                                        topic: values.topic,
+                                        description: values.description,
+                                        sourceLanguage: values.languageFrom,
+                                        targetLanguage: values.languageTo,
+                                        amount: JSON.parse(values.cards).length || 10,
+                                      });
+                                      setFieldValue('promptToAiAgent', prompt);
+                                    }}
+                                    edge="end"
+                                >
+                                  <AutoAwesomeIcon/>
+                                </IconButton>
+                              </InputAdornment>
+                          ),
+                        }}
                     />
                   </Stack>
                   {/* Right column: cards editor */}

@@ -1,19 +1,19 @@
 class AiPromptService {
-    static getCardsRequestForDeckPrompt({
-                                            topic,
-                                            description,
-                                            sourceLanguage,
-                                            targetLanguage,
-                                            amount,
-                                        }: {
-        id: string;
-        topic: string;
-        description?: string;
-        sourceLanguage: string;
-        targetLanguage: string;
-        amount: number;
-    }): string {
-        return `Please, create JSON with an array of the following structure and values:
+  static getCardsRequestForDeckPrompt({
+                                        topic,
+                                        description,
+                                        sourceLanguage,
+                                        targetLanguage,
+                                        amount,
+                                      }: {
+    id: string;
+    topic: string;
+    description?: string;
+    sourceLanguage: string;
+    targetLanguage: string;
+    amount: number;
+  }): string {
+    return `Please, create JSON with an array of the following structure and values:
 
 id: A unique identifier for the word pair (uuid)
 sourceLanguage: ${sourceLanguage}
@@ -31,7 +31,7 @@ Topic: ${topic}
 Description (additional context for the topic): ${description}
 Limit: ${amount} items
 `;
-    }
+  }
 }
 
 export default AiPromptService;
