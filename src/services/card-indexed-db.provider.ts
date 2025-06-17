@@ -3,21 +3,6 @@ import {ICard, ICardList} from '../types/card.types.ts';
 
 export class CardIndexedDbProvider {
   /**
-   * Get all cards from IndexedDB
-   */
-  static async getAllCards(deckId?: string): Promise<ICardList> {
-    try {
-      if (deckId) {
-        return await db.cards.where('deckId').equals(deckId).toArray();
-      }
-      return await db.cards.toArray();
-    } catch (error) {
-      console.error('Failed to get cards from IndexedDB:', error);
-      throw new Error('Failed to load cards from local storage');
-    }
-  }
-
-  /**
    * Get cards by deck ID
    */
   static async getCardsByDeckId(deckId: string): Promise<ICardList> {

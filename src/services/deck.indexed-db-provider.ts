@@ -1,5 +1,5 @@
-import { db } from '../db/database';
-import { IDeck } from '../types/deck.types';
+import {db} from '../db/database';
+import {IDeck} from '../types/deck.types';
 
 export class DeckIndexedDbProvider {
   /**
@@ -72,18 +72,6 @@ export class DeckIndexedDbProvider {
     } catch (error) {
       console.error('Failed to check decks count in IndexedDB:', error);
       return false;
-    }
-  }
-
-  /**
-   * Clear all decks from IndexedDB
-   */
-  static async clearAllDecks(): Promise<void> {
-    try {
-      await db.decks.clear();
-    } catch (error) {
-      console.error('Failed to clear decks from IndexedDB:', error);
-      throw new Error('Failed to clear decks from local storage');
     }
   }
 

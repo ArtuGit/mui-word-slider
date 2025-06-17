@@ -3,45 +3,7 @@ import {DeckIndexedDbProvider} from './deck.indexed-db-provider';
 import {INITIAL_DECKS} from '../constants/initial-data';
 import {delay} from '../utils/time.utils.ts';
 
-/**
- * Get default decks (creates default decks if none exist)
- */
-const getDefaultDecks = async (): Promise<IDeck[]> => {
-  try {
-    // Simulate network delay between 500ms and 1500ms
-    await delay(Math.random() * 1000 + 500);
-    console.log('Fetching default decks...');
-
-    const allDecks = await DeckIndexedDbProvider.getAllDecks();
-
-    if (allDecks.length === 0) {
-      // Create default decks if none exist
-      for (const initialDeck of INITIAL_DECKS) {
-        await DeckIndexedDbProvider.saveDeck(initialDeck);
-      }
-      return [...INITIAL_DECKS];
-    }
-
-    return allDecks;
-  } catch (error) {
-    console.error('Failed to get default decks:', error);
-    throw error;
-  }
-};
-
 export const deckService = {
-  /**
-   * Get all decks
-   */
-  getAllDecks: async (): Promise<IDeck[]> => {
-    try {
-      return await DeckIndexedDbProvider.getAllDecks();
-    } catch (error) {
-      console.error('Failed to get all decks:', error);
-      throw error;
-    }
-  },
-
   /**
    * Get a deck by ID
    */
@@ -55,11 +17,37 @@ export const deckService = {
   },
 
   /**
+   * Get default decks (creates default decks if none exist)
+   */
+  getDefaultDecks: async (): Promise<IDeck[]> => {
+    try {
+      // Simulate network delay between 500ms and 1500ms
+      await delay(Math.random() * 1000 + 500);
+      console.log('Fetching default decks...');
+
+      const allDecks = await DeckIndexedDbProvider.getAllDecks();
+
+      if (allDecks.length === 0) {
+        // Create default decks if none exist
+        for (const initialDeck of INITIAL_DECKS) {
+          await DeckIndexedDbProvider.saveDeck(initialDeck);
+        }
+        return [...INITIAL_DECKS];
+      }
+
+      return allDecks;
+    } catch (error) {
+      console.error('Failed to get default decks:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Get the default deck
    */
   getDefaultDeck: async (): Promise<IDeck> => {
     try {
-      const defaultDecks = await getDefaultDecks();
+      const defaultDecks = await deckService.getDefaultDecks();
       if (defaultDecks.length === 0) {
         throw new Error('No default deck available');
       }
@@ -119,18 +107,6 @@ export const deckService = {
   },
 
   /**
-   * Clear all decks
-   */
-  clearAllDecks: async (): Promise<void> => {
-    try {
-      await DeckIndexedDbProvider.clearAllDecks();
-    } catch (error) {
-      console.error('Failed to clear all decks:', error);
-      throw error;
-    }
-  },
-
-  /**
    * Get the count of decks
    */
   getDecksCount: async (): Promise<number> => {
@@ -155,16 +131,11 @@ export const deckService = {
   },
 
   /**
-   * Get default decks (creates default decks if none exist)
-   */
-  getDefaultDecks,
-
-  /**
    * Initialize the deck system - ensures default decks exist, returns all decks
    */
   initializeDecks: async (): Promise<IDeck[]> => {
     try {
-      return await getDefaultDecks();
+      return await deckService.getDefaultDecks();
     } catch (error) {
       console.error('Failed to initialize decks:', error);
       throw error;
