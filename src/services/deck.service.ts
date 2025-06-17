@@ -5,6 +5,18 @@ import {delay} from '../utils/time.utils.ts';
 
 export const deckService = {
   /**
+   * Get all decks
+   */
+  getAllDecks: async (): Promise<IDeck[]> => {
+    try {
+      return await DeckIndexedDbProvider.getAllDecks();
+    } catch (error) {
+      console.error('Failed to get deck by ID:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Get a deck by ID
    */
   getDeckById: async (id: string): Promise<IDeck | undefined> => {

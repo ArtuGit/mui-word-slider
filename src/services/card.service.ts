@@ -21,9 +21,9 @@ export const cardService = {
   /**
    * Load cards from IndexedDB
    */
-  loadCards: async (deckId?: string): Promise<ICardList> => {
+  loadCards: async (deckId: string): Promise<ICardList> => {
     try {
-      return await CardIndexedDbProvider.getAllCards(deckId);
+      return await CardIndexedDbProvider.getCardsByDeckId(deckId);
     } catch (error) {
       console.error('Failed to load cards from IndexedDB:', error);
       throw error;

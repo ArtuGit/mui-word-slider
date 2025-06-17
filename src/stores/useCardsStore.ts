@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { ICard, ICardList } from '../types/card.types.ts';
-import { cardService } from '../services/card.service.ts';
-import { useDecksStore } from './useDecksStore';
+import {create} from 'zustand';
+import {ICard, ICardList} from '../types/card.types.ts';
+import {cardService} from '../services/card.service.ts';
+import {useDecksStore} from './useDecksStore';
 
 interface WordsState {
   words: ICardList;
@@ -11,7 +11,7 @@ interface WordsState {
   fetchCards: (deckId?: string) => Promise<void>;
   initializeCards: (deckId?: string) => Promise<void>;
   saveCards: (newWords: ICard[], deckId?: string) => Promise<void>;
-  loadCardsFromDB: (deckId?: string) => Promise<void>;
+  loadCardsFromDB: (deckId: string) => Promise<void>;
   clearStoredCards: (deckId?: string) => Promise<void>;
   clearWords: () => void;
   getStoredCardsCount: (deckId?: string) => Promise<number>;
@@ -98,17 +98,10 @@ export const useCardsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  loadCardsFromDB: async (deckId?: string) => {
+  loadCardsFromDB: async (deckId: string) => {
     set({ isLoading: true, error: null });
     try {
-      // If no deckId provided, get current deck from deck store
-      let targetDeckId = deckId;
-      if (!targetDeckId) {
-        const deckStore = useDecksStore.getState();
-        targetDeckId = deckStore.currentDeck?.id;
-      }
-
-      const words = await cardService.loadCards(targetDeckId);
+      const words = await cardService.loadCards(deckId);
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
