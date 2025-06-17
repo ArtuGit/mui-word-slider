@@ -1,5 +1,5 @@
 import {db} from '../db/database';
-import {ICard, ICardList} from '../types/card.types.ts';
+import {ICardList} from '../types/card.types.ts';
 
 export class CardIndexedDbProvider {
   /**
@@ -33,42 +33,6 @@ export class CardIndexedDbProvider {
     } catch (error) {
       console.error('Failed to save cards to IndexedDB:', error);
       throw new Error('Failed to save cards to local storage');
-    }
-  }
-
-  /**
-   * Add a single word pair to IndexedDB
-   */
-  static async addCard(wordPair: ICard): Promise<string> {
-    try {
-      return await db.cards.add(wordPair);
-    } catch (error) {
-      console.error('Failed to add word pair to IndexedDB:', error);
-      throw new Error('Failed to add word pair to local storage');
-    }
-  }
-
-  /**
-   * Update a word pair in IndexedDB
-   */
-  static async updateCard(id: string, updates: Partial<Omit<ICard, 'id'>>): Promise<number> {
-    try {
-      return await db.cards.update(id, updates);
-    } catch (error) {
-      console.error('Failed to update word pair in IndexedDB:', error);
-      throw new Error('Failed to update word pair in local storage');
-    }
-  }
-
-  /**
-   * Delete a word pair from IndexedDB
-   */
-  static async deleteCard(id: string): Promise<void> {
-    try {
-      await db.cards.delete(id);
-    } catch (error) {
-      console.error('Failed to delete word pair from IndexedDB:', error);
-      throw new Error('Failed to delete word pair from local storage');
     }
   }
 
