@@ -83,7 +83,7 @@ export const cardService = {
 
       if (hasStored) {
         // Load from IndexedDB
-        return await CardIndexedDbProvider.getAllCards(targetDeckId);
+        return await CardIndexedDbProvider.getCardsByDeckId(targetDeckId);
       } else {
         // Load default words for this deck and save them to IndexedDB
         const defaultWords = await cardService.getDefaultCards(targetDeckId);
