@@ -16,11 +16,10 @@ interface DecksState {
   updateDeck: (id: string, updates: Partial<Omit<IDeck, 'id'>>) => Promise<void>;
   deleteDeck: (id: string) => Promise<void>;
   searchDecks: (query: string) => Promise<IDeck[]>;
-  initializeDecks: () => Promise<void>;
   clearError: () => void;
 }
 
-export const useDecksStore = create<DecksState>((set, get) => ({
+export const useDecksStore = create<DecksState>((set, _get) => ({
   decks: [],
   isLoading: false,
   error: null,
@@ -125,31 +124,6 @@ export const useDecksStore = create<DecksState>((set, get) => ({
         error: error instanceof Error ? error.message : 'Failed to search decks',
       });
       return [];
-    }
-  },
-
-  initializeDecks: async () => {
-    const { hasInitialized, isLoading } = get();
-
-    // Only initialize if we haven't already and we're not currently loading
-    if (!hasInitialized && !isLoading) {
-      set({ isLoading: true, error: null });
-      try {
-        // Get the default decks (creates default if none exist)
-        const allDecks = await deckService.initializeDecks();
-
-        set({
-          decks: allDecks,
-          isLoading: false,
-          hasInitialized: true,
-        });
-      } catch (error) {
-        set({
-          error: error instanceof Error ? error.message : 'Failed to initialize decks',
-          isLoading: false,
-          hasInitialized: true, // Mark as initialized even on error to prevent retries
-        });
-      }
     }
   },
 
