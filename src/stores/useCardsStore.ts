@@ -9,7 +9,7 @@ interface WordsState {
   hasInitialized: boolean;
 
   // Actions
-  saveCards: (newWords: ICard[], deckId: string) => Promise<void>;
+  saveCards: (cards: ICard[], deckId: string) => Promise<void>;
   getCards: (deckId: string) => Promise<void>;
   clearWords: () => void;
   getCardsAmount: (deckId: string) => Promise<number>;
