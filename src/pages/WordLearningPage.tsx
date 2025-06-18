@@ -20,7 +20,7 @@ import type {IDeck} from '../types/deck.types';
 export const WordLearningPage: FC = () => {
   const { deckId } = useParams<{ deckId: string }>();
   const navigate = useNavigate();
-  const { words, isLoading, error, clearError, initializeCards, clearWords } = useCardsStore();
+  const {words, isLoading, error, clearError, clearWords, loadCardsFromDB} = useCardsStore();
   const {getDeckById} = useDecksStore();
   const theme = useTheme();
   const [deck, setDeck] = useState<IDeck | null>(null);
@@ -39,14 +39,14 @@ export const WordLearningPage: FC = () => {
           return;
         }
         setDeck(foundDeck);
-        await initializeCards(deckId);
+        await loadCardsFromDB(deckId);
       } catch (error) {
         console.error('Failed to load deck and words:', error);
         navigate('/decks');
       }
     };
     loadDeckAndWords();
-  }, [deckId, navigate, getDeckById, initializeCards, clearWords]);
+  }, [deckId, navigate, getDeckById, loadCardsFromDB, clearWords]);
 
   let content;
   if (isLoading) {

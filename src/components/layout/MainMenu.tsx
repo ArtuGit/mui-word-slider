@@ -1,5 +1,4 @@
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import {FC} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
@@ -37,19 +36,6 @@ const MainMenu: FC = () => {
                 <ViewModuleIcon color="secondary" fontSize="small"/>
           </ListItemIcon>
             <ListItemText primary="Decks" primaryTypographyProps={{fontSize: '0.95rem'}}/>
-        </ListItemButton>
-      </ListItem>
-        <ListItem sx={{width: 'auto', p: 0, minHeight: 0}} disablePadding>
-        <ListItemButton
-          selected={location.pathname === '/upload'}
-          onClick={() => handleNavigation('/upload')}
-          dense
-          sx={{minHeight: 32, p: '4px 12px'}}
-        >
-            <ListItemIcon sx={{minWidth: 0, mr: 0.5}}>
-                <CloudUploadIcon color="action" fontSize="small"/>
-          </ListItemIcon>
-            <ListItemText primary="Upload" primaryTypographyProps={{fontSize: '0.95rem'}}/>
         </ListItemButton>
       </ListItem>
     </List>

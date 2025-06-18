@@ -8,7 +8,7 @@ interface WordsState {
   error: string | null;
   hasInitialized: boolean;
   fetchCards: (deckId: string) => Promise<void>;
-  initializeCards: (deckId: string) => Promise<void>;
+  initializeCards: () => Promise<void>;
   saveCards: (newWords: ICard[], deckId: string) => Promise<void>;
   loadCardsFromDB: (deckId: string) => Promise<void>;
   clearStoredCards: (deckId: string) => Promise<void>;
@@ -37,15 +37,12 @@ export const useCardsStore = create<WordsState>((set, get) => ({
     }
   },
 
-  initializeCards: async (deckId: string) => {
+  initializeCards: async () => {
     const { isLoading } = get();
     if (isLoading) return;
     set({ isLoading: true, error: null });
     try {
-      if (!deckId) {
-        throw new Error('No deck ID available for word initialization');
-      }
-      const words = await cardService.initializeCards(deckId);
+      const words = await cardService.initializeCards();
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
