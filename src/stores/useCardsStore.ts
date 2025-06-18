@@ -2,7 +2,7 @@ import {create} from 'zustand';
 import {ICard, ICardList} from '../types/card.types.ts';
 import {cardService} from '../services/card.service.ts';
 
-interface WordsState {
+interface ICardsState {
   words: ICardList;
   isLoading: boolean;
   error: string | null;
@@ -17,7 +17,7 @@ interface WordsState {
   clearError: () => void;
 }
 
-export const useCardsStore = create<WordsState>((set, _get) => ({
+export const useCardsStore = create<ICardsState>((set, _get) => ({
   words: [],
   isLoading: false,
   error: null,

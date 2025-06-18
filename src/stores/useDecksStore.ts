@@ -2,7 +2,7 @@ import {create} from 'zustand';
 import {IDeck} from '../types/deck.types';
 import {deckService} from '../services/deck.service';
 
-interface DecksState {
+interface IDecksState {
   decks: IDeck[];
   isLoading: boolean;
   error: string | null;
@@ -18,7 +18,7 @@ interface DecksState {
   clearError: () => void;
 }
 
-export const useDecksStore = create<DecksState>((set, _get) => ({
+export const useDecksStore = create<IDecksState>((set, _get) => ({
   decks: [],
   isLoading: false,
   error: null,
