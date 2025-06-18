@@ -11,7 +11,6 @@ interface DecksState {
   // Actions
   getAllDecks: () => Promise<void>;
   getDeckById: (id: string) => Promise<IDeck | undefined>;
-  getDefaultDecks: () => Promise<void>;
   createDeck: (deck: IDeck) => Promise<string>;
   updateDeck: (id: string, updates: Partial<Omit<IDeck, 'id'>>) => Promise<void>;
   deleteDeck: (id: string) => Promise<void>;
@@ -46,24 +45,6 @@ export const useDecksStore = create<DecksState>((set, _get) => ({
         error: error instanceof Error ? error.message : 'Failed to get deck',
       });
       return undefined;
-    }
-  },
-
-  getDefaultDecks: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const decks = await deckService.getDefaultDecks();
-      set({
-        decks,
-        isLoading: false,
-        hasInitialized: true,
-      });
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to get default decks',
-        isLoading: false,
-        hasInitialized: true,
-      });
     }
   },
 

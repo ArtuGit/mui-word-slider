@@ -29,12 +29,12 @@ const ContentContainer = styled(Box)(() => ({
 
 export const DecksPage: FC = () => {
   const navigate = useNavigate();
-  const { decks, isLoading, error, clearError, getDefaultDecks } = useDecksStore();
+  const {decks, isLoading, error, clearError, getAllDecks} = useDecksStore();
 
   // Load decks when component mounts
   useEffect(() => {
-    getDefaultDecks();
-  }, [getDefaultDecks]);
+    getAllDecks();
+  }, [getAllDecks]);
 
   const handlePlayDeck = async (deck: DeckType) => {
     try {

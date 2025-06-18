@@ -7,12 +7,12 @@ interface WordsState {
   isLoading: boolean;
   error: string | null;
   hasInitialized: boolean;
-  fetchCards: (deckId: string) => Promise<void>;
+
+  // Actions
   saveCards: (newWords: ICard[], deckId: string) => Promise<void>;
-  loadCardsFromDB: (deckId: string) => Promise<void>;
-  clearStoredCards: (deckId: string) => Promise<void>;
+  getCards: (deckId: string) => Promise<void>;
   clearWords: () => void;
-  getStoredCardsCount: (deckId: string) => Promise<number>;
+  getCardsAmount: (deckId: string) => Promise<number>;
   searchCards: (query: string, deckId: string) => Promise<ICardList>;
   clearError: () => void;
 }
@@ -22,19 +22,6 @@ export const useCardsStore = create<WordsState>((set, _get) => ({
   isLoading: false,
   error: null,
   hasInitialized: false,
-
-  fetchCards: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const words = await cardService.getDefaultCards();
-      set({ words, isLoading: false, hasInitialized: true });
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to fetch words',
-        isLoading: false,
-      });
-    }
-  },
 
   saveCards: async (newWords: ICard[], deckId: string) => {
     set({ isLoading: true, error: null });
@@ -50,7 +37,7 @@ export const useCardsStore = create<WordsState>((set, _get) => ({
     }
   },
 
-  loadCardsFromDB: async (deckId: string) => {
+  getCards: async (deckId: string) => {
     set({ isLoading: true, error: null });
     try {
       const words = await cardService.loadCards(deckId);
@@ -64,21 +51,8 @@ export const useCardsStore = create<WordsState>((set, _get) => ({
     }
   },
 
-  clearStoredCards: async (deckId: string) => {
-    set({ isLoading: true, error: null });
-    try {
-      await cardService.clearCards(deckId);
-      set({ words: [], isLoading: false, hasInitialized: false });
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to clear stored words',
-        isLoading: false,
-      });
-      throw error;
-    }
-  },
 
-  getStoredCardsCount: async (deckId: string): Promise<number> => {
+  getCardsAmount: async (deckId: string): Promise<number> => {
     try {
       return await cardService.getStoredCardsCount(deckId);
     } catch (error) {
