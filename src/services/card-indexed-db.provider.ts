@@ -66,9 +66,9 @@ export class CardIndexedDbProvider {
   }
 
   /**
-   * Clear all cards from IndexedDB
+   * Clear cards from IndexedDB
    */
-  static async clearAllCards(deckId?: string): Promise<void> {
+  static async clearCards(deckId?: string): Promise<void> {
     try {
       if (deckId) {
         await db.cards.where('deckId').equals(deckId).delete();

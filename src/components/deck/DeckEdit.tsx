@@ -82,7 +82,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
   useEffect(() => {
     if (deckId) {
       setLoading(true);
-      Promise.all([deckService.getDeckById(deckId), cardService.loadCardsByDeckId(deckId)])
+      Promise.all([deckService.getDeckById(deckId), cardService.loadCards(deckId)])
           .then(([deck, cards]) => {
             if (deck) {
               setInitialValues({
@@ -113,7 +113,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
           promptToAiAgent: values.promptToAiAgent,
           amount: cards.length,
         });
-        await cardService.clearStoredCards(deckId);
+        await cardService.clearCards(deckId);
         await cardService.saveCards(cards, deckId);
       } else {
         const newDeckId = crypto.randomUUID();

@@ -23,10 +23,10 @@ export const useCardsStore = create<WordsState>((set, _get) => ({
   error: null,
   hasInitialized: false,
 
-  fetchCards: async (deckId: string) => {
+  fetchCards: async () => {
     set({ isLoading: true, error: null });
     try {
-      const words = await cardService.getDefaultCards(deckId);
+      const words = await cardService.getDefaultCards();
       set({ words, isLoading: false, hasInitialized: true });
     } catch (error) {
       set({
@@ -67,7 +67,7 @@ export const useCardsStore = create<WordsState>((set, _get) => ({
   clearStoredCards: async (deckId: string) => {
     set({ isLoading: true, error: null });
     try {
-      await cardService.clearStoredCards(deckId);
+      await cardService.clearCards(deckId);
       set({ words: [], isLoading: false, hasInitialized: false });
     } catch (error) {
       set({

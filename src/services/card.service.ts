@@ -1,6 +1,5 @@
 import {ICardList} from '../types/card.types.ts';
 import {CardIndexedDbProvider} from './card-indexed-db.provider.ts';
-import {deckService} from './deck.service';
 import {INITIAL_CARDS} from '../constants/initial-data';
 import {delay} from '../utils/time.utils.ts';
 
@@ -8,13 +7,10 @@ export const cardService = {
   /**
    * Get default cards (mock data with simulated network delay)
    */
-  getDefaultCards: async (deckId?: string): Promise<ICardList> => {
+  getDefaultCards: async (): Promise<ICardList> => {
     // Simulate network delay between 500ms and 1500ms
     await delay(Math.random() * 1000 + 500);
 
-    if (deckId) {
-      return INITIAL_CARDS.filter(word => word.deckId === deckId);
-    }
     return INITIAL_CARDS;
   },
 
@@ -26,18 +22,6 @@ export const cardService = {
       return await CardIndexedDbProvider.getCardsByDeckId(deckId);
     } catch (error) {
       console.error('Failed to load cards from IndexedDB:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Load cards for a specific deck
-   */
-  loadCardsByDeckId: async (deckId: string): Promise<ICardList> => {
-    try {
-      return await CardIndexedDbProvider.getCardsByDeckId(deckId);
-    } catch (error) {
-      console.error('Failed to load cards by deck ID:', error);
       throw error;
     }
   },
@@ -57,7 +41,7 @@ export const cardService = {
   /**
    * Check if IndexedDB has cards stored
    */
-  hasStoredCards: async (deckId?: string): Promise<boolean> => {
+  hasCards: async (deckId?: string): Promise<boolean> => {
     try {
       return await CardIndexedDbProvider.hasCards(deckId);
     } catch (error) {
@@ -67,42 +51,29 @@ export const cardService = {
   },
 
   /**
-   * Initialize cards: load from IndexedDB if available, otherwise load defaults and save them
+   * Initialize cards: save defaults to IndexedDB if not available
    */
-  initializeCards: async (deckId?: string): Promise<ICardList> => {
+  initializeCards: async (): Promise<void> => {
     try {
-      // If no deckId provided, get the default deck
-      let targetDeckId = deckId;
-      if (!targetDeckId) {
-        const defaultDeck = await deckService.getDefaultDeck();
-        targetDeckId = defaultDeck.id;
-      }
+      // Check if we have stored cards
+      const hasStored = await cardService.hasCards();
 
-      // Check if we have stored cards for this deck
-      const hasStored = await CardIndexedDbProvider.hasCards(targetDeckId);
-
-      if (hasStored) {
+      if (!hasStored) {
         // Load from IndexedDB
-        return await CardIndexedDbProvider.getCardsByDeckId(targetDeckId);
-      } else {
-        // Load default words for this deck and save them to IndexedDB
-        const defaultWords = await cardService.getDefaultCards(targetDeckId);
-        await CardIndexedDbProvider.saveCards(defaultWords, targetDeckId);
-        return defaultWords;
+        const defaultWords = await cardService.getDefaultCards();
+        await CardIndexedDbProvider.saveCards(defaultWords);
       }
     } catch (error) {
       console.error('Failed to initialize cards:', error);
-      // Fallback to default words without saving
-      return await cardService.getDefaultCards(deckId);
     }
   },
 
   /**
    * Clear all stored cards from IndexedDB
    */
-  clearStoredCards: async (deckId?: string): Promise<void> => {
+  clearCards: async (deckId?: string): Promise<void> => {
     try {
-      await CardIndexedDbProvider.clearAllCards(deckId);
+      await CardIndexedDbProvider.clearCards(deckId);
     } catch (error) {
       console.error('Failed to clear stored cards:', error);
       throw error;
