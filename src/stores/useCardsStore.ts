@@ -8,7 +8,6 @@ interface WordsState {
   error: string | null;
   hasInitialized: boolean;
   fetchCards: (deckId: string) => Promise<void>;
-  initializeCards: () => Promise<void>;
   saveCards: (newWords: ICard[], deckId: string) => Promise<void>;
   loadCardsFromDB: (deckId: string) => Promise<void>;
   clearStoredCards: (deckId: string) => Promise<void>;
@@ -18,7 +17,7 @@ interface WordsState {
   clearError: () => void;
 }
 
-export const useCardsStore = create<WordsState>((set, get) => ({
+export const useCardsStore = create<WordsState>((set, _get) => ({
   words: [],
   isLoading: false,
   error: null,
@@ -33,22 +32,6 @@ export const useCardsStore = create<WordsState>((set, get) => ({
       set({
         error: error instanceof Error ? error.message : 'Failed to fetch words',
         isLoading: false,
-      });
-    }
-  },
-
-  initializeCards: async () => {
-    const { isLoading } = get();
-    if (isLoading) return;
-    set({ isLoading: true, error: null });
-    try {
-      const words = await cardService.initializeCards();
-      set({ words, isLoading: false, hasInitialized: true });
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to load initial words',
-        isLoading: false,
-        hasInitialized: true,
       });
     }
   },
