@@ -10,6 +10,7 @@ interface ICardsState {
 
   // Actions
   saveCards: (cards: ICard[], deckId: string) => Promise<void>;
+  deleteCards: (deckId: string) => Promise<void>;
   getCards: (deckId: string) => Promise<void>;
   clearWords: () => void;
   getCardsAmount: (deckId: string) => Promise<number>;
