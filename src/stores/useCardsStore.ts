@@ -12,7 +12,7 @@ interface ICardsState {
   saveCards: (cards: ICard[], deckId: string) => Promise<void>;
   deleteCards: (deckId: string) => Promise<void>;
   getCards: (deckId: string) => Promise<void>;
-  clearWords: () => void;
+  clearCards: () => void;
   getCardsAmount: (deckId: string) => Promise<number>;
   searchCards: (query: string, deckId: string) => Promise<ICardList>;
   clearError: () => void;
@@ -89,5 +89,5 @@ export const useCardsStore = create<ICardsState>((set, _get) => ({
 
   clearError: () => set({ error: null }),
 
-  clearWords: () => set({ words: [] }),
+  clearCards: () => set({words: []}),
 }));
