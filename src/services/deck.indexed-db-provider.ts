@@ -39,6 +39,18 @@ export class DeckIndexedDbProvider {
   }
 
   /**
+   * Save multiple decks to IndexedDB (bulk operation)
+   */
+  static async saveDecks(decks: IDeck[]): Promise<void> {
+    try {
+      await db.decks.bulkAdd(decks);
+    } catch (error) {
+      console.error('Failed to save decks to IndexedDB:', error);
+      throw new Error('Failed to save decks to local storage');
+    }
+  }
+
+  /**
    * Update a deck in IndexedDB
    */
   static async updateDeck(id: string, updates: Partial<Omit<IDeck, 'id'>>): Promise<number> {
