@@ -55,22 +55,6 @@ export const deckService = {
   },
 
   /**
-   * Get the default deck
-   */
-  getDefaultDeck: async (): Promise<IDeck> => {
-    try {
-      const defaultDecks = await deckService.getDefaultDecks();
-      if (defaultDecks.length === 0) {
-        throw new Error('No default deck available');
-      }
-      return defaultDecks[0]; // Return the first deck as the default
-    } catch (error) {
-      console.error('Failed to get default deck:', error);
-      throw error;
-    }
-  },
-
-  /**
    * Create a new deck
    */
   createDeck: async (deck: IDeck): Promise<string> => {
