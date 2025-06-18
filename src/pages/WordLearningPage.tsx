@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {
   Alert,
   Box,
@@ -15,46 +15,38 @@ import {useNavigate, useParams} from 'react-router-dom';
 import WordCardSlider from '../components/word/WordCardSlider.tsx';
 import {useCardsStore} from '../stores/useCardsStore.ts';
 import {useDecksStore} from '../stores/useDecksStore';
+import type {IDeck} from '../types/deck.types';
 
 export const WordLearningPage: FC = () => {
   const { deckId } = useParams<{ deckId: string }>();
   const navigate = useNavigate();
   const { words, isLoading, error, clearError, initializeCards, clearWords } = useCardsStore();
-    const {setCurrentDeck, getDeckById, currentDeck} = useDecksStore();
+  const {getDeckById} = useDecksStore();
   const theme = useTheme();
+  const [deck, setDeck] = useState<IDeck | null>(null);
 
   useEffect(() => {
     const loadDeckAndWords = async () => {
       if (!deckId) {
-        // If no deckId, redirect to decks page
         navigate('/decks');
         return;
       }
-
       try {
-        // Clear existing words first
         clearWords();
-
-        // Get the deck by ID and set it as current
-        const deck = await getDeckById(deckId);
-        if (!deck) {
-          // If deck not found, redirect to decks page
+        const foundDeck = await getDeckById(deckId);
+        if (!foundDeck) {
           navigate('/decks');
           return;
         }
-
-        setCurrentDeck(deck);
-        // Initialize words for this specific deck
+        setDeck(foundDeck);
         await initializeCards(deckId);
       } catch (error) {
         console.error('Failed to load deck and words:', error);
-        // On error, redirect to decks page
         navigate('/decks');
       }
     };
-
     loadDeckAndWords();
-  }, [deckId, navigate, getDeckById, setCurrentDeck, initializeCards, clearWords]);
+  }, [deckId, navigate, getDeckById, initializeCards, clearWords]);
 
   let content;
   if (isLoading) {
@@ -73,66 +65,66 @@ export const WordLearningPage: FC = () => {
 
   return (
     <Container maxWidth="lg">
-      {currentDeck && (
+      {deck && (
           <Card
               elevation={0}
               sx={{
-                  mb: 2,
-                  bgcolor: 'background.default',
-                  borderRadius: 2,
-                  p: {xs: 1, sm: 2},
-                  maxWidth: 500,
-                  mx: 'auto',
-                  opacity: 0.85,
+                mb: 2,
+                bgcolor: 'background.default',
+                borderRadius: 2,
+                p: {xs: 1, sm: 2},
+                maxWidth: 500,
+                mx: 'auto',
+                opacity: 0.85,
               }}
           >
-              <CardContent sx={{p: 0}}>
+            <CardContent sx={{p: 0}}>
+              <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: {xs: '1.1rem', sm: '1.2rem'},
+                    mb: 0.5,
+                    textAlign: 'center',
+                    color: theme.palette.text.primary,
+                  }}
+              >
+                {deck.topic}
+              </Typography>
+              {deck.description && (
                   <Typography
-                      variant="h6"
+                      variant="body2"
                       sx={{
-                          fontWeight: 500,
-                          fontSize: {xs: '1.1rem', sm: '1.2rem'},
-                          mb: 0.5,
-                          textAlign: 'center',
-                          color: theme.palette.text.primary,
+                        fontSize: {xs: '0.95rem', sm: '1rem'},
+                        mb: 1,
+                        textAlign: 'center',
+                        color: theme.palette.text.primary,
                       }}
                   >
-                      {currentDeck.topic}
+                    {deck.description}
                   </Typography>
-                  {currentDeck.description && (
-                      <Typography
-                          variant="body2"
-                          sx={{
-                              fontSize: {xs: '0.95rem', sm: '1rem'},
-                              mb: 1,
-                              textAlign: 'center',
-                              color: theme.palette.text.primary,
-                          }}
-                      >
-                          {currentDeck.description}
-                      </Typography>
-                  )}
-                  <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
-                      <Chip
-                          size="small"
-                          label={currentDeck.languageFrom}
-                          sx={{
-                              bgcolor: theme.palette.primary.main,
-                              color: theme.palette.text.primary,
-                              fontSize: '0.85rem',
-                          }}
-                      />
-                      <Chip
-                          size="small"
-                          label={currentDeck.languageTo}
-                          sx={{
-                              bgcolor: theme.palette.secondary.main,
-                              color: theme.palette.background.paper,
-                              fontSize: '0.85rem',
-                          }}
-                      />
-                  </Stack>
-              </CardContent>
+              )}
+              <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
+                <Chip
+                    size="small"
+                    label={deck.languageFrom}
+                    sx={{
+                      bgcolor: theme.palette.primary.main,
+                      color: theme.palette.text.primary,
+                      fontSize: '0.85rem',
+                    }}
+                />
+                <Chip
+                    size="small"
+                    label={deck.languageTo}
+                    sx={{
+                      bgcolor: theme.palette.secondary.main,
+                      color: theme.palette.background.paper,
+                      fontSize: '0.85rem',
+                    }}
+                />
+              </Stack>
+            </CardContent>
           </Card>
       )}
       <Box

@@ -1,10 +1,9 @@
-import { create } from 'zustand';
-import { IDeck } from '../types/deck.types';
-import { deckService } from '../services/deck.service';
+import {create} from 'zustand';
+import {IDeck} from '../types/deck.types';
+import {deckService} from '../services/deck.service';
 
 interface DecksState {
   decks: IDeck[];
-  currentDeck: IDeck | null;
   isLoading: boolean;
   error: string | null;
   hasInitialized: boolean;
@@ -13,8 +12,6 @@ interface DecksState {
   getAllDecks: () => Promise<void>;
   getDeckById: (id: string) => Promise<IDeck | undefined>;
   getDefaultDecks: () => Promise<void>;
-  getDefaultDeck: () => Promise<void>;
-  setCurrentDeck: (deck: IDeck) => void;
   createDeck: (deck: IDeck) => Promise<string>;
   updateDeck: (id: string, updates: Partial<Omit<IDeck, 'id'>>) => Promise<void>;
   deleteDeck: (id: string) => Promise<void>;
@@ -25,7 +22,6 @@ interface DecksState {
 
 export const useDecksStore = create<DecksState>((set, get) => ({
   decks: [],
-  currentDeck: null,
   isLoading: false,
   error: null,
   hasInitialized: false,
@@ -60,7 +56,6 @@ export const useDecksStore = create<DecksState>((set, get) => ({
       const decks = await deckService.getDefaultDecks();
       set({
         decks,
-        currentDeck: decks.length > 0 ? decks[0] : null,
         isLoading: false,
         hasInitialized: true,
       });
@@ -71,28 +66,6 @@ export const useDecksStore = create<DecksState>((set, get) => ({
         hasInitialized: true,
       });
     }
-  },
-
-  getDefaultDeck: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const defaultDeck = await deckService.getDefaultDeck();
-      set({
-        currentDeck: defaultDeck,
-        isLoading: false,
-        hasInitialized: true,
-      });
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to get default deck',
-        isLoading: false,
-        hasInitialized: true,
-      });
-    }
-  },
-
-  setCurrentDeck: (deck: IDeck) => {
-    set({ currentDeck: deck });
   },
 
   createDeck: async (deck: IDeck): Promise<string> => {
@@ -119,15 +92,6 @@ export const useDecksStore = create<DecksState>((set, get) => ({
       // Refresh decks list
       const decks = await deckService.getAllDecks();
       set({ decks, isLoading: false });
-
-      // Update current deck if it's the one being updated
-      const { currentDeck } = get();
-      if (currentDeck && currentDeck.id === id) {
-        const updatedDeck = await deckService.getDeckById(id);
-        if (updatedDeck) {
-          set({ currentDeck: updatedDeck });
-        }
-      }
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to update deck',
@@ -144,12 +108,6 @@ export const useDecksStore = create<DecksState>((set, get) => ({
       // Refresh decks list
       const decks = await deckService.getAllDecks();
       set({ decks, isLoading: false });
-
-      // Clear current deck if it's the one being deleted
-      const { currentDeck } = get();
-      if (currentDeck && currentDeck.id === id) {
-        set({ currentDeck: null });
-      }
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to delete deck',
@@ -181,7 +139,6 @@ export const useDecksStore = create<DecksState>((set, get) => ({
         const allDecks = await deckService.initializeDecks();
 
         set({
-          currentDeck: allDecks.length > 0 ? allDecks[0] : null,
           decks: allDecks,
           isLoading: false,
           hasInitialized: true,
