@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AiPromptService from '../../services/ai-promt.service';
 import InputAdornment from '@mui/material/InputAdornment';
-import {useSnackbar} from 'notistack';
 
 interface DeckEditProps {
   deckId?: string;
@@ -77,23 +76,6 @@ const DeckSchema = Yup.object().shape({
       ),
 });
 
-const validatePromptFields = (values: DeckFormValues) => {
-  const requiredFields = [
-    {field: 'topic', label: 'Topic'},
-    {field: 'languageFrom', label: 'Source Language'},
-    {field: 'languageTo', label: 'Target Language'},
-  ] as const;
-
-  const missingFields = requiredFields.filter(({field}) => !values[field]);
-
-  if (missingFields.length > 0) {
-    const missingFieldLabels = missingFields.map(({label}) => label).join(', ');
-    return `Please fill in required fields: ${missingFieldLabels}`;
-  }
-
-  return null;
-};
-
 const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
   const [initialValues, setInitialValues] = useState<DeckFormValues>({
     topic: '',
@@ -105,7 +87,6 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
   });
   const [loading, setLoading] = useState(!!deckId);
   const [error, setError] = useState<string | null>(null);
-  const {enqueueSnackbar} = useSnackbar();
 
   useEffect(() => {
     if (deckId) {
@@ -183,7 +164,15 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
             validationSchema={DeckSchema}
             onSubmit={handleSubmit}
         >
-          {({errors, touched, isSubmitting, values, setFieldValue}) => (
+          {({
+              errors,
+              touched,
+              isSubmitting,
+              values,
+              setFieldValue,
+              validateForm,
+              setFieldTouched,
+            }) => (
               <Form>
                 <Box
                     sx={{
@@ -259,10 +248,15 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
                                     aria-label="Compose"
                                     color="primary"
                                     disabled={!!values.promptToAiAgent}
-                                    onClick={() => {
-                                      const errorMessage = validatePromptFields(values);
-                                      if (errorMessage) {
-                                        enqueueSnackbar(errorMessage, {variant: 'warning'});
+                                    onClick={async () => {
+                                      await Promise.all([
+                                        setFieldTouched('topic', true, false),
+                                        setFieldTouched('languageFrom', true, false),
+                                        setFieldTouched('languageTo', true, false),
+                                      ]);
+
+                                      const errors = await validateForm();
+                                      if (Object.keys(errors).length > 0) {
                                         return;
                                       }
 
