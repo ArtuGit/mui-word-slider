@@ -12,6 +12,8 @@ import {
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import WordCardSlider from '../components/word/WordCardSlider.tsx';
+import WordCardList from '../components/word/WordCardList.tsx';
+import DisplayModeTabs from '../components/ui/DisplayModeTabs.tsx';
 import { useCardsStore } from '../stores/useCardsStore.ts';
 import { useDecksStore } from '../stores/useDecksStore';
 import type { IDeck } from '../types/deck.types';
@@ -62,7 +64,13 @@ export const WordLearningPage: FC = () => {
       </Alert>
     );
   } else if (words.length > 0) {
-    content = <WordCardSlider words={words} />;
+    content = (
+      <DisplayModeTabs
+        words={words}
+        listComponent={<WordCardList words={words} />}
+        sliderComponent={<WordCardSlider words={words} />}
+      />
+    );
   } else {
     content = <Alert severity="info">No words available for this deck.</Alert>;
   }
@@ -131,6 +139,7 @@ export const WordLearningPage: FC = () => {
           </CardContent>
         </Card>
       )}
+
       <Box
         sx={{
           display: 'flex',
