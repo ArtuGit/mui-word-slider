@@ -11,8 +11,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import WordCardSlider from '../components/word/WordCardSlider.tsx';
-import WordCardList from '../components/word/WordCardList.tsx';
+import WordCardSlider from '../components/word-card/slider/WordCardSlider.tsx';
+import WordCardList from '../components/word-card/list/WordCardList.tsx';
 import DisplayModeTabs from '../components/ui/DisplayModeTabs.tsx';
 import { useCardsStore } from '../stores/useCardsStore.ts';
 import { useDecksStore } from '../stores/useDecksStore';

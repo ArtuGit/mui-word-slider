@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { Box, Card, CardContent, IconButton, styled, Tooltip, Typography } from '@mui/material';
 import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
-import { ICard } from '../../types/card.types.ts';
-import { speechService } from '../../services/speech.service';
+import { ICard } from '../../../types/card.types.ts';
+import { speechService } from '../../../services/speech.service.ts';
 
 type CardProps = Pick<
   ICard,

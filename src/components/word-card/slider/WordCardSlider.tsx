@@ -3,8 +3,8 @@ import Slider from 'react-slick';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { ICard } from '../../types/card.types.ts';
-import WordCard from './WordCard';
+import { ICard } from '../../../types/card.types.ts';
+import WordCard from './WordCard.tsx';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

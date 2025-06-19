@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Box, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
-import { ICard } from '../../types/card.types';
+import { ICard } from '../../../types/card.types.ts';
 
 interface WordCardListProps {
   words: ICard[];
