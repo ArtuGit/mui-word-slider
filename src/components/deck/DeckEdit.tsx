@@ -13,7 +13,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AiPromptService from '../../services/ai-promt.service';
 import InputAdornment from '@mui/material/InputAdornment';
 import LoadingProgress from '../ui/LoadingProgress';
-import {CARDS_JSON_EXAMPLE} from "../../constants/cards.json.exampe.ts";
+import {CARDS_JSON_EXAMPLE} from "../../constants/cards.json.example.ts";
 
 interface DeckEditProps {
   deckId?: string;
