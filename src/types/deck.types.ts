@@ -7,7 +7,7 @@ export interface IDeck {
   languageFrom: string;
   languageTo: string;
   amount: number;
-  promptToAiAgent: string;
+  promptToAiAgent?: string;
 }
 
 export interface IDeckWithCards extends IDeck {

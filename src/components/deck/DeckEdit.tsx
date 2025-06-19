@@ -12,10 +12,20 @@ import IconButton from '@mui/material/IconButton';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AiPromptService from '../../services/ai-promt.service';
 import InputAdornment from '@mui/material/InputAdornment';
+import {useSnackbar} from 'notistack';
 
 interface DeckEditProps {
   deckId?: string;
   onBack: () => void;
+}
+
+interface DeckFormValues {
+  topic: string;
+  description?: string;
+  languageFrom: string;
+  languageTo: string;
+  promptToAiAgent?: string;
+  cards: string;
 }
 
 const cardArrayTest = (value: string) => {
@@ -67,8 +77,25 @@ const DeckSchema = Yup.object().shape({
       ),
 });
 
+const validatePromptFields = (values: DeckFormValues) => {
+  const requiredFields = [
+    {field: 'topic', label: 'Topic'},
+    {field: 'languageFrom', label: 'Source Language'},
+    {field: 'languageTo', label: 'Target Language'},
+  ] as const;
+
+  const missingFields = requiredFields.filter(({field}) => !values[field]);
+
+  if (missingFields.length > 0) {
+    const missingFieldLabels = missingFields.map(({label}) => label).join(', ');
+    return `Please fill in required fields: ${missingFieldLabels}`;
+  }
+
+  return null;
+};
+
 const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues, setInitialValues] = useState<DeckFormValues>({
     topic: '',
     description: '',
     languageFrom: '',
@@ -78,6 +105,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
   });
   const [loading, setLoading] = useState(!!deckId);
   const [error, setError] = useState<string | null>(null);
+  const {enqueueSnackbar} = useSnackbar();
 
   useEffect(() => {
     if (deckId) {
@@ -123,7 +151,7 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
           description: values.description,
           languageFrom: values.languageFrom,
           languageTo: values.languageTo,
-          promptToAiAgent: values.promptToAiAgent,
+          ...(values?.promptToAiAgent ? {promptToAiAgent: values.promptToAiAgent} : {}),
           amount: cards.length,
         });
         await cardService.saveCards(
@@ -226,12 +254,18 @@ const DeckEdit: FC<DeckEditProps> = ({deckId, onBack}) => {
                         helperText={touched.promptToAiAgent && errors.promptToAiAgent}
                         InputProps={{
                           endAdornment: (
-                              <InputAdornment position="end">
+                              <InputAdornment position="start">
                                 <IconButton
                                     aria-label="Compose"
                                     color="primary"
                                     disabled={!!values.promptToAiAgent}
                                     onClick={() => {
+                                      const errorMessage = validatePromptFields(values);
+                                      if (errorMessage) {
+                                        enqueueSnackbar(errorMessage, {variant: 'warning'});
+                                        return;
+                                      }
+
                                       const prompt = AiPromptService.getCardsRequestForDeckPrompt({
                                         id: '',
                                         topic: values.topic,
