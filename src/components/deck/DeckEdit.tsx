@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { deckService } from '../../services/deck.service';
@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AiPromptService from '../../services/ai-promt.service';
 import InputAdornment from '@mui/material/InputAdornment';
+import LoadingProgress from '../ui/LoadingProgress';
 
 interface DeckEditProps {
   deckId?: string;
@@ -146,7 +147,7 @@ const DeckEdit: FC<DeckEditProps> = ({ deckId, onBack }) => {
     }
   };
 
-  if (loading) return <CircularProgress sx={{ m: 4 }} />;
+  if (loading) return <LoadingProgress />;
 
   return (
     <Paper sx={{ width: '90vw', maxWidth: 900, mx: 'auto', mt: 4, p: 3 }}>

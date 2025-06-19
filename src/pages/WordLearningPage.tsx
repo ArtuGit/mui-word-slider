@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   Chip,
-  CircularProgress,
   Container,
   Stack,
   Typography,
@@ -16,6 +15,7 @@ import WordCardSlider from '../components/word/WordCardSlider.tsx';
 import { useCardsStore } from '../stores/useCardsStore.ts';
 import { useDecksStore } from '../stores/useDecksStore';
 import type { IDeck } from '../types/deck.types';
+import LoadingProgress from '../components/ui/LoadingProgress';
 
 export const WordLearningPage: FC = () => {
   const { deckId } = useParams<{ deckId: string }>();
@@ -24,6 +24,7 @@ export const WordLearningPage: FC = () => {
   const { getDeckById } = useDecksStore();
   const theme = useTheme();
   const [deck, setDeck] = useState<IDeck | null>(null);
+  const [isDeckLoading, setIsDeckLoading] = useState(true);
 
   useEffect(() => {
     const loadDeckAndWords = async () => {
@@ -32,6 +33,7 @@ export const WordLearningPage: FC = () => {
         return;
       }
       try {
+        setIsDeckLoading(true);
         clearCards();
         const foundDeck = await getDeckById(deckId);
         if (!foundDeck) {
@@ -43,14 +45,16 @@ export const WordLearningPage: FC = () => {
       } catch (error) {
         console.error('Failed to load deck and words:', error);
         navigate('/decks');
+      } finally {
+        setIsDeckLoading(false);
       }
     };
     loadDeckAndWords();
   }, [deckId, navigate, getDeckById, getCards, clearCards]);
 
   let content;
-  if (isLoading) {
-    content = <CircularProgress size={60} />;
+  if (isDeckLoading || isLoading) {
+    content = <LoadingProgress />;
   } else if (error) {
     content = (
       <Alert severity="error" onClose={clearError}>
@@ -65,7 +69,7 @@ export const WordLearningPage: FC = () => {
 
   return (
     <Container maxWidth="lg">
-      {deck && (
+      {deck && !isDeckLoading && (
         <Card
           elevation={0}
           sx={{
