@@ -13,6 +13,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AiPromptService from '../../services/ai-promt.service';
 import InputAdornment from '@mui/material/InputAdornment';
 import LoadingProgress from '../ui/LoadingProgress';
+import {CARDS_JSON_EXAMPLE} from "../../constants/cards.json.exampe.ts";
 
 interface DeckEditProps {
   deckId?: string;
@@ -84,7 +85,7 @@ const DeckEdit: FC<DeckEditProps> = ({ deckId, onBack }) => {
     languageFrom: '',
     languageTo: '',
     promptToAiAgent: '',
-    cards: '[]',
+    cards: '',
   });
   const [loading, setLoading] = useState(!!deckId);
   const [error, setError] = useState<string | null>(null);
@@ -309,7 +310,7 @@ const DeckEdit: FC<DeckEditProps> = ({ deckId, onBack }) => {
                   <CodeEditor
                     value={values.cards}
                     language="json"
-                    placeholder="[]"
+                    placeholder={CARDS_JSON_EXAMPLE}
                     onChange={evn => setFieldValue('cards', evn.target.value)}
                     padding={15}
                     data-color-mode="dark"
