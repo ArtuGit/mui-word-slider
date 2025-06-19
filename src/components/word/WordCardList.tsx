@@ -27,7 +27,7 @@ const WordCardList: FC<WordCardListProps> = ({ words }) => {
             <Card
               elevation={2}
               sx={{
-                height: 280,
+                height: 180,
                 width: '100%',
                 maxWidth: 280,
                 mx: 'auto',
@@ -43,61 +43,58 @@ const WordCardList: FC<WordCardListProps> = ({ words }) => {
             >
               <CardContent
                 sx={{
-                  p: 3,
+                  p: 2,
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 0.75,
+                  gap: 0.25,
                 }}
               >
-                <Typography
-                  variant="h6"
+                <Box sx={{ mb: 1 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: theme.palette.primary.main,
+                      wordBreak: 'break-word',
+                      lineHeight: 1.1,
+                      mb: 0.5,
+                    }}
+                  >
+                    {word.sourceWord}
+                  </Typography>
+
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: '1.1rem',
+                      color: theme.palette.text.primary,
+                      fontWeight: 500,
+                      wordBreak: 'break-word',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {word.targetWord}
+                  </Typography>
+                </Box>
+
+                <Box
                   sx={{
-                    fontWeight: 700,
-                    fontSize: '1.25rem',
-                    color: theme.palette.primary.main,
-                    wordBreak: 'break-word',
-                    lineHeight: 1.2,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
+                    mt: 'auto',
+                    pt: 0.5,
+                    borderTop: 1,
+                    borderColor: 'divider',
                   }}
                 >
-                  {word.sourceWord}
-                </Typography>
-
-                <Typography
-                  variant="body1"
-                  sx={{
-                    fontSize: '1.1rem',
-                    color: theme.palette.text.primary,
-                    fontWeight: 500,
-                    wordBreak: 'break-word',
-                    lineHeight: 1.3,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    mb: 0.5,
-                  }}
-                >
-                  {word.targetWord}
-                </Typography>
-
-                <Box sx={{ mt: 'auto', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                   {word.pronunciation && (
                     <Typography
                       variant="body2"
                       sx={{
                         fontStyle: 'italic',
                         color: theme.palette.text.secondary,
-                        fontSize: '0.9rem',
-                        lineHeight: 1.2,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 1,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
+                        fontSize: '0.85rem',
+                        lineHeight: 1.1,
                       }}
                     >
                       {word.pronunciation}
@@ -109,10 +106,11 @@ const WordCardList: FC<WordCardListProps> = ({ words }) => {
                       variant="body2"
                       sx={{
                         color: theme.palette.text.secondary,
-                        fontSize: '0.85rem',
-                        lineHeight: 1.3,
+                        fontSize: '0.8rem',
+                        lineHeight: 1.2,
+                        mt: 0.25,
                         display: '-webkit-box',
-                        WebkitLineClamp: 3,
+                        WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
                       }}
