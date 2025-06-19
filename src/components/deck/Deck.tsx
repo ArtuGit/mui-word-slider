@@ -83,7 +83,7 @@ const StatsBox = styled(Box)(({ theme }) => ({
 export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { deleteDeck } = useDecksStore();
+  const {deleteDeckWithCards} = useDecksStore();
   const { enqueueSnackbar } = useSnackbar();
 
   const handlePlay = (e: React.MouseEvent) => {
@@ -104,7 +104,7 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteDeck(deck.id);
+      await deleteDeckWithCards(deck.id);
       setDeleteDialogOpen(false);
       enqueueSnackbar(`Deck "${deck.topic}" has been successfully deleted!`, {
         variant: 'success',

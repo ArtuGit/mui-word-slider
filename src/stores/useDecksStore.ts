@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import {IDeck} from '../types/deck.types';
 import {deckService} from '../services/deck.service';
+import {cardService} from '../services/card.service.ts';
 
 interface IDecksState {
   decks: IDeck[];
@@ -13,7 +14,7 @@ interface IDecksState {
   getDeckById: (id: string) => Promise<IDeck | undefined>;
   createDeck: (deck: IDeck) => Promise<string>;
   updateDeck: (id: string, updates: Partial<Omit<IDeck, 'id'>>) => Promise<void>;
-  deleteDeck: (id: string) => Promise<void>;
+  deleteDeckWithCards: (id: string) => Promise<void>;
   searchDecks: (query: string) => Promise<IDeck[]>;
   clearError: () => void;
 }
@@ -81,10 +82,10 @@ export const useDecksStore = create<IDecksState>((set, _get) => ({
     }
   },
 
-  deleteDeck: async (id: string) => {
+  deleteDeckWithCards: async (id: string) => {
     set({ isLoading: true, error: null });
     try {
-      await deckService.deleteDeck(id);
+      await Promise.all([deckService.deleteDeck(id), cardService.clearCards(id)]);
       // Refresh decks list
       const decks = await deckService.getAllDecks();
       set({ decks, isLoading: false });
