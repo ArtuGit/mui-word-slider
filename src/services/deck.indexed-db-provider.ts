@@ -1,5 +1,5 @@
-import {db} from '../db/database';
-import {IDeck} from '../types/deck.types';
+import { db } from '../db/database';
+import { IDeck } from '../types/deck.types';
 
 export class DeckIndexedDbProvider {
   /**

@@ -2,7 +2,7 @@
  * Speech Service using Web Speech API
  * Provides text-to-speech functionality with language support
  */
-import {LANGUAGE_MAP, SUPPORTED_LANGUAGES} from '../constants/languages.ts';
+import { LANGUAGE_MAP, SUPPORTED_LANGUAGES } from '../constants/languages.ts';
 
 interface SpeechOptions {
   language: string;

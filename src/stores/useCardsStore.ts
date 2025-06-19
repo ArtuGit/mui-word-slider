@@ -1,6 +1,6 @@
-import {create} from 'zustand';
-import {ICard, ICardList} from '../types/card.types.ts';
-import {cardService} from '../services/card.service.ts';
+import { create } from 'zustand';
+import { ICard, ICardList } from '../types/card.types.ts';
+import { cardService } from '../services/card.service.ts';
 
 interface ICardsState {
   words: ICardList;
@@ -53,13 +53,13 @@ export const useCardsStore = create<ICardsState>((set, _get) => ({
   },
 
   deleteCards: async (deckId: string) => {
-    set({isLoading: true, error: null});
+    set({ isLoading: true, error: null });
     try {
       await cardService.clearCards(deckId);
       // Clear words from state if they belong to the deleted deck
       const currentWords = _get().words;
       const filteredWords = currentWords.filter(word => word.deckId !== deckId);
-      set({words: filteredWords, isLoading: false});
+      set({ words: filteredWords, isLoading: false });
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to delete cards',
@@ -89,5 +89,5 @@ export const useCardsStore = create<ICardsState>((set, _get) => ({
 
   clearError: () => set({ error: null }),
 
-  clearCards: () => set({words: []}),
+  clearCards: () => set({ words: [] }),
 }));

@@ -1,7 +1,7 @@
-import {ICardList} from '../types/card.types.ts';
-import {CardIndexedDbProvider} from './card-indexed-db.provider.ts';
-import {INITIAL_CARDS} from '../constants/initial-data';
-import {delay} from '../utils/time.utils.ts';
+import { ICardList } from '../types/card.types.ts';
+import { CardIndexedDbProvider } from './card-indexed-db.provider.ts';
+import { INITIAL_CARDS } from '../constants/initial-data';
+import { delay } from '../utils/time.utils.ts';
 
 export const cardService = {
   /**

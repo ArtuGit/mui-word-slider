@@ -1,7 +1,7 @@
-import {IDeck} from '../types/deck.types';
-import {DeckIndexedDbProvider} from './deck.indexed-db-provider';
-import {INITIAL_DECKS} from '../constants/initial-data';
-import {delay} from '../utils/time.utils.ts';
+import { IDeck } from '../types/deck.types';
+import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
+import { INITIAL_DECKS } from '../constants/initial-data';
+import { delay } from '../utils/time.utils.ts';
 
 export const deckService = {
   /**
@@ -21,6 +21,7 @@ export const deckService = {
    */
   getDeckById: async (id: string): Promise<IDeck | undefined> => {
     try {
+      await delay(Math.random() * 2000 + 500);
       return await DeckIndexedDbProvider.getDeckById(id);
     } catch (error) {
       console.error('Failed to get deck by ID:', error);

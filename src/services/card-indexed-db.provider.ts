@@ -1,5 +1,5 @@
-import {db} from '../db/database';
-import {ICardList} from '../types/card.types.ts';
+import { db } from '../db/database';
+import { ICardList } from '../types/card.types.ts';
 
 export class CardIndexedDbProvider {
   /**

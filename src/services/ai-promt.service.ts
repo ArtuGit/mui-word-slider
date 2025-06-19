@@ -1,11 +1,11 @@
 class AiPromptService {
   static getCardsRequestForDeckPrompt({
-                                          topic,
-                                          description,
-                                          sourceLanguage,
-                                          targetLanguage,
-                                          amount,
-                                      }: {
+    topic,
+    description,
+    sourceLanguage,
+    targetLanguage,
+    amount,
+  }: {
     id: string;
     topic: string;
     description?: string;

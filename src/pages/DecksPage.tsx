@@ -1,10 +1,10 @@
-import {FC, useEffect} from 'react';
-import {Alert, Box, Button, CircularProgress, Container, styled, Typography} from '@mui/material';
-import {Add as AddIcon} from '@mui/icons-material';
-import {useNavigate} from 'react-router-dom';
-import {useDecksStore} from '../stores/useDecksStore';
+import { FC, useEffect } from 'react';
+import { Alert, Box, Button, CircularProgress, Container, styled, Typography } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useDecksStore } from '../stores/useDecksStore';
 import DeckList from '../components/deck/DeckList';
-import {IDeck as DeckType} from '../types/deck.types';
+import { IDeck as DeckType } from '../types/deck.types';
 
 const PageHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -29,7 +29,7 @@ const ContentContainer = styled(Box)(() => ({
 
 export const DecksPage: FC = () => {
   const navigate = useNavigate();
-  const {decks, isLoading, error, clearError, getAllDecks} = useDecksStore();
+  const { decks, isLoading, error, clearError, getAllDecks } = useDecksStore();
 
   // Load decks when component mounts
   useEffect(() => {

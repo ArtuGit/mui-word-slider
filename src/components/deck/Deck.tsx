@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import { FC, useState } from 'react';
 import {
   Box,
   Button,
@@ -22,10 +22,10 @@ import {
   PlayArrow as PlayArrowIcon,
   Translate as TranslateIcon,
 } from '@mui/icons-material';
-import {useSnackbar} from 'notistack';
-import {IDeck as DeckType} from '../../types/deck.types';
-import {useDecksStore} from '../../stores/useDecksStore';
-import {cardService} from "../../services/card.service.ts";
+import { useSnackbar } from 'notistack';
+import { IDeck as DeckType } from '../../types/deck.types';
+import { useDecksStore } from '../../stores/useDecksStore';
+import { cardService } from '../../services/card.service.ts';
 
 interface DeckProps {
   deck: DeckType;
@@ -84,7 +84,7 @@ const StatsBox = styled(Box)(({ theme }) => ({
 export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const {deleteDeck} = useDecksStore();
+  const { deleteDeck } = useDecksStore();
   const { enqueueSnackbar } = useSnackbar();
 
   const handlePlay = (e: React.MouseEvent) => {
@@ -105,7 +105,7 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await Promise.all([deleteDeck(deck.id), cardService.clearCards(deck.id)])
+      await Promise.all([deleteDeck(deck.id), cardService.clearCards(deck.id)]);
       setDeleteDialogOpen(false);
       enqueueSnackbar(`Deck "${deck.topic}" has been successfully deleted!`, {
         variant: 'success',

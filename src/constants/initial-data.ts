@@ -1,5 +1,5 @@
-import {IDeck} from '../types/deck.types';
-import {ICardList} from '../types/card.types.ts';
+import { IDeck } from '../types/deck.types';
+import { ICardList } from '../types/card.types.ts';
 
 // Initial decks configuration
 export const INITIAL_DECKS: IDeck[] = [
