@@ -39,9 +39,11 @@ export const Header: FC = () => {
             onClick={handleLogoClick}
             sx={{
               p: 0,
+              borderRadius: '50%',
               '&:hover': {
                 transform: 'scale(1.05)',
                 transition: 'transform 0.2s ease-in-out',
+                borderRadius: '8px',
               },
             }}
           >
