@@ -13,7 +13,7 @@ const WordCard: FC<WordCardProps> = ({ word }) => {
     <Card
       elevation={2}
       sx={{
-        height: 180,
+        minHeight: 140,
         width: '100%',
         maxWidth: 280,
         mx: 'auto',
@@ -52,7 +52,7 @@ const WordCard: FC<WordCardProps> = ({ word }) => {
           </Typography>
 
           <Typography
-            variant="body1"
+            variant="body2"
             sx={{
               fontSize: '1.1rem',
               color: theme.palette.text.primary,
@@ -79,8 +79,8 @@ const WordCard: FC<WordCardProps> = ({ word }) => {
               sx={{
                 fontStyle: 'italic',
                 color: theme.palette.text.secondary,
-                fontSize: '0.85rem',
-                lineHeight: 1.1,
+                fontSize: '1rem',
+                lineHeight: 1.2,
               }}
             >
               {word.pronunciation}
@@ -92,9 +92,9 @@ const WordCard: FC<WordCardProps> = ({ word }) => {
               variant="body2"
               sx={{
                 color: theme.palette.text.secondary,
-                fontSize: '0.8rem',
-                lineHeight: 1.2,
-                mt: 0.25,
+                fontSize: '0.9rem',
+                lineHeight: 1.3,
+                mt: 1,
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical',
