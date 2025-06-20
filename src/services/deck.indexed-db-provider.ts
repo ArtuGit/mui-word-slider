@@ -1,13 +1,21 @@
-import { db } from '../db/database';
-import { IDeck } from '../types/deck.types';
+import {db} from '../db/database';
+import {IDeck, IDeckWithAmount} from '../types/deck.types';
+import {CardIndexedDbProvider} from './card-indexed-db.provider';
 
 export class DeckIndexedDbProvider {
   /**
-   * Get all decks from IndexedDB
+   * Get all decks from IndexedDB with calculated amounts
    */
-  static async getAllDecks(): Promise<IDeck[]> {
+  static async getAllDecks(): Promise<IDeckWithAmount[]> {
     try {
-      return await db.decks.toArray();
+      const decks = await db.decks.toArray();
+      const decksWithAmount = await Promise.all(
+          decks.map(async deck => ({
+            ...deck,
+            amount: await CardIndexedDbProvider.getCardsCount(deck.id),
+          }))
+      );
+      return decksWithAmount;
     } catch (error) {
       console.error('Failed to get decks from IndexedDB:', error);
       throw new Error('Failed to load decks from local storage');
@@ -15,11 +23,18 @@ export class DeckIndexedDbProvider {
   }
 
   /**
-   * Get a deck by ID
+   * Get a deck by ID with calculated amount
    */
-  static async getDeckById(id: string): Promise<IDeck | undefined> {
+  static async getDeckById(id: string): Promise<IDeckWithAmount | undefined> {
     try {
-      return await db.decks.get(id);
+      const deck = await db.decks.get(id);
+      if (!deck) return undefined;
+
+      const amount = await CardIndexedDbProvider.getCardsCount(deck.id);
+      return {
+        ...deck,
+        amount,
+      };
     } catch (error) {
       console.error('Failed to get deck by ID from IndexedDB:', error);
       throw new Error('Failed to load deck from local storage');
@@ -100,12 +115,12 @@ export class DeckIndexedDbProvider {
   }
 
   /**
-   * Search decks by topic or description
+   * Search decks by topic or description with calculated amounts
    */
-  static async searchDecks(query: string): Promise<IDeck[]> {
+  static async searchDecks(query: string): Promise<IDeckWithAmount[]> {
     try {
       const lowerQuery = query.toLowerCase();
-      return await db.decks
+      const decks = await db.decks
         .filter(
           deck =>
             deck.topic.toLowerCase().includes(lowerQuery) ||
@@ -114,6 +129,14 @@ export class DeckIndexedDbProvider {
             deck.languageTo.toLowerCase().includes(lowerQuery)
         )
         .toArray();
+
+      const decksWithAmount = await Promise.all(
+          decks.map(async deck => ({
+            ...deck,
+            amount: await CardIndexedDbProvider.getCardsCount(deck.id),
+          }))
+      );
+      return decksWithAmount;
     } catch (error) {
       console.error('Failed to search decks in IndexedDB:', error);
       throw new Error('Failed to search decks in local storage');

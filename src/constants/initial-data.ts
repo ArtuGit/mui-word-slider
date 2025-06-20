@@ -1,5 +1,5 @@
-import { IDeck } from '../types/deck.types';
-import { ICardList } from '../types/card.types.ts';
+import {IDeck} from '../types/deck.types';
+import {ICardList} from '../types/card.types.ts';
 
 // Initial decks configuration
 export const INITIAL_DECKS: IDeck[] = [
@@ -9,7 +9,6 @@ export const INITIAL_DECKS: IDeck[] = [
     description: 'Essential Polish phrases for everyday conversation',
     languageFrom: 'Polish',
     languageTo: 'English',
-    amount: 30,
     promptToAiAgent:
       'Please create JSON with Polish common phrases and their English translations, including pronunciation and remarks for context.',
   },
@@ -19,7 +18,6 @@ export const INITIAL_DECKS: IDeck[] = [
     description: 'Essential Spanish words for beginners',
     languageFrom: 'Spanish',
     languageTo: 'English',
-    amount: 20,
     promptToAiAgent:
       'Please create JSON with basic Spanish vocabulary words and their English translations, including pronunciation and usage context.',
   },
@@ -29,7 +27,6 @@ export const INITIAL_DECKS: IDeck[] = [
     description: 'Essential German words for beginners',
     languageFrom: 'German',
     languageTo: 'English',
-    amount: 20,
     promptToAiAgent:
       'Please create JSON with basic German vocabulary words and their English translations, including pronunciation and grammar notes.',
   },

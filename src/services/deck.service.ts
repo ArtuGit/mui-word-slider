@@ -1,13 +1,13 @@
-import { IDeck } from '../types/deck.types';
-import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
-import { INITIAL_DECKS } from '../constants/initial-data';
-import { delay } from '../utils/time.utils.ts';
+import {IDeck, IDeckWithAmount} from '../types/deck.types';
+import {DeckIndexedDbProvider} from './deck.indexed-db-provider';
+import {INITIAL_DECKS} from '../constants/initial-data';
+import {delay} from '../utils/time.utils.ts';
 
 export const deckService = {
   /**
    * Get all decks
    */
-  getAllDecks: async (): Promise<IDeck[]> => {
+  getAllDecks: async (): Promise<IDeckWithAmount[]> => {
     try {
       return await DeckIndexedDbProvider.getAllDecks();
     } catch (error) {
@@ -19,7 +19,7 @@ export const deckService = {
   /**
    * Get a deck by ID
    */
-  getDeckById: async (id: string): Promise<IDeck | undefined> => {
+  getDeckById: async (id: string): Promise<IDeckWithAmount | undefined> => {
     try {
       await delay(Math.random() * 2000 + 500);
       return await DeckIndexedDbProvider.getDeckById(id);
@@ -32,7 +32,7 @@ export const deckService = {
   /**
    * Get default decks (creates default decks if none exist)
    */
-  getDefaultDecks: async (): Promise<IDeck[]> => {
+  getDefaultDecks: async (): Promise<IDeckWithAmount[]> => {
     try {
       // Simulate network delay between 500ms and 1500ms
       await delay(Math.random() * 1000 + 500);
@@ -45,7 +45,8 @@ export const deckService = {
         for (const initialDeck of INITIAL_DECKS) {
           await DeckIndexedDbProvider.saveDeck(initialDeck);
         }
-        return [...INITIAL_DECKS];
+        // Return the created decks with calculated amounts
+        return await DeckIndexedDbProvider.getAllDecks();
       }
 
       return allDecks;
@@ -119,7 +120,7 @@ export const deckService = {
   /**
    * Search decks by query
    */
-  searchDecks: async (query: string): Promise<IDeck[]> => {
+  searchDecks: async (query: string): Promise<IDeckWithAmount[]> => {
     try {
       return await DeckIndexedDbProvider.searchDecks(query);
     } catch (error) {
@@ -131,7 +132,7 @@ export const deckService = {
   /**
    * Initialize the deck system - ensures default decks exist, returns all decks
    */
-  initializeDecks: async (): Promise<IDeck[]> => {
+  initializeDecks: async (): Promise<IDeckWithAmount[]> => {
     try {
       return await deckService.getDefaultDecks();
     } catch (error) {

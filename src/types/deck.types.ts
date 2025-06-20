@@ -1,4 +1,4 @@
-import type { ICard } from './card.types';
+import type {ICard} from './card.types';
 
 export interface IDeck {
   id: string;
@@ -6,8 +6,11 @@ export interface IDeck {
   description?: string;
   languageFrom: string;
   languageTo: string;
-  amount: number;
   promptToAiAgent?: string;
+}
+
+export interface IDeckWithAmount extends IDeck {
+  amount: number;
 }
 
 export interface IDeckWithCards extends IDeck {

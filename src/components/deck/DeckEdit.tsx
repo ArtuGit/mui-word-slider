@@ -1,19 +1,19 @@
-import { FC, useEffect, useState } from 'react';
-import { Box, Button, Paper, Stack, TextField, Typography } from '@mui/material';
-import { Field, Form, Formik } from 'formik';
+import {FC, useEffect, useState} from 'react';
+import {Box, Button, Paper, Stack, TextField, Typography} from '@mui/material';
+import {Field, Form, Formik} from 'formik';
 import * as Yup from 'yup';
-import { deckService } from '../../services/deck.service';
-import { ICard } from '../../types/card.types';
+import {deckService} from '../../services/deck.service';
+import {ICard} from '../../types/card.types';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import { cardService } from '../../services/card.service';
-import { SUPPORTED_LANGUAGES_NAMES } from '../../constants/languages';
+import {cardService} from '../../services/card.service';
+import {SUPPORTED_LANGUAGES_NAMES} from '../../constants/languages';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import AiPromptService from '../../services/ai-promt.service';
 import InputAdornment from '@mui/material/InputAdornment';
 import LoadingProgress from '../ui/LoadingProgress';
-import { CARDS_JSON_EXAMPLE } from '../../constants/cards.json.example.ts';
+import {CARDS_JSON_EXAMPLE} from '../../constants/cards.json.example.ts';
 
 interface DeckEditProps {
   deckId?: string;
@@ -122,7 +122,6 @@ const DeckEdit: FC<DeckEditProps> = ({ deckId, onBack }) => {
           languageFrom: values.languageFrom,
           languageTo: values.languageTo,
           promptToAiAgent: values.promptToAiAgent,
-          amount: cards.length,
         });
         await cardService.clearCards(deckId);
         await cardService.saveCards(cards, deckId);
@@ -135,7 +134,6 @@ const DeckEdit: FC<DeckEditProps> = ({ deckId, onBack }) => {
           languageFrom: values.languageFrom,
           languageTo: values.languageTo,
           ...(values?.promptToAiAgent ? { promptToAiAgent: values.promptToAiAgent } : {}),
-          amount: cards.length,
         });
         await cardService.saveCards(
           cards.map(card => ({ ...card, deckId: newDeckId })),

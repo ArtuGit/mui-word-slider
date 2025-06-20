@@ -1,20 +1,20 @@
-import { create } from 'zustand';
-import { IDeck } from '../types/deck.types';
-import { deckService } from '../services/deck.service';
+import {create} from 'zustand';
+import {IDeck, IDeckWithAmount} from '../types/deck.types';
+import {deckService} from '../services/deck.service';
 
 interface IDecksState {
-  decks: IDeck[];
+  decks: IDeckWithAmount[];
   isLoading: boolean;
   error: string | null;
   hasInitialized: boolean;
 
   // Actions
   getAllDecks: () => Promise<void>;
-  getDeckById: (id: string) => Promise<IDeck | undefined>;
+  getDeckById: (id: string) => Promise<IDeckWithAmount | undefined>;
   createDeck: (deck: IDeck) => Promise<string>;
   updateDeck: (id: string, updates: Partial<Omit<IDeck, 'id'>>) => Promise<void>;
   deleteDeck: (id: string) => Promise<void>;
-  searchDecks: (query: string) => Promise<IDeck[]>;
+  searchDecks: (query: string) => Promise<IDeckWithAmount[]>;
   clearError: () => void;
 }
 
@@ -37,7 +37,7 @@ export const useDecksStore = create<IDecksState>((set, _get) => ({
     }
   },
 
-  getDeckById: async (id: string): Promise<IDeck | undefined> => {
+  getDeckById: async (id: string): Promise<IDeckWithAmount | undefined> => {
     try {
       return await deckService.getDeckById(id);
     } catch (error) {
@@ -97,7 +97,7 @@ export const useDecksStore = create<IDecksState>((set, _get) => ({
     }
   },
 
-  searchDecks: async (query: string): Promise<IDeck[]> => {
+  searchDecks: async (query: string): Promise<IDeckWithAmount[]> => {
     try {
       return await deckService.searchDecks(query);
     } catch (error) {

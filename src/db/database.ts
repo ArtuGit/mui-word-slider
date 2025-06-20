@@ -1,6 +1,6 @@
-import Dexie, { type EntityTable } from 'dexie';
-import { ICard } from '../types/card.types.ts';
-import { IDeck } from '../types/deck.types';
+import Dexie, {type EntityTable} from 'dexie';
+import {ICard} from '../types/card.types.ts';
+import {IDeck} from '../types/deck.types';
 
 // Define the database interface
 export interface CardDB extends Dexie {
@@ -17,5 +17,22 @@ db.version(1).stores({
   cards:
     'id, deckId, sourceLanguage, targetLanguage, sourceWord, targetWord, pronunciation, remark', // id is primary key, others are indexed
 });
+
+// Migration to remove amount field from decks
+db.version(2)
+    .stores({
+        decks: 'id, topic, description, languageFrom, languageTo',
+        cards:
+            'id, deckId, sourceLanguage, targetLanguage, sourceWord, targetWord, pronunciation, remark', // id is primary key, others are indexed
+    })
+    .upgrade(tx => {
+        // Remove amount field from existing decks
+        return tx
+            .table('decks')
+            .toCollection()
+            .modify(deck => {
+                delete (deck as any).amount;
+            });
+    });
 
 export default db;
