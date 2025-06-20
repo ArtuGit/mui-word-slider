@@ -84,6 +84,7 @@ export const deckService = {
    */
   deleteDeck: async (id: string): Promise<void> => {
     try {
+      await delay(Math.random() * 2000 + 500);
       await DeckIndexedDbProvider.deleteDeck(id);
     } catch (error) {
       console.error('Failed to delete deck:', error);
