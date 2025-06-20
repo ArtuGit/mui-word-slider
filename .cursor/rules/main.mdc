@@ -13,6 +13,7 @@ alwaysApply: true
 - React router is used
 - Zustand is state manager
 - Formik is form manager
+- Dexie is used for IndexedDB storage
 
 
 
