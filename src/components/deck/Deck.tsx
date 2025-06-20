@@ -19,7 +19,7 @@ import {
 import {
   Delete as DeleteIcon,
   Edit as EditIcon,
-  PlayArrow as PlayArrowIcon,
+  FolderOpen as FolderOpenIcon,
   Translate as TranslateIcon,
 } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
@@ -87,7 +87,7 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
   const { deleteDeck } = useDecksStore();
   const { enqueueSnackbar } = useSnackbar();
 
-  const handlePlay = (e: React.MouseEvent) => {
+  const handleBrowse = (e: React.MouseEvent) => {
     e.stopPropagation();
     onPlay?.(deck);
   };
@@ -145,10 +145,10 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
             />
 
             <ActionButtons>
-              <Tooltip title="Play Deck">
+              <Tooltip title="Browse Deck">
                 <IconButton
                   size="small"
-                  onClick={handlePlay}
+                  onClick={handleBrowse}
                   sx={{
                     color: 'inherit',
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -159,7 +159,7 @@ export const Deck: FC<DeckProps> = ({ deck, onPlay, onEdit, onDelete }) => {
                     },
                   }}
                 >
-                  <PlayArrowIcon sx={{ fontSize: '1rem' }} />
+                  <FolderOpenIcon sx={{ fontSize: '1rem' }} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Edit Deck">
