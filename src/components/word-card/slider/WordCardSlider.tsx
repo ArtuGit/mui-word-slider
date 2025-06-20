@@ -18,24 +18,23 @@ interface ArrowProps {
   onDirectionChange: (direction: 'left' | 'right') => void;
 }
 
-const OuterContainer = styled(Box)(({ theme }) => ({
-  width: '90%',
-  maxWidth: '600px',
+const OuterContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+}));
+
+const SliderCardWrapper = styled(Box)(({theme}) => ({
+  position: 'relative',
+  width: '90%',
+  maxWidth: '600px',
   [theme.breakpoints.up('lg')]: {
     maxWidth: '900px',
   },
   [theme.breakpoints.up('xl')]: {
     maxWidth: '1200px',
   },
-}));
-
-const SliderCardWrapper = styled(Box)(() => ({
-  position: 'relative',
-  width: '100%',
   margin: '0 auto',
   '& .slick-slider': {
     width: '100%',
