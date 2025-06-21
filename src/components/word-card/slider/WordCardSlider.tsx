@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 interface WordCardSliderProps {
   words: ICard[];
+  onDeleteCard?: (cardId: string) => void;
 }
 
 interface ArrowProps {
@@ -128,7 +129,7 @@ const PrevArrow: FC<ArrowProps> = props => {
   );
 };
 
-export const WordCardSlider: FC<WordCardSliderProps> = ({ words }) => {
+export const WordCardSlider: FC<WordCardSliderProps> = ({words, onDeleteCard}) => {
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [current, setCurrent] = useState(0);
 
@@ -167,6 +168,7 @@ export const WordCardSlider: FC<WordCardSliderProps> = ({ words }) => {
                 pronunciation={word.pronunciation}
                 remark={word.remark}
                 sourceLanguage={word.sourceLanguage}
+                onDelete={() => onDeleteCard?.(word.id)}
               />
             </div>
           ))}

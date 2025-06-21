@@ -5,9 +5,10 @@ import WordCard from './WordCard.tsx';
 
 interface WordCardListProps {
   words: ICard[];
+    onDeleteCard?: (cardId: string) => void;
 }
 
-const WordCardList: FC<WordCardListProps> = ({ words }) => {
+const WordCardList: FC<WordCardListProps> = ({words, onDeleteCard}) => {
   return (
     <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', px: 2 }}>
       <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
@@ -23,7 +24,7 @@ const WordCardList: FC<WordCardListProps> = ({ words }) => {
               },
             }}
           >
-            <WordCard word={word} />
+              <WordCard word={word} onDelete={onDeleteCard}/>
           </Grid>
         ))}
       </Grid>

@@ -11,6 +11,7 @@ interface ICardsState {
   // Actions
   saveCards: (cards: ICard[], deckId: string) => Promise<void>;
   deleteCards: (deckId: string) => Promise<void>;
+  deleteCard: (cardId: string) => Promise<void>;
   getCards: (deckId: string) => Promise<void>;
   clearCards: () => void;
   getCardsAmount: (deckId: string) => Promise<number>;
@@ -63,6 +64,23 @@ export const useCardsStore = create<ICardsState>((set, _get) => ({
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to delete cards',
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  deleteCard: async (cardId: string) => {
+    set({isLoading: true, error: null});
+    try {
+      await cardService.deleteCard(cardId);
+      set(state => ({
+        words: state.words.filter(word => word.id !== cardId),
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to delete card',
         isLoading: false,
       });
       throw error;

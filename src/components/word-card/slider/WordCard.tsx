@@ -1,13 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import { Box, Card, CardContent, IconButton, styled, Tooltip, Typography } from '@mui/material';
-import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
+import {VolumeUp as VolumeUpIcon, Delete as DeleteIcon} from '@mui/icons-material';
 import { ICard } from '../../../types/card.types.ts';
 import { speechService } from '../../../services/speech.service.ts';
 
 type CardProps = Pick<
   ICard,
   'sourceWord' | 'targetWord' | 'pronunciation' | 'remark' | 'sourceLanguage'
->;
+> & {
+  onDelete?: () => void;
+};
 
 // Styled components for custom card sections
 const CardSection = styled(Box)(({ theme }) => ({
@@ -147,9 +149,11 @@ export const WordCard: FC<CardProps> = ({
   pronunciation,
   remark,
   sourceLanguage,
+                                          onDelete,
 }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isSpeechAvailable, setIsSpeechAvailable] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Check speech availability when component mounts and when voices change
   useEffect(() => {
@@ -205,8 +209,13 @@ export const WordCard: FC<CardProps> = ({
     }
   };
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDelete?.();
+  };
+
   return (
-    <StyledCard>
+      <StyledCard onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <CardContent
         sx={{
           display: 'flex',
@@ -216,6 +225,25 @@ export const WordCard: FC<CardProps> = ({
         }}
       >
         <UpperSection>
+          {onDelete && isHovered && (
+              <IconButton
+                  aria-label="delete"
+                  onClick={handleDelete}
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    left: 8,
+                    zIndex: 1,
+                    color: 'white',
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(0,0,0,0.5)',
+                    },
+                  }}
+              >
+                <DeleteIcon fontSize="small"/>
+              </IconButton>
+          )}
           {isSpeechAvailable && (
             <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
               <SpeechButton onClick={handleSpeak} size="medium">

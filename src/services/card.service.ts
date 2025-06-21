@@ -103,4 +103,17 @@ export const cardService = {
       throw error;
     }
   },
+
+  /**
+   * Delete a single card from IndexedDB
+   */
+  deleteCard: async (cardId: string): Promise<void> => {
+    try {
+      await delay(Math.random() * 1000 + 500);
+      await CardIndexedDbProvider.deleteCard(cardId);
+    } catch (error) {
+      console.error('Failed to delete card:', error);
+      throw error;
+    }
+  },
 };

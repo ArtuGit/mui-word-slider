@@ -122,4 +122,16 @@ export class CardIndexedDbProvider {
       throw new Error('Failed to search cards in local storage');
     }
   }
+
+  /**
+   * Delete a single card by its ID
+   */
+  static async deleteCard(cardId: string): Promise<void> {
+    try {
+      await db.cards.delete(cardId);
+    } catch (error) {
+      console.error('Failed to delete card from IndexedDB:', error);
+      throw new Error('Failed to delete card from local storage');
+    }
+  }
 }

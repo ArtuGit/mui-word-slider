@@ -16,16 +16,18 @@ import WordCardList from '../components/word-card/list/WordCardList.tsx';
 import DisplayModeTabs from '../components/ui/DisplayModeTabs.tsx';
 import { useCardsStore } from '../stores/useCardsStore.ts';
 import { useDecksStore } from '../stores/useDecksStore';
-import type { IDeck } from '../types/deck.types';
+import type {IDeckWithAmount} from '../types/deck.types';
 import LoadingProgress from '../components/ui/LoadingProgress';
+import {useSnackbar} from 'notistack';
 
 export const WordLearningPage: FC = () => {
   const { deckId } = useParams<{ deckId: string }>();
   const navigate = useNavigate();
-  const { words, isLoading, error, clearError, clearCards, getCards } = useCardsStore();
+  const {words, isLoading, error, clearError, clearCards, getCards, deleteCard} = useCardsStore();
   const { getDeckById } = useDecksStore();
   const theme = useTheme();
-  const [deck, setDeck] = useState<IDeck | null>(null);
+  const {enqueueSnackbar} = useSnackbar();
+  const [deck, setDeck] = useState<IDeckWithAmount | null>(null);
   const [isDeckLoading, setIsDeckLoading] = useState(true);
 
   useEffect(() => {
@@ -54,6 +56,15 @@ export const WordLearningPage: FC = () => {
     loadDeckAndWords();
   }, [deckId, navigate, getDeckById, getCards, clearCards]);
 
+  const handleDeleteCard = async (cardId: string) => {
+    try {
+      await deleteCard(cardId);
+      enqueueSnackbar('Card successfully deleted', {variant: 'success'});
+    } catch (e) {
+      enqueueSnackbar('Failed to delete card', {variant: 'error'});
+    }
+  };
+
   let content;
   if (isDeckLoading || isLoading) {
     content = <LoadingProgress />;
@@ -67,8 +78,8 @@ export const WordLearningPage: FC = () => {
     content = (
       <DisplayModeTabs
         words={words}
-        listComponent={<WordCardList words={words} />}
-        sliderComponent={<WordCardSlider words={words} />}
+        listComponent={<WordCardList words={words} onDeleteCard={handleDeleteCard}/>}
+        sliderComponent={<WordCardSlider words={words} onDeleteCard={handleDeleteCard}/>}
       />
     );
   } else {
