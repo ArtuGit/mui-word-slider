@@ -8,7 +8,6 @@ alwaysApply: true
 - Users can manage decks of word cards: create, edit, and delete decks
 - Users can browse decks in two modes: List (grid) and Slider
 
-
 ## Front End
 - React MUI Typescript Project
 - Follow best Front End modern practices
@@ -22,7 +21,3 @@ alwaysApply: true
 
 ##  Storage
 - Dexie is used for IndexedDB storage
-
-
-
-
