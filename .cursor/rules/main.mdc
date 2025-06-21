@@ -6,7 +6,7 @@ alwaysApply: true
 
 ## Features
 - Users can manage decks of word cards: create, edit, and delete decks
-- Users can browse decks in two modes: list and grid
+- Users can browse decks in two modes: List (grid) and Slider
 
 
 ## Front End
