@@ -1,26 +1,26 @@
-import {FC, useState} from 'react';
-import {Box, Card, CardContent, IconButton, Typography, useTheme} from '@mui/material';
+import { FC, useState } from 'react';
+import { Box, Card, CardContent, IconButton, Typography, useTheme } from '@mui/material';
 import { ICard } from '../../../types/card.types.ts';
-import {Delete as DeleteIcon} from '@mui/icons-material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
 interface WordCardProps {
   word: ICard;
-    onDelete?: (cardId: string) => void;
+  onDelete?: (cardId: string) => void;
 }
 
-const WordCard: FC<WordCardProps> = ({word, onDelete}) => {
+const WordCard: FC<WordCardProps> = ({ word, onDelete }) => {
   const theme = useTheme();
-    const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-    const handleDelete = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent card click event
-        onDelete?.(word.id);
-    };
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click event
+    onDelete?.(word.id);
+  };
 
   return (
     <Card
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       elevation={2}
       sx={{
         minHeight: 140,
@@ -35,28 +35,28 @@ const WordCard: FC<WordCardProps> = ({word, onDelete}) => {
         borderRadius: 3,
         display: 'flex',
         flexDirection: 'column',
-          position: 'relative', // for positioning the delete button
+        position: 'relative', // for positioning the delete button
       }}
     >
-        {onDelete && isHovered && (
-            <IconButton
-                aria-label="delete"
-                onClick={handleDelete}
-                sx={{
-                    position: 'absolute',
-                    top: 8,
-                    right: 8,
-                    zIndex: 1,
-                    color: 'white',
-                    backgroundColor: 'rgba(0,0,0,0.3)',
-                    '&:hover': {
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                    },
-                }}
-            >
-                <DeleteIcon fontSize="small"/>
-            </IconButton>
-        )}
+      {onDelete && isHovered && (
+        <IconButton
+          aria-label="delete"
+          onClick={handleDelete}
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            zIndex: 1,
+            color: 'white',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            '&:hover': {
+              backgroundColor: 'rgba(0,0,0,0.5)',
+            },
+          }}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      )}
       <CardContent
         sx={{
           p: 2,
