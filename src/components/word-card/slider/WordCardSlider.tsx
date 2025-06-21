@@ -144,8 +144,8 @@ export const WordCardSlider: FC<WordCardSliderProps> = ({ words }) => {
     autoplay: hasMultipleCards,
     autoplaySpeed: 3000,
     pauseOnHover: true,
-    nextArrow: hasMultipleCards ? <NextArrow onDirectionChange={setSlideDirection}/> : null,
-    prevArrow: hasMultipleCards ? <PrevArrow onDirectionChange={setSlideDirection}/> : null,
+    nextArrow: hasMultipleCards ? <NextArrow onDirectionChange={setSlideDirection}/> : undefined,
+    prevArrow: hasMultipleCards ? <PrevArrow onDirectionChange={setSlideDirection}/> : undefined,
     beforeChange: (oldIndex: number, next: number) => {
       const direction = next > oldIndex ? 'right' : 'left';
       setSlideDirection(direction);

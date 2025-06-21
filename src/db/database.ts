@@ -30,8 +30,8 @@ db.version(2)
         return tx
             .table('decks')
             .toCollection()
-            .modify(deck => {
-                delete (deck as any).amount;
+            .modify((deck: Record<string, unknown>) => {
+                delete deck.amount;
             });
     });
 
