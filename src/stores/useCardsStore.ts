@@ -71,7 +71,7 @@ export const useCardsStore = create<ICardsState>((set, _get) => ({
   },
 
   deleteCard: async (cardId: string) => {
-    set({isLoading: true, error: null});
+    set({ isLoading: true, error: null });
     try {
       await cardService.deleteCard(cardId);
       set(state => ({

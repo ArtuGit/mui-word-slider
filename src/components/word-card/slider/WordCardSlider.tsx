@@ -129,7 +129,7 @@ const PrevArrow: FC<ArrowProps> = props => {
   );
 };
 
-export const WordCardSlider: FC<WordCardSliderProps> = ({words, onDeleteCard}) => {
+export const WordCardSlider: FC<WordCardSliderProps> = ({ words, onDeleteCard }) => {
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [current, setCurrent] = useState(0);
 

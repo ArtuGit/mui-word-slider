@@ -16,17 +16,17 @@ import WordCardList from '../components/word-card/list/WordCardList.tsx';
 import DisplayModeTabs from '../components/ui/DisplayModeTabs.tsx';
 import { useCardsStore } from '../stores/useCardsStore.ts';
 import { useDecksStore } from '../stores/useDecksStore';
-import type {IDeckWithAmount} from '../types/deck.types';
+import type { IDeckWithAmount } from '../types/deck.types';
 import LoadingProgress from '../components/ui/LoadingProgress';
-import {useSnackbar} from 'notistack';
+import { useSnackbar } from 'notistack';
 
 export const WordLearningPage: FC = () => {
   const { deckId } = useParams<{ deckId: string }>();
   const navigate = useNavigate();
-  const {words, isLoading, error, clearError, clearCards, getCards, deleteCard} = useCardsStore();
+  const { words, isLoading, error, clearError, clearCards, getCards, deleteCard } = useCardsStore();
   const { getDeckById } = useDecksStore();
   const theme = useTheme();
-  const {enqueueSnackbar} = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [deck, setDeck] = useState<IDeckWithAmount | null>(null);
   const [isDeckLoading, setIsDeckLoading] = useState(true);
 
@@ -59,9 +59,9 @@ export const WordLearningPage: FC = () => {
   const handleDeleteCard = async (cardId: string) => {
     try {
       await deleteCard(cardId);
-      enqueueSnackbar('Card successfully deleted', {variant: 'success'});
+      enqueueSnackbar('Card successfully deleted', { variant: 'success' });
     } catch (e) {
-      enqueueSnackbar('Failed to delete card', {variant: 'error'});
+      enqueueSnackbar('Failed to delete card', { variant: 'error' });
     }
   };
 
@@ -78,8 +78,8 @@ export const WordLearningPage: FC = () => {
     content = (
       <DisplayModeTabs
         words={words}
-        listComponent={<WordCardList words={words} onDeleteCard={handleDeleteCard}/>}
-        sliderComponent={<WordCardSlider words={words} onDeleteCard={handleDeleteCard}/>}
+        listComponent={<WordCardList words={words} onDeleteCard={handleDeleteCard} />}
+        sliderComponent={<WordCardSlider words={words} onDeleteCard={handleDeleteCard} />}
       />
     );
   } else {
