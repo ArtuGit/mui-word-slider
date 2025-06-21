@@ -132,17 +132,20 @@ export const WordCardSlider: FC<WordCardSliderProps> = ({ words }) => {
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [current, setCurrent] = useState(0);
 
+  // Disable infinite scroll and autoplay when there's only one card
+  const hasMultipleCards = words.length > 1;
+
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: hasMultipleCards,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: hasMultipleCards,
     autoplaySpeed: 3000,
     pauseOnHover: true,
-    nextArrow: <NextArrow onDirectionChange={setSlideDirection} />,
-    prevArrow: <PrevArrow onDirectionChange={setSlideDirection} />,
+    nextArrow: hasMultipleCards ? <NextArrow onDirectionChange={setSlideDirection}/> : null,
+    prevArrow: hasMultipleCards ? <PrevArrow onDirectionChange={setSlideDirection}/> : null,
     beforeChange: (oldIndex: number, next: number) => {
       const direction = next > oldIndex ? 'right' : 'left';
       setSlideDirection(direction);
