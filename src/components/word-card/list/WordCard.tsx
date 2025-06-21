@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
-import { Box, Card, CardContent, IconButton, Typography, useTheme } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+import { Box, Card, CardContent, IconButton, Tooltip, Typography, useTheme } from '@mui/material';
 import { ICard } from '../../../types/card.types.ts';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon, VolumeUp as VolumeUpIcon } from '@mui/icons-material';
+import { speechService } from '../../../services/speech.service.ts';
 
 interface WordCardProps {
   word: ICard;
@@ -11,10 +12,57 @@ interface WordCardProps {
 const WordCard: FC<WordCardProps> = ({ word, onDelete }) => {
   const theme = useTheme();
   const [isHovered, setIsHovered] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSpeechAvailable, setIsSpeechAvailable] = useState(false);
+
+  useEffect(() => {
+    const checkSpeechAvailability = () => {
+      const available =
+        speechService.isSupported() &&
+        Boolean(word.sourceLanguage) &&
+        speechService.isLanguageSupported(word.sourceLanguage);
+      setIsSpeechAvailable(available);
+    };
+
+    checkSpeechAvailability();
+
+    if (speechService.isSupported() && window.speechSynthesis) {
+      const handleVoicesChanged = () => {
+        setTimeout(checkSpeechAvailability, 100);
+      };
+      window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+      return () => {
+        window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+      };
+    }
+  }, [word.sourceLanguage]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click event
     onDelete?.(word.id);
+  };
+
+  const handleSpeak = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isSpeechAvailable) return;
+
+    if (isSpeaking) {
+      speechService.stop();
+      setIsSpeaking(false);
+      return;
+    }
+
+    try {
+      setIsSpeaking(true);
+      await speechService.speak(word.sourceWord, {
+        language: word.sourceLanguage,
+        rate: 0.9,
+        pitch: 1.0,
+        volume: 1.0,
+      });
+    } finally {
+      setIsSpeaking(false);
+    }
   };
 
   return (
@@ -66,7 +114,7 @@ const WordCard: FC<WordCardProps> = ({ word, onDelete }) => {
           gap: 0.25,
         }}
       >
-        <Box sx={{ mb: 1 }}>
+        <Box sx={{ mb: 1, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <Typography
             variant="h6"
             sx={{
@@ -104,17 +152,40 @@ const WordCard: FC<WordCardProps> = ({ word, onDelete }) => {
           }}
         >
           {word.pronunciation && (
-            <Typography
-              variant="body2"
-              sx={{
-                fontStyle: 'italic',
-                color: theme.palette.text.secondary,
-                fontSize: '1rem',
-                lineHeight: 1.2,
-              }}
-            >
-              {word.pronunciation}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontStyle: 'italic',
+                  color: theme.palette.text.secondary,
+                  fontSize: '1rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                {word.pronunciation}
+              </Typography>
+              {isSpeechAvailable && (
+                <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
+                  <span>
+                    <IconButton
+                      onClick={handleSpeak}
+                      size="small"
+                      disabled={!isSpeechAvailable}
+                      sx={{
+                        ml: 0.5,
+                        color: theme.palette.text.secondary,
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                          color: theme.palette.primary.main,
+                        },
+                      }}
+                    >
+                      <VolumeUpIcon fontSize="small" />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
+            </Box>
           )}
 
           {word.remark && (
