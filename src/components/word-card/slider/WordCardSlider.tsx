@@ -6,8 +6,6 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { ICard } from '../../../types/card.types.ts';
 import WordCard from './WordCard.tsx';
 
-1;
-
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
