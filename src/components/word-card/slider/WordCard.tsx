@@ -1,13 +1,15 @@
-import { FC, useState, useEffect } from 'react';
-import { Box, Card, CardContent, styled, Typography, IconButton, Tooltip } from '@mui/material';
-import { VolumeUp as VolumeUpIcon } from '@mui/icons-material';
-import { WordPair } from '../../types/word.types';
-import { speechService } from '../../services/speech.service';
+import { FC, useEffect, useState } from 'react';
+import { Box, Card, CardContent, IconButton, styled, Tooltip, Typography } from '@mui/material';
+import { VolumeUp as VolumeUpIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { ICard } from '../../../types/card.types.ts';
+import { speechService } from '../../../services/speech.service.ts';
 
-type WordCardProps = Pick<
-  WordPair,
+type CardProps = Pick<
+  ICard,
   'sourceWord' | 'targetWord' | 'pronunciation' | 'remark' | 'sourceLanguage'
->;
+> & {
+  onDelete?: () => void;
+};
 
 // Styled components for custom card sections
 const CardSection = styled(Box)(({ theme }) => ({
@@ -118,7 +120,7 @@ const RemarkTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const SpeechButton = styled(IconButton)(({ theme }) => ({
+const ActionButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
   right: theme.spacing(2),
@@ -141,15 +143,17 @@ const SpeechButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const WordCard: FC<WordCardProps> = ({
+export const WordCard: FC<CardProps> = ({
   sourceWord,
   targetWord,
   pronunciation,
   remark,
   sourceLanguage,
+  onDelete,
 }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isSpeechAvailable, setIsSpeechAvailable] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Check speech availability when component mounts and when voices change
   useEffect(() => {
@@ -205,8 +209,13 @@ export const WordCard: FC<WordCardProps> = ({
     }
   };
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDelete?.();
+  };
+
   return (
-    <StyledCard>
+    <StyledCard onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <CardContent
         sx={{
           display: 'flex',
@@ -216,19 +225,40 @@ export const WordCard: FC<WordCardProps> = ({
         }}
       >
         <UpperSection>
-          {isSpeechAvailable && (
-            <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
-              <SpeechButton onClick={handleSpeak} size="medium">
-                <VolumeUpIcon />
-              </SpeechButton>
+          {onDelete && isHovered && (
+            <Tooltip title="Delete card">
+              <ActionButton onClick={handleDelete} size="medium">
+                <DeleteIcon />
+              </ActionButton>
             </Tooltip>
           )}
           <WordTypography variant="h1" color="text.primary">
             {sourceWord}
           </WordTypography>
-          <PronunciationTypography variant="body1" color="text.primary">
-            {pronunciation}
-          </PronunciationTypography>
+          <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
+            <PronunciationTypography variant="body1" color="text.primary">
+              {pronunciation}
+            </PronunciationTypography>
+            {isSpeechAvailable && (
+              <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
+                <IconButton
+                  onClick={handleSpeak}
+                  size="medium"
+                  sx={{
+                    ml: 1,
+                    color: 'text.primary',
+                    opacity: 0.9,
+                    '&:hover': {
+                      opacity: 1,
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                  }}
+                >
+                  <VolumeUpIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
         </UpperSection>
         <LowerSection>
           <WordTypography variant="h1" color="background.paper">

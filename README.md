@@ -4,13 +4,16 @@
 
 ## Project Overview
 
-MemVocab is a modern web application designed to help users learn and memorize vocabulary through interactive flashcard-style learning. The application provides an engaging, user-friendly interface for language learners to practice word pairs and build their vocabulary effectively.
+MemVocab is a modern web application designed to help users learn and memorize vocabulary through interactive
+flashcard-style learning. The application provides an engaging, user-friendly interface for language learners to
+practice cards and build their vocabulary effectively.
 
 ### Key Features
 
 - **Interactive Learning Experience**: Users can practice vocabulary through a swipe-based flashcard interface that makes learning engaging and intuitive
 - **Custom Vocabulary Sets**: Upload and manage personalized word pair collections in JSON format to focus on specific learning goals
-- **Pronunciation Support**: IPA (International Phonetic Alphabet) transcription display for all word pairs helps users learn correct pronunciation
+- **Pronunciation Support**: IPA (International Phonetic Alphabet) transcription display for all cards helps users learn
+  correct pronunciation
 - **Contextual Remarks**: Optional additional context and meaning clarification for better understanding
 - **Offline Capability**: All vocabulary data is stored locally, allowing users to continue learning without an internet connection
 - **Progress Tracking**: Visual feedback and smooth transitions help users track their learning progress

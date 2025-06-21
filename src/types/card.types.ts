@@ -1,5 +1,6 @@
-export interface WordPair {
+export interface ICard {
   id: string;
+  deckId: string;
   sourceLanguage: string;
   targetLanguage: string;
   sourceWord: string;
@@ -8,4 +9,4 @@ export interface WordPair {
   remark?: string; // Optional additional context or meaning clarification
 }
 
-export type WordPairList = WordPair[];
+export type ICardList = ICard[];

@@ -1,14 +1,73 @@
-import { FC } from 'react';
-import { Alert, Box, CircularProgress, Container } from '@mui/material';
-import WordSlider from '../components/word/WordSlider';
-import { useWordsStore } from '../stores/useWordsStore';
+import { FC, useEffect, useState } from 'react';
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import WordCardSlider from '../components/word-card/slider/WordCardSlider.tsx';
+import WordCardList from '../components/word-card/list/WordCardList.tsx';
+import DisplayModeTabs from '../components/ui/DisplayModeTabs.tsx';
+import { useCardsStore } from '../stores/useCardsStore.ts';
+import { useDecksStore } from '../stores/useDecksStore';
+import type { IDeckWithAmount } from '../types/deck.types';
+import LoadingProgress from '../components/ui/LoadingProgress';
+import { useSnackbar } from 'notistack';
 
 export const WordLearningPage: FC = () => {
-  const { words, isLoading, error, clearError } = useWordsStore();
+  const { deckId } = useParams<{ deckId: string }>();
+  const navigate = useNavigate();
+  const { words, isLoading, error, clearError, clearCards, getCards, deleteCard } = useCardsStore();
+  const { getDeckById } = useDecksStore();
+  const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
+  const [deck, setDeck] = useState<IDeckWithAmount | null>(null);
+  const [isDeckLoading, setIsDeckLoading] = useState(true);
+
+  useEffect(() => {
+    const loadDeckAndWords = async () => {
+      if (!deckId) {
+        navigate('/decks');
+        return;
+      }
+      try {
+        setIsDeckLoading(true);
+        clearCards();
+        const foundDeck = await getDeckById(deckId);
+        if (!foundDeck) {
+          navigate('/decks');
+          return;
+        }
+        setDeck(foundDeck);
+        await getCards(deckId);
+      } catch (error) {
+        console.error('Failed to load deck and words:', error);
+        navigate('/decks');
+      } finally {
+        setIsDeckLoading(false);
+      }
+    };
+    loadDeckAndWords();
+  }, [deckId, navigate, getDeckById, getCards, clearCards]);
+
+  const handleDeleteCard = async (cardId: string) => {
+    try {
+      await deleteCard(cardId);
+      enqueueSnackbar('Card successfully deleted', { variant: 'success' });
+    } catch (e) {
+      enqueueSnackbar('Failed to delete card', { variant: 'error' });
+    }
+  };
 
   let content;
-  if (isLoading) {
-    content = <CircularProgress size={60} />;
+  if (isDeckLoading || isLoading) {
+    content = <LoadingProgress />;
   } else if (error) {
     content = (
       <Alert severity="error" onClose={clearError}>
@@ -16,13 +75,82 @@ export const WordLearningPage: FC = () => {
       </Alert>
     );
   } else if (words.length > 0) {
-    content = <WordSlider words={words} />;
+    content = (
+      <DisplayModeTabs
+        words={words}
+        listComponent={<WordCardList words={words} onDeleteCard={handleDeleteCard} />}
+        sliderComponent={<WordCardSlider words={words} onDeleteCard={handleDeleteCard} />}
+      />
+    );
   } else {
-    content = <Alert severity="info">No words available. Please upload some word pairs.</Alert>;
+    content = <Alert severity="info">No words available for this deck.</Alert>;
   }
 
   return (
     <Container maxWidth="lg">
+      {deck && !isDeckLoading && (
+        <Card
+          elevation={0}
+          sx={{
+            mb: 2,
+            bgcolor: 'background.default',
+            borderRadius: 2,
+            p: { xs: 1, sm: 2 },
+            maxWidth: 500,
+            mx: 'auto',
+            opacity: 0.85,
+          }}
+        >
+          <CardContent sx={{ p: 0 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 500,
+                fontSize: { xs: '1.1rem', sm: '1.2rem' },
+                mb: 0.5,
+                textAlign: 'center',
+                color: theme.palette.text.primary,
+              }}
+            >
+              {deck.topic}
+            </Typography>
+            {deck.description && (
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: { xs: '0.95rem', sm: '1rem' },
+                  mb: 1,
+                  textAlign: 'center',
+                  color: theme.palette.text.primary,
+                }}
+              >
+                {deck.description}
+              </Typography>
+            )}
+            <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
+              <Chip
+                size="small"
+                label={deck.languageFrom}
+                sx={{
+                  bgcolor: theme.palette.primary.main,
+                  color: theme.palette.text.primary,
+                  fontSize: '0.85rem',
+                }}
+              />
+              <Chip
+                size="small"
+                label={deck.languageTo}
+                sx={{
+                  bgcolor: theme.palette.secondary.main,
+                  color: theme.palette.background.paper,
+                  fontSize: '0.85rem',
+                }}
+              />
+            </Stack>
+          </CardContent>
+        </Card>
+      )}
+
       <Box
         sx={{
           display: 'flex',

@@ -3,14 +3,15 @@ import Slider from 'react-slick';
 import { Box, IconButton, styled, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { WordPair } from '../../types/word.types';
-import WordCard from './WordCard';
+import { ICard } from '../../../types/card.types.ts';
+import WordCard from './WordCard.tsx';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-interface WordSliderProps {
-  words: WordPair[];
+interface WordCardSliderProps {
+  words: ICard[];
+  onDeleteCard?: (cardId: string) => void;
 }
 
 interface ArrowProps {
@@ -18,24 +19,23 @@ interface ArrowProps {
   onDirectionChange: (direction: 'left' | 'right') => void;
 }
 
-const OuterContainer = styled(Box)(({ theme }) => ({
-  width: '90%',
-  maxWidth: '600px',
+const OuterContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+}));
+
+const SliderCardWrapper = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  width: '90%',
+  maxWidth: '600px',
   [theme.breakpoints.up('lg')]: {
     maxWidth: '900px',
   },
   [theme.breakpoints.up('xl')]: {
     maxWidth: '1200px',
   },
-}));
-
-const SliderCardWrapper = styled(Box)(() => ({
-  position: 'relative',
-  width: '100%',
   margin: '0 auto',
   '& .slick-slider': {
     width: '100%',
@@ -129,21 +129,24 @@ const PrevArrow: FC<ArrowProps> = props => {
   );
 };
 
-export const WordSlider: FC<WordSliderProps> = ({ words }) => {
+export const WordCardSlider: FC<WordCardSliderProps> = ({ words, onDeleteCard }) => {
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [current, setCurrent] = useState(0);
 
+  // Disable infinite scroll and autoplay when there's only one card
+  const hasMultipleCards = words.length > 1;
+
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: hasMultipleCards,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: hasMultipleCards,
     autoplaySpeed: 3000,
     pauseOnHover: true,
-    nextArrow: <NextArrow onDirectionChange={setSlideDirection} />,
-    prevArrow: <PrevArrow onDirectionChange={setSlideDirection} />,
+    nextArrow: hasMultipleCards ? <NextArrow onDirectionChange={setSlideDirection} /> : undefined,
+    prevArrow: hasMultipleCards ? <PrevArrow onDirectionChange={setSlideDirection} /> : undefined,
     beforeChange: (oldIndex: number, next: number) => {
       const direction = next > oldIndex ? 'right' : 'left';
       setSlideDirection(direction);
@@ -165,6 +168,7 @@ export const WordSlider: FC<WordSliderProps> = ({ words }) => {
                 pronunciation={word.pronunciation}
                 remark={word.remark}
                 sourceLanguage={word.sourceLanguage}
+                onDelete={() => onDeleteCard?.(word.id)}
               />
             </div>
           ))}
@@ -175,4 +179,4 @@ export const WordSlider: FC<WordSliderProps> = ({ words }) => {
   );
 };
 
-export default WordSlider;
+export default WordCardSlider;
