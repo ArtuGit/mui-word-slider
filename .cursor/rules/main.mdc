@@ -21,3 +21,6 @@ alwaysApply: true
 
 ##  Storage
 - Dexie is used for IndexedDB storage
+
+## Auth
+- Supabase is used for authentication
