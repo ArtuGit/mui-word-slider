@@ -120,7 +120,7 @@ const RemarkTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const SpeechButton = styled(IconButton)(({ theme }) => ({
+const ActionButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
   right: theme.spacing(2),
@@ -226,37 +226,39 @@ export const WordCard: FC<CardProps> = ({
       >
         <UpperSection>
           {onDelete && isHovered && (
-            <IconButton
-              aria-label="delete"
-              onClick={handleDelete}
-              sx={{
-                position: 'absolute',
-                top: 8,
-                left: 8,
-                zIndex: 1,
-                color: 'white',
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                '&:hover': {
-                  backgroundColor: 'rgba(0,0,0,0.5)',
-                },
-              }}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          )}
-          {isSpeechAvailable && (
-            <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
-              <SpeechButton onClick={handleSpeak} size="medium">
-                <VolumeUpIcon />
-              </SpeechButton>
+            <Tooltip title="Delete card">
+              <ActionButton onClick={handleDelete} size="medium">
+                <DeleteIcon />
+              </ActionButton>
             </Tooltip>
           )}
           <WordTypography variant="h1" color="text.primary">
             {sourceWord}
           </WordTypography>
-          <PronunciationTypography variant="body1" color="text.primary">
-            {pronunciation}
-          </PronunciationTypography>
+          <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
+            <PronunciationTypography variant="body1" color="text.primary">
+              {pronunciation}
+            </PronunciationTypography>
+            {isSpeechAvailable && (
+              <Tooltip title={isSpeaking ? 'Stop pronunciation' : 'Pronounce word'}>
+                <IconButton
+                  onClick={handleSpeak}
+                  size="medium"
+                  sx={{
+                    ml: 1,
+                    color: 'text.primary',
+                    opacity: 0.9,
+                    '&:hover': {
+                      opacity: 1,
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                  }}
+                >
+                  <VolumeUpIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
         </UpperSection>
         <LowerSection>
           <WordTypography variant="h1" color="background.paper">

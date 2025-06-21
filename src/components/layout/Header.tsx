@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import MainMenu from './MainMenu.tsx';
+import MainMenu from './menu/MainMenu.tsx';
 
 export const Header: FC = () => {
   const navigate = useNavigate();
