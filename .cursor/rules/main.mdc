@@ -3,8 +3,14 @@ description:
 globs: 
 alwaysApply: true
 ---
-## React MUI Typescript Project
 
+## Features
+- Users can manage decks of word cards: create, edit, and delete decks
+- Users can browse decks in two modes: list and grid
+
+
+## Front End
+- React MUI Typescript Project
 - Follow best Front End modern practices
 - See package.json for dependencies, suggest installing new dependencies if needed
 - Implement features step by step according to instructions to the Agent
@@ -13,6 +19,8 @@ alwaysApply: true
 - React router is used
 - Zustand is state manager
 - Formik is form manager
+
+##  Storage
 - Dexie is used for IndexedDB storage
 
 
