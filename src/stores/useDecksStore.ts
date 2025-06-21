@@ -1,6 +1,6 @@
-import {create} from 'zustand';
-import {IDeck, IDeckWithAmount} from '../types/deck.types';
-import {deckService} from '../services/deck.service';
+import { create } from 'zustand';
+import { IDeck, IDeckWithAmount } from '../types/deck.types';
+import { deckService } from '../services/deck.service';
 
 interface IDecksState {
   decks: IDeckWithAmount[];

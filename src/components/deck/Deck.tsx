@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import { FC, useState } from 'react';
 import {
   Box,
   Button,
@@ -22,10 +22,10 @@ import {
   FolderOpen as FolderOpenIcon,
   Translate as TranslateIcon,
 } from '@mui/icons-material';
-import {useSnackbar} from 'notistack';
-import {IDeckWithAmount as DeckType} from '../../types/deck.types';
-import {useDecksStore} from '../../stores/useDecksStore';
-import {cardService} from '../../services/card.service.ts';
+import { useSnackbar } from 'notistack';
+import { IDeckWithAmount as DeckType } from '../../types/deck.types';
+import { useDecksStore } from '../../stores/useDecksStore';
+import { cardService } from '../../services/card.service.ts';
 
 interface DeckProps {
   deck: DeckType;

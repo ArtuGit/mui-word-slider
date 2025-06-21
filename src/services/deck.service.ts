@@ -1,7 +1,7 @@
-import {IDeck, IDeckWithAmount} from '../types/deck.types';
-import {DeckIndexedDbProvider} from './deck.indexed-db-provider';
-import {INITIAL_DECKS} from '../constants/initial-data';
-import {delay} from '../utils/time.utils.ts';
+import { IDeck, IDeckWithAmount } from '../types/deck.types';
+import { DeckIndexedDbProvider } from './deck.indexed-db-provider';
+import { INITIAL_DECKS } from '../constants/initial-data';
+import { delay } from '../utils/time.utils.ts';
 
 export const deckService = {
   /**

@@ -1,4 +1,4 @@
-import type {ICard} from './card.types';
+import type { ICard } from './card.types';
 
 export interface IDeck {
   id: string;

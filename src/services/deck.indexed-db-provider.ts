@@ -1,6 +1,6 @@
-import {db} from '../db/database';
-import {IDeck, IDeckWithAmount} from '../types/deck.types';
-import {CardIndexedDbProvider} from './card-indexed-db.provider';
+import { db } from '../db/database';
+import { IDeck, IDeckWithAmount } from '../types/deck.types';
+import { CardIndexedDbProvider } from './card-indexed-db.provider';
 
 export class DeckIndexedDbProvider {
   /**
@@ -10,10 +10,10 @@ export class DeckIndexedDbProvider {
     try {
       const decks = await db.decks.toArray();
       const decksWithAmount = await Promise.all(
-          decks.map(async deck => ({
-            ...deck,
-            amount: await CardIndexedDbProvider.getCardsCount(deck.id),
-          }))
+        decks.map(async deck => ({
+          ...deck,
+          amount: await CardIndexedDbProvider.getCardsCount(deck.id),
+        }))
       );
       return decksWithAmount;
     } catch (error) {
@@ -131,10 +131,10 @@ export class DeckIndexedDbProvider {
         .toArray();
 
       const decksWithAmount = await Promise.all(
-          decks.map(async deck => ({
-            ...deck,
-            amount: await CardIndexedDbProvider.getCardsCount(deck.id),
-          }))
+        decks.map(async deck => ({
+          ...deck,
+          amount: await CardIndexedDbProvider.getCardsCount(deck.id),
+        }))
       );
       return decksWithAmount;
     } catch (error) {

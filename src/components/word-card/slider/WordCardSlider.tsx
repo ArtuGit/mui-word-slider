@@ -1,10 +1,12 @@
-import {FC, useState} from 'react';
+import { FC, useState } from 'react';
 import Slider from 'react-slick';
-import {Box, IconButton, styled, Typography} from '@mui/material';
+import { Box, IconButton, styled, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import {ICard} from '../../../types/card.types.ts';
+import { ICard } from '../../../types/card.types.ts';
 import WordCard from './WordCard.tsx';
+
+1;
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -25,7 +27,7 @@ const OuterContainer = styled(Box)(() => ({
   justifyContent: 'center',
 }));
 
-const SliderCardWrapper = styled(Box)(({theme}) => ({
+const SliderCardWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
   width: '90%',
   maxWidth: '600px',
@@ -144,8 +146,8 @@ export const WordCardSlider: FC<WordCardSliderProps> = ({ words }) => {
     autoplay: hasMultipleCards,
     autoplaySpeed: 3000,
     pauseOnHover: true,
-    nextArrow: hasMultipleCards ? <NextArrow onDirectionChange={setSlideDirection}/> : undefined,
-    prevArrow: hasMultipleCards ? <PrevArrow onDirectionChange={setSlideDirection}/> : undefined,
+    nextArrow: hasMultipleCards ? <NextArrow onDirectionChange={setSlideDirection} /> : undefined,
+    prevArrow: hasMultipleCards ? <PrevArrow onDirectionChange={setSlideDirection} /> : undefined,
     beforeChange: (oldIndex: number, next: number) => {
       const direction = next > oldIndex ? 'right' : 'left';
       setSlideDirection(direction);
